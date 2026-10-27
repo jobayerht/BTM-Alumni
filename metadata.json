@@ -1,0 +1,6 @@
+{
+  "name": "BTM Alumni — IUT Department of Business & Technology Management",
+  "description": "Centralized alumni directory, career insights, and archival network for the Department of Business and Technology Management (BTM) at Islamic University of Technology (IUT).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
