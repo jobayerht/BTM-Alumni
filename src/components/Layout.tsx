@@ -59,24 +59,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     return clean === href || clean.startsWith(`${href}/`) || (href === '/batches' && clean.startsWith('/batch/'));
   };
 
-  const isHome = path === '/' || path === '';
-
   return (
-    <div
-      className={`min-h-screen flex flex-col transition-colors ${
-        isHome
-          ? 'bg-[#06050b] text-[#dfe7e0]'
-          : 'bg-[#FFFFFF] dark:bg-[#120917] text-[#25212B] dark:text-[#F7F3F9]'
-      }`}
-    >
+    <div className="min-h-screen flex flex-col bg-[#FFFFFF] dark:bg-[#120917] text-[#25212B] dark:text-[#F7F3F9] transition-colors">
       {/* Single Top Header Bar */}
-      <header
-        className={`sticky top-0 z-40 border-b transition-colors ${
-          isHome
-            ? 'bg-[#06050b]/85 border-[#dfe7e0]/12 text-[#dfe7e0]'
-            : 'bg-[#FFFFFF]/95 dark:bg-[#120917]/95 backdrop-blur-md border-[#E8DFED] dark:border-[#2E1A3B]'
-        }`}
-      >
+      <header className="sticky top-0 z-40 bg-[#FFFFFF]/95 dark:bg-[#120917]/95 backdrop-blur-md border-b border-[#E8DFED] dark:border-[#2E1A3B] transition-colors">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-6">
           {/* Zone 1: Brand Wordmark */}
           <a
@@ -320,13 +306,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       )}
 
       {/* Institutional Footer */}
-      <footer
-        className={`relative z-10 border-t mt-20 ${
-          isHome
-            ? 'bg-[#06050b]/92 border-[#dfe7e0]/12 text-[#dfe7e0]'
-            : 'bg-[#F7F3F9] dark:bg-[#160B1D] border-[#E8DFED] dark:border-[#2E1A3B]'
-        }`}
-      >
+      <footer className="bg-[#F7F3F9] dark:bg-[#160B1D] border-t border-[#E8DFED] dark:border-[#2E1A3B] mt-20">
         <div className="max-w-[1280px] mx-auto px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
             {/* Brand & Departmental Reference */}
