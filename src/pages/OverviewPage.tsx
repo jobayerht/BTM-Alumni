@@ -218,7 +218,7 @@ export const OverviewPage: React.FC = () => {
       </header>
 
       {/* Prototype Sample Data Transparency Notice */}
-      <div className="my-6 px-5 py-3.5 rounded-xl bg-[#F7F3F9] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#352044] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#716A79] dark:text-[#B69AD8]">
+      <div className="my-6 px-5 py-3.5 rounded-xl btm-glass-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#716A79] dark:text-[#B69AD8]">
         <div>
           <strong className="text-[#32143F] dark:text-[#F7F3F9]">
             Demonstration Data &amp; Counting Integrity Notice:
@@ -235,7 +235,7 @@ export const OverviewPage: React.FC = () => {
       {/* 2. Global Interactive Filters */}
       <section
         aria-label="Global Dashboard Filters"
-        className="p-6 rounded-2xl bg-[#FFFFFF] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#321E3E] space-y-5 mb-10"
+        className="p-6 rounded-2xl btm-glass space-y-5 mb-10"
       >
         {/* Row A: Multi-Batch Selector */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
@@ -430,7 +430,7 @@ export const OverviewPage: React.FC = () => {
           {analytics.kpis.map((kpi) => (
             <div
               key={kpi.id}
-              className="p-5 rounded-xl bg-[#FFFFFF] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#321E3E] flex flex-col justify-between"
+              className="p-5 rounded-xl btm-glass flex flex-col justify-between"
             >
               <div>
                 <div className="text-xs font-medium text-[#716A79] dark:text-[#B69AD8]">
@@ -461,7 +461,7 @@ export const OverviewPage: React.FC = () => {
       <div
         role="tablist"
         aria-label="Dashboard analytical sections"
-        className="mb-10 flex flex-wrap items-center gap-1.5 p-1.5 bg-[#F7F3F9] dark:bg-[#180C20] border border-[#E8DFED] dark:border-[#321E3E] rounded-xl"
+        className="mb-10 flex flex-wrap items-center gap-1.5 p-1.5 btm-glass-subtle rounded-xl"
       >
         {[
           { id: 'all', label: 'All Insights (Complete View)', icon: null },
@@ -548,7 +548,7 @@ export const OverviewPage: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* A. Domestic vs International Distribution */}
-              <div className="lg:col-span-5 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
+              <div className="lg:col-span-5 p-6 rounded-2xl btm-glass space-y-5">
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     A. Domestic vs. International Split
@@ -681,7 +681,7 @@ export const OverviewPage: React.FC = () => {
               </div>
 
               {/* B. Country Distribution Table */}
-              <div className="lg:col-span-7 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
+              <div className="lg:col-span-7 p-6 rounded-2xl btm-glass space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
@@ -821,7 +821,7 @@ export const OverviewPage: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Study Level & Country Breakdown */}
-              <div className="lg:col-span-5 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-6">
+              <div className="lg:col-span-5 p-6 rounded-2xl btm-glass space-y-6">
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     Postgraduate Study-Level &amp; Host Country Breakdown
@@ -879,7 +879,7 @@ export const OverviewPage: React.FC = () => {
               </div>
 
               {/* Represented Postgraduate Records & Universities Table */}
-              <div className="lg:col-span-7 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
+              <div className="lg:col-span-7 p-6 rounded-2xl btm-glass space-y-4">
                 <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                   Recorded Postgraduate &amp; Doctoral Dossiers
                 </h3>
@@ -944,7 +944,7 @@ export const OverviewPage: React.FC = () => {
             {/* Employment Geography & Seniority Split */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Employment Geography & Role Transitions */}
-              <div className="p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5 flex flex-col justify-between">
+              <div className="p-6 rounded-2xl btm-glass space-y-5 flex flex-col justify-between">
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     A. Workplace Geography &amp; Role Transitions
@@ -984,7 +984,7 @@ export const OverviewPage: React.FC = () => {
               </div>
 
               {/* Seniority Distribution */}
-              <div className="p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
+              <div className="p-6 rounded-2xl btm-glass space-y-5">
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     B. Recorded Career-Level &amp; Seniority Distribution
@@ -1030,7 +1030,7 @@ export const OverviewPage: React.FC = () => {
             {/* Industry Rankings & Company Representation */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Section 8: Industry Insights */}
-              <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
+              <div className="lg:col-span-6 p-6 rounded-2xl btm-glass space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
@@ -1094,7 +1094,7 @@ export const OverviewPage: React.FC = () => {
               </div>
 
               {/* Section 9: Company & Organization Insights */}
-              <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
+              <div className="lg:col-span-6 p-6 rounded-2xl btm-glass space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
@@ -1184,7 +1184,7 @@ export const OverviewPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] overflow-x-auto">
+            <div className="rounded-2xl btm-glass overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
                   <tr className="border-b border-[#E8DFED] dark:border-[#2E1A3B] bg-[#F7F3F9]/70 dark:bg-[#140A1B] font-mono uppercase text-[11px] text-[#716A79] dark:text-[#B69AD8]">
@@ -1358,7 +1358,7 @@ export const OverviewPage: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Qualifications, Certifications & Skills */}
-              <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
+              <div className="lg:col-span-6 p-6 rounded-2xl btm-glass space-y-5">
                 <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                   A. Highest Qualification &amp; Professional Certifications
                 </h3>
@@ -1408,7 +1408,7 @@ export const OverviewPage: React.FC = () => {
               </div>
 
               {/* Entrepreneurship & Recorded Achievements */}
-              <div className="lg:col-span-6 p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
+              <div className="lg:col-span-6 p-6 rounded-2xl btm-glass space-y-5">
                 <div className="flex items-center justify-between">
                   <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     B. Recorded Milestones, Ventures &amp; Publications
@@ -1442,7 +1442,7 @@ export const OverviewPage: React.FC = () => {
             </div>
 
             {/* Section 13: Alumni Data Quality and Coverage */}
-            <div className="p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-6">
+            <div className="p-7 rounded-2xl btm-glass space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
                 <div>
                   <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
@@ -1533,7 +1533,7 @@ export const OverviewPage: React.FC = () => {
                 <div
                   key={p.alumni.id}
                   onClick={() => navigate(`/alumni/${p.alumni.studentId}`)}
-                  className="group cursor-pointer p-4 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-3"
+                  className="group cursor-pointer p-4 rounded-xl btm-glass-card flex flex-col justify-between gap-3"
                 >
                   <div className="flex items-start gap-3">
                     <AlumniPortrait

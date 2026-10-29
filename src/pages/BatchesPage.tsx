@@ -72,10 +72,10 @@ export const BatchesPage: React.FC = () => {
             <article
               key={batch.id}
               onClick={() => navigate(`/batch/${batch.code}`)}
-              className="group cursor-pointer flex flex-col justify-between rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] overflow-hidden hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors"
+              className="group cursor-pointer flex flex-col justify-between rounded-2xl btm-glass-card overflow-hidden"
             >
               <div>
-                <div className="h-56 overflow-hidden border-b border-[#E8DFED] dark:border-[#321E3E]">
+                <div className="h-56 overflow-hidden border-b border-[#E8DFED]/80 dark:border-[#321E3E]">
                   <EditorialPlate
                     variant={batch.coverPlateVariant}
                     imageUrl={batch.coverImage}
@@ -91,7 +91,7 @@ export const BatchesPage: React.FC = () => {
                       Academic Years {batch.intakeYear}–{batch.graduationYear}
                     </span>
                     <span className="text-[#663078] dark:text-[#C8B2E6] font-semibold">
-                      {batch.status === 'active' ? 'Active Directory' : 'Coming Soon · Archival Preparation'}
+                      B.Sc. in BTM · IUT
                     </span>
                   </div>
 
@@ -105,7 +105,7 @@ export const BatchesPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="px-8 py-4 bg-[#F7F3F9]/70 dark:bg-[#140A1B] border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between gap-4">
+              <div className="px-8 py-4 bg-[#F7F3F9]/55 dark:bg-[#140A1B]/55 backdrop-blur-xs border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-between gap-4">
                 <span className="font-mono text-xs text-[#25212B] dark:text-[#E8DFED] tabular-nums">
                   {count} Available Alumni {count === 1 ? 'Profile' : 'Profiles'}
                 </span>

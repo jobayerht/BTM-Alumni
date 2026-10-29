@@ -101,7 +101,13 @@ export const HomePage: React.FC = () => {
     <div>
       {/* 1. Asymmetric 60/40 Editorial Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-[#230E2D] via-[#32143F] to-[#4A1F5C] text-[#F7F3F9] border-b border-[#4A235A]">
-        <div className="max-w-[1280px] mx-auto px-6 py-16 lg:py-24">
+        {/* Ambient Hero Glows for Frosted Glass Depth */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 left-[12%] w-80 h-80 rounded-full bg-[#B69AD8]/20 blur-[90px]" />
+          <div className="absolute bottom-[-10%] right-[10%] w-96 h-96 rounded-full bg-[#9D59B8]/25 blur-[100px]" />
+        </div>
+
+        <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left 60% Editorial & Search Column */}
             <div className="lg:col-span-7 space-y-6">
@@ -119,10 +125,10 @@ export const HomePage: React.FC = () => {
                 Gazipur, Bangladesh.
               </p>
 
-              {/* Hero Search Form */}
+              {/* Hero Search Form (Glass) */}
               <form
                 onSubmit={handleHeroSearchSubmit}
-                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 bg-[#190920]/75 p-2 rounded-xl border border-[#B69AD8]/30 max-w-xl"
+                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 btm-glass-dark p-2 rounded-xl max-w-xl"
               >
                 <div className="flex items-center gap-2.5 flex-1 px-3 py-2">
                   <Search className="w-4 h-4 text-[#B69AD8] shrink-0" />
@@ -137,7 +143,7 @@ export const HomePage: React.FC = () => {
                 </div>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078] hover:bg-[#7D3C94] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078]/90 hover:bg-[#7D3C94] border border-[#FFFFFF]/20 backdrop-blur-md rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   Search Directory
                 </button>
@@ -148,7 +154,7 @@ export const HomePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/batch/17')}
-                  className="px-5 py-2.5 text-xs font-semibold text-[#32143F] bg-[#F7F3F9] hover:bg-[#FFFFFF] rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-5 py-2.5 text-xs font-semibold text-[#32143F] bg-[#F7F3F9]/95 hover:bg-[#FFFFFF] backdrop-blur-md rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 cursor-pointer shadow-sm"
                 >
                   <span>Explore BTM 17 Directory</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -156,14 +162,14 @@ export const HomePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/batches')}
-                  className="px-4 py-2.5 text-xs font-semibold text-[#F7F3F9] bg-[#FFFFFF]/10 hover:bg-[#FFFFFF]/15 border border-[#B69AD8]/30 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-semibold text-[#F7F3F9] bg-[#FFFFFF]/12 hover:bg-[#FFFFFF]/20 backdrop-blur-md border border-[#FFFFFF]/25 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   Browse All Batches
                 </button>
                 <button
                   type="button"
                   onClick={() => navigate('/overview')}
-                  className="px-4 py-2.5 text-xs font-semibold text-[#F7F3F9] bg-[#FFFFFF]/10 hover:bg-[#FFFFFF]/15 border border-[#B69AD8]/30 rounded-lg transition-colors inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-semibold text-[#F7F3F9] bg-[#FFFFFF]/12 hover:bg-[#FFFFFF]/20 backdrop-blur-md border border-[#FFFFFF]/25 rounded-lg transition-colors inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   <LayoutDashboard className="w-3.5 h-3.5" />
                   <span>Overview Dashboard</span>
@@ -171,10 +177,10 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right 40% Architectural Feature Plate */}
+            {/* Right 40% Architectural Feature Plate (Glass) */}
             <div className="lg:col-span-5">
-              <div className="rounded-2xl overflow-hidden border border-[#B69AD8]/30 bg-[#1B0B24] shadow-2xl">
-                <div className="h-64 sm:h-72 border-b border-[#B69AD8]/20">
+              <div className="rounded-2xl overflow-hidden btm-glass-dark">
+                <div className="h-64 sm:h-72 border-b border-[#B69AD8]/25">
                   <EditorialPlate
                     variant="campus-arch"
                     alt="Islamic University of Technology BTM Architectural Plate"
@@ -182,7 +188,7 @@ export const HomePage: React.FC = () => {
                     className="w-full h-full"
                   />
                 </div>
-                <div className="p-6 grid grid-cols-3 gap-4 divide-x divide-[#B69AD8]/20 text-center">
+                <div className="p-6 grid grid-cols-3 gap-4 divide-x divide-[#B69AD8]/25 text-center bg-[#FFFFFF]/5 backdrop-blur-md">
                   <div>
                     <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#FFFFFF] tabular-nums">
                       {totalProfiles}
@@ -242,10 +248,10 @@ export const HomePage: React.FC = () => {
               <article
                 key={batch.id}
                 onClick={() => navigate(`/batch/${batch.code}`)}
-                className="group cursor-pointer rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] overflow-hidden hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between"
+                className="group cursor-pointer rounded-2xl btm-glass-card overflow-hidden flex flex-col justify-between"
               >
                 <div>
-                  <div className="h-36 overflow-hidden border-b border-[#E8DFED] dark:border-[#321E3E]">
+                  <div className="h-36 overflow-hidden border-b border-[#E8DFED]/80 dark:border-[#321E3E]">
                     <EditorialPlate
                       variant={batch.coverPlateVariant}
                       imageUrl={batch.coverImage}
@@ -271,7 +277,7 @@ export const HomePage: React.FC = () => {
                     </p>
                   </div>
                 </div>
-                <div className="px-5 py-3.5 bg-[#F7F3F9]/70 dark:bg-[#140A1B] border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+                <div className="px-5 py-3.5 bg-[#F7F3F9]/55 dark:bg-[#140A1B]/55 backdrop-blur-xs border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
                   <span>Open {batch.name}</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </div>
@@ -282,9 +288,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 3. Platform Navigation Overview (Global Map, Overview, Insights, About) */}
-      <section className="bg-[#F7F3F9]/60 dark:bg-[#160B1D] border-y border-[#E8DFED] dark:border-[#2E1A3B]">
+      <section className="btm-glass-subtle border-y border-[#E8DFED] dark:border-[#2E1A3B]">
         <div className="max-w-[1280px] mx-auto px-6 py-16 lg:py-20">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B]">
             <div>
               <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
                 Explore the Portal
@@ -307,11 +313,11 @@ export const HomePage: React.FC = () => {
             {/* Global Map Preview Card */}
             <article
               onClick={() => navigate('/map')}
-              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+              className="group cursor-pointer rounded-xl btm-glass-card p-6 flex flex-col justify-between gap-5"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                  <div className="w-10 h-10 rounded-lg btm-glass-subtle flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
                     <Globe className="w-5 h-5" />
                   </div>
                   <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
@@ -324,11 +330,11 @@ export const HomePage: React.FC = () => {
                 </h3>
 
                 <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/85 leading-relaxed">
-                  Explore the geographic distribution of BTM alumni across cities and countries worldwide on an interactive map.
+                  Explore the geographic distribution of BTM alumni across countries worldwide on an interactive map.
                 </p>
               </div>
 
-              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+              <div className="pt-3.5 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
                 <span>Open Global Map</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
@@ -337,11 +343,11 @@ export const HomePage: React.FC = () => {
             {/* Overview Dashboard Preview Card */}
             <article
               onClick={() => navigate('/overview')}
-              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+              className="group cursor-pointer rounded-xl btm-glass-card p-6 flex flex-col justify-between gap-5"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                  <div className="w-10 h-10 rounded-lg btm-glass-subtle flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
                     <LayoutDashboard className="w-5 h-5" />
                   </div>
                   <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
@@ -358,7 +364,7 @@ export const HomePage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+              <div className="pt-3.5 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
                 <span>View Overview</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
@@ -367,11 +373,11 @@ export const HomePage: React.FC = () => {
             {/* Career Insights Preview Card */}
             <article
               onClick={() => navigate('/insights')}
-              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+              className="group cursor-pointer rounded-xl btm-glass-card p-6 flex flex-col justify-between gap-5"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                  <div className="w-10 h-10 rounded-lg btm-glass-subtle flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
                     <BarChart3 className="w-5 h-5" />
                   </div>
                   <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
@@ -388,7 +394,7 @@ export const HomePage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+              <div className="pt-3.5 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
                 <span>Explore Insights</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
@@ -397,11 +403,11 @@ export const HomePage: React.FC = () => {
             {/* About & Archival Charter Preview Card */}
             <article
               onClick={() => navigate('/about')}
-              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+              className="group cursor-pointer rounded-xl btm-glass-card p-6 flex flex-col justify-between gap-5"
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                  <div className="w-10 h-10 rounded-lg btm-glass-subtle flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
                     <Building2 className="w-5 h-5" />
                   </div>
                   <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6]">
@@ -418,7 +424,7 @@ export const HomePage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+              <div className="pt-3.5 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
                 <span>Read About BTM</span>
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </div>
@@ -431,9 +437,9 @@ export const HomePage: React.FC = () => {
       <section className="max-w-[1280px] mx-auto px-6 py-16 lg:py-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           {/* Left: Top Organizations */}
-          <div className="lg:col-span-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 sm:p-8 flex flex-col justify-between">
+          <div className="lg:col-span-6 rounded-2xl btm-glass p-6 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between gap-4 pb-4 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
+              <div className="flex items-center justify-between gap-4 pb-4 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B]">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
                     Career Representation
@@ -445,7 +451,7 @@ export const HomePage: React.FC = () => {
                 <BarChart3 className="w-5 h-5 text-[#663078] dark:text-[#B69AD8] shrink-0" />
               </div>
 
-              <div className="mt-4 divide-y divide-[#E8DFED] dark:divide-[#2E1A3B]">
+              <div className="mt-4 divide-y divide-[#E8DFED]/70 dark:divide-[#2E1A3B]">
                 {topOrganizations.map((org) => (
                   <button
                     key={org.organization}
@@ -464,7 +470,7 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#E8DFED] dark:border-[#2E1A3B]">
+            <div className="mt-6 pt-4 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B]">
               <button
                 type="button"
                 onClick={() => navigate('/insights')}
@@ -477,9 +483,9 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Right: Global Footprint */}
-          <div className="lg:col-span-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 sm:p-8 flex flex-col justify-between">
+          <div className="lg:col-span-6 rounded-2xl btm-glass p-6 sm:p-8 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between gap-4 pb-4 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
+              <div className="flex items-center justify-between gap-4 pb-4 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B]">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
                     Geographic Reach
@@ -491,7 +497,7 @@ export const HomePage: React.FC = () => {
                 <Globe className="w-5 h-5 text-[#663078] dark:text-[#B69AD8] shrink-0" />
               </div>
 
-              <div className="mt-4 divide-y divide-[#E8DFED] dark:divide-[#2E1A3B]">
+              <div className="mt-4 divide-y divide-[#E8DFED]/70 dark:divide-[#2E1A3B]">
                 {countryFootprint.slice(0, 6).map((item) => (
                   <button
                     key={item.country}
@@ -517,7 +523,7 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-[#E8DFED] dark:border-[#2E1A3B]">
+            <div className="mt-6 pt-4 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B]">
               <button
                 type="button"
                 onClick={() => navigate('/map')}

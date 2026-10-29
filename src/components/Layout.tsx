@@ -60,9 +60,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFFFFF] dark:bg-[#120917] text-[#25212B] dark:text-[#F7F3F9] transition-colors">
+    <div className="relative min-h-screen flex flex-col bg-[#FAF7FC] dark:bg-[#110816] text-[#25212B] dark:text-[#F7F3F9] transition-colors overflow-x-hidden">
+      {/* Ambient Background Light Orbs for Glassmorphism Refraction */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      >
+        <div className="absolute -top-32 -left-24 w-[480px] h-[480px] rounded-full bg-[#B69AD8]/25 dark:bg-[#663078]/20 blur-[110px]" />
+        <div className="absolute top-[28%] -right-32 w-[520px] h-[520px] rounded-full bg-[#D8C2F0]/30 dark:bg-[#4A1F5C]/20 blur-[120px]" />
+        <div className="absolute -bottom-36 left-[22%] w-[460px] h-[460px] rounded-full bg-[#E8DFED]/45 dark:bg-[#32143F]/25 blur-[110px]" />
+      </div>
+
       {/* Single Top Header Bar */}
-      <header className="sticky top-0 z-40 bg-[#FFFFFF]/95 dark:bg-[#120917]/95 backdrop-blur-md border-b border-[#E8DFED] dark:border-[#2E1A3B] transition-colors">
+      <header className="sticky top-0 z-40 btm-glass-header transition-colors">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-6">
           {/* Zone 1: Brand Wordmark */}
           <a
@@ -109,7 +119,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               type="button"
               onClick={() => setSearchModalOpen(true)}
               aria-label="Search Directory"
-              className="px-3 sm:px-4 py-2 text-xs font-semibold text-[#FFFFFF] bg-[#663078] hover:bg-[#32143F] dark:bg-[#663078] dark:hover:bg-[#7D3C94] rounded-lg transition-colors whitespace-nowrap shrink-0 inline-flex items-center gap-1.5 cursor-pointer"
+              className="px-3 sm:px-4 py-2 text-xs font-semibold text-[#FFFFFF] bg-[#663078]/90 hover:bg-[#32143F] dark:bg-[#663078]/85 dark:hover:bg-[#7D3C94] backdrop-blur-md border border-[#FFFFFF]/20 rounded-lg transition-colors whitespace-nowrap shrink-0 inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
               <Search className="w-3.5 h-3.5 shrink-0" />
               <span className="hidden sm:inline">Search</span>
@@ -119,7 +129,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               type="button"
               onClick={toggleTheme}
               aria-label={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
-              className="p-2 sm:px-3 sm:py-2 rounded-lg border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9] dark:bg-[#190D21] text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors inline-flex items-center gap-1.5 cursor-pointer shrink-0"
+              className="p-2 sm:px-3 sm:py-2 rounded-lg btm-glass-subtle text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors inline-flex items-center gap-1.5 cursor-pointer shrink-0"
             >
               {theme === 'light' ? (
                 <>
@@ -138,7 +148,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label="Toggle navigation menu"
-              className="md:hidden p-2 rounded-lg border border-[#E8DFED] dark:border-[#321E3E] text-[#25212B] dark:text-[#F7F3F9] shrink-0"
+              className="md:hidden p-2 rounded-lg btm-glass-subtle text-[#25212B] dark:text-[#F7F3F9] shrink-0"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -148,7 +158,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
       {/* Mobile Drawer Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#FFFFFF] dark:bg-[#190D21] border-b border-[#E8DFED] dark:border-[#321E3E] px-6 py-5 space-y-3">
+        <div className="md:hidden relative z-30 btm-glass border-b border-[#E8DFED] dark:border-[#321E3E] px-6 py-5 space-y-3">
           <div className="flex flex-col space-y-2.5 text-sm font-medium">
             {navLinks.map((item) => (
               <a
@@ -173,19 +183,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       )}
 
       {/* Main Content */}
-      <main className="flex-1">{children}</main>
+      <main className="relative z-10 flex-1">{children}</main>
 
       {/* Instant Global Search Modal */}
       {searchModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-[#190920]/70 backdrop-blur-xs flex items-start justify-center pt-16 px-4"
+          className="fixed inset-0 z-50 bg-[#190920]/55 backdrop-blur-md flex items-start justify-center pt-16 px-4"
           onClick={() => setSearchModalOpen(false)}
         >
           <div
-            className="w-full max-w-2xl bg-[#FFFFFF] dark:bg-[#1B0E24] border border-[#E8DFED] dark:border-[#362046] rounded-xl shadow-2xl overflow-hidden"
+            className="w-full max-w-2xl btm-glass rounded-2xl shadow-2xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-[#E8DFED] dark:border-[#321E3E] flex items-center gap-3">
+            <div className="p-4 border-b border-[#E8DFED]/80 dark:border-[#321E3E] flex items-center gap-3">
               <Search className="w-5 h-5 text-[#663078] dark:text-[#B69AD8] shrink-0" />
               <input
                 type="text"
@@ -229,13 +239,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           setSearchModalOpen(false);
                           navigate(`/batch/${b.code}`);
                         }}
-                        className="p-3 text-left rounded-lg border border-[#E8DFED] dark:border-[#321E3E] hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors"
+                        className="p-3 text-left rounded-lg btm-glass-card"
                       >
                         <div className="font-serif font-semibold text-sm text-[#25212B] dark:text-[#F7F3F9]">
                           {b.name}
                         </div>
-                        <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8]/75 mt-0.5">
-                          {b.status === 'active' ? 'Active Directory' : 'Coming Soon'}
+                        <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8]/75 mt-0.5 font-mono tabular-nums">
+                          {b.intakeYear}–{b.graduationYear}
                         </div>
                       </button>
                     ))}
@@ -251,7 +261,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-[#E8DFED] dark:divide-[#2E1A3B]">
+                <div className="divide-y divide-[#E8DFED]/70 dark:divide-[#2E1A3B]">
                   {quickResults.map((item) => (
                     <button
                       key={item.alumni.id}
@@ -261,7 +271,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                         setQuickQuery('');
                         navigate(`/alumni/${item.alumni.studentId}`);
                       }}
-                      className="w-full py-3 px-2 flex items-center justify-between gap-4 text-left hover:bg-[#F7F3F9] dark:hover:bg-[#241330] rounded-lg transition-colors"
+                      className="w-full py-3 px-2 flex items-center justify-between gap-4 text-left hover:bg-[#F7F3F9]/70 dark:hover:bg-[#241330]/70 rounded-lg transition-colors"
                     >
                       <div className="min-w-0">
                         <div className="text-sm font-semibold text-[#25212B] dark:text-[#F7F3F9] truncate">
@@ -288,7 +298,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               )}
             </div>
 
-            <div className="px-4 py-3 bg-[#F7F3F9] dark:bg-[#150A1C] border-t border-[#E8DFED] dark:border-[#321E3E] flex items-center justify-between text-xs text-[#716A79] dark:text-[#B69AD8]/80">
+            <div className="px-4 py-3 btm-glass-subtle border-t border-[#E8DFED]/80 dark:border-[#321E3E] flex items-center justify-between text-xs text-[#716A79] dark:text-[#B69AD8]/80">
               <span>Search across names, student IDs, companies, designations, and locations</span>
               <button
                 type="button"
@@ -306,7 +316,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       )}
 
       {/* Institutional Footer */}
-      <footer className="bg-[#F7F3F9] dark:bg-[#160B1D] border-t border-[#E8DFED] dark:border-[#2E1A3B] mt-20">
+      <footer className="relative z-10 btm-glass-subtle border-t border-[#E8DFED] dark:border-[#2E1A3B] mt-20">
         <div className="max-w-[1280px] mx-auto px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
             {/* Brand & Departmental Reference */}

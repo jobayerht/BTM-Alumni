@@ -24,7 +24,7 @@ export const AlumniCard: React.FC<AlumniCardProps> = ({ profile, viewMode = 'gri
     return (
       <article
         onClick={handleOpenProfile}
-        className="group cursor-pointer bg-[#FFFFFF] dark:bg-[#1A0E23] border border-[#E8DFED] dark:border-[#321E3E] rounded-lg px-4 py-3 transition-colors hover:border-[#663078] dark:hover:border-[#B69AD8] flex items-center justify-between gap-4"
+        className="group cursor-pointer btm-glass-card rounded-lg px-4 py-3 flex items-center justify-between gap-4"
       >
         <div className="flex items-center gap-4 min-w-0">
           <span className="font-mono text-xs sm:text-sm font-semibold text-[#663078] dark:text-[#B69AD8] tabular-nums shrink-0">
@@ -43,7 +43,7 @@ export const AlumniCard: React.FC<AlumniCardProps> = ({ profile, viewMode = 'gri
     return (
       <article
         onClick={handleOpenProfile}
-        className="group cursor-pointer bg-[#FFFFFF] dark:bg-[#1A0E23] border border-[#E8DFED] dark:border-[#321E3E] rounded-xl p-5 transition-colors hover:border-[#663078] dark:hover:border-[#B69AD8]"
+        className="group cursor-pointer btm-glass-card rounded-xl p-5"
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="min-w-0">
@@ -115,7 +115,7 @@ export const AlumniCard: React.FC<AlumniCardProps> = ({ profile, viewMode = 'gri
   return (
     <article
       onClick={handleOpenProfile}
-      className="group cursor-pointer flex flex-col justify-between bg-[#FFFFFF] dark:bg-[#1A0E23] border border-[#E8DFED] dark:border-[#321E3E] rounded-xl p-6 transition-colors hover:border-[#663078] dark:hover:border-[#B69AD8]"
+      className="group cursor-pointer flex flex-col justify-between btm-glass-card rounded-xl p-6"
     >
       <div>
         <div className="flex items-center justify-between gap-4 font-mono text-xs text-[#663078] dark:text-[#B69AD8] tabular-nums">

@@ -46,7 +46,7 @@ export const AboutPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="lg:col-span-5 h-64 rounded-2xl overflow-hidden border border-[#E8DFED] dark:border-[#352044]">
+        <div className="lg:col-span-5 h-64 rounded-2xl overflow-hidden btm-glass">
           <EditorialPlate
             variant="quadrangle"
             alt="Architectural representation of the BTM Departmental Archive"
@@ -120,7 +120,7 @@ export const AboutPage: React.FC = () => {
         </div>
 
         <aside className="lg:col-span-4 space-y-6">
-          <div className="p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9] dark:bg-[#190D21] space-y-4">
+          <div className="p-6 rounded-2xl btm-glass-subtle space-y-4">
             <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
               Institutional Disclaimer
             </div>
@@ -131,7 +131,7 @@ export const AboutPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
+          <div className="p-6 rounded-2xl btm-glass space-y-4">
             <div className="text-xs font-mono uppercase tracking-wider text-[#32143F] dark:text-[#E8DFED]">
               Explore Platform Capabilities
             </div>
@@ -147,7 +147,7 @@ export const AboutPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/overview')}
-                className="w-full py-2.5 px-4 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#23122E] hover:bg-[#E8DFED] rounded-lg transition-colors inline-flex items-center justify-between cursor-pointer"
+                className="w-full py-2.5 px-4 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] btm-glass-subtle hover:bg-[#E8DFED]/70 dark:hover:bg-[#23122E] rounded-lg transition-colors inline-flex items-center justify-between cursor-pointer"
               >
                 <span>Explore Overview Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />

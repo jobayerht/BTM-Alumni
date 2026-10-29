@@ -233,7 +233,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
       </nav>
 
       {currentBatch ? (
-        <div className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] overflow-hidden mb-8">
+        <div className="rounded-2xl btm-glass overflow-hidden mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
             <div className="lg:col-span-7 p-8 lg:p-10 flex flex-col justify-between space-y-6">
               <div>
@@ -252,7 +252,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                 </p>
               </div>
 
-              <div className="pt-4 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex flex-wrap items-center justify-between gap-4">
+              <div className="pt-4 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center gap-6">
                   <div>
                     <div className="font-mono text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
@@ -265,17 +265,15 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                   <div className="h-8 w-px bg-[#E8DFED] dark:bg-[#2E1A3B]" />
                   <div>
                     <div className="text-sm font-semibold text-[#25212B] dark:text-[#E8DFED]">
-                      {currentBatch.status === 'active' ? 'Active Directory' : 'Coming Soon State'}
+                      B.Sc. in BTM ({currentBatch.intakeYear}–{currentBatch.graduationYear})
                     </div>
                     <div className="text-xs text-[#716A79] dark:text-[#B69AD8]/80">
-                      {currentBatch.status === 'active'
-                        ? 'Verified BTM 17 archival records loaded'
-                        : 'Awaiting verified departmental intake'}
+                      Islamic University of Technology (IUT)
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-[#F7F3F9] dark:bg-[#130919] p-1 rounded-lg border border-[#E8DFED] dark:border-[#2E1A3B]">
+                <div className="flex items-center gap-1.5 btm-glass-subtle p-1 rounded-lg">
                   {batches.map((b) => (
                     <button
                       key={b.id}
@@ -294,7 +292,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
               </div>
             </div>
 
-            <div className="lg:col-span-5 min-h-[240px] border-t lg:border-t-0 lg:border-l border-[#E8DFED] dark:border-[#321E3E]">
+            <div className="lg:col-span-5 min-h-[240px] border-t lg:border-t-0 lg:border-l border-[#E8DFED]/80 dark:border-[#321E3E]">
               <EditorialPlate
                 variant={currentBatch.coverPlateVariant}
                 imageUrl={currentBatch.coverImage}
@@ -326,7 +324,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
       )}
 
       {currentBatch && baseProfiles.length === 0 ? (
-        <div className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9]/60 dark:bg-[#190D21] p-10 lg:p-14 text-center max-w-3xl mx-auto my-8 space-y-5">
+        <div className="rounded-2xl btm-glass p-10 lg:p-14 text-center max-w-3xl mx-auto my-8 space-y-5">
           <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
             {currentBatch.name} · Batch Directory Status
           </div>
@@ -353,9 +351,9 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
       ) : (
         <>
           {!currentBatch && (
-            <div className="bg-[#F7F3F9] dark:bg-[#180C20] border border-[#E8DFED] dark:border-[#321E3E] rounded-xl p-5 mb-6 space-y-4">
+            <div className="btm-glass rounded-xl p-5 mb-6 space-y-4">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                <div className="lg:col-span-6 relative flex items-center bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3.5 py-2">
+                <div className="lg:col-span-6 relative flex items-center btm-glass-subtle rounded-lg px-3.5 py-2">
                   <Search className="w-4 h-4 text-[#663078] dark:text-[#B69AD8] shrink-0 mr-2.5" />
                   <input
                     type="text"
@@ -381,7 +379,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                     aria-label="Filter by Batch"
                     value={selectedBatchFilter}
                     onChange={(e) => setSelectedBatchFilter(e.target.value)}
-                    className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
+                    className="btm-glass-subtle rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
                   >
                     <option value="all">All Batches</option>
                     {batches.map((b) => (
@@ -395,7 +393,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                     aria-label="Filter by Country"
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
+                    className="btm-glass-subtle rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
                   >
                     <option value="all">All Locations ({availableLocations.length})</option>
                     {availableLocations.map((loc) => (
@@ -408,7 +406,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
               </div>
 
               {hasActiveFilters && (
-                <div className="pt-3 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-end">
+                <div className="pt-3 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B] flex items-center justify-end">
                   <button
                     type="button"
                     onClick={resetFilters}
@@ -438,7 +436,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                   id="sort-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                  className="bg-[#FFFFFF] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none"
+                  className="btm-glass-subtle rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none"
                 >
                   <option value="id_asc">Student ID (Ascending)</option>
                   <option value="id_desc">Student ID (Descending)</option>
@@ -449,7 +447,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
               <div
                 role="group"
                 aria-label="Directory layout view mode"
-                className="flex items-center gap-1 p-1 bg-[#F7F3F9] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#352044] rounded-lg"
+                className="flex items-center gap-1 p-1 btm-glass-subtle rounded-lg"
               >
                 <button
                   type="button"
@@ -492,7 +490,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
           </div>
 
           {filteredProfiles.length === 0 ? (
-            <div className="p-12 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] text-center space-y-3">
+            <div className="p-12 rounded-xl btm-glass text-center space-y-3">
               <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                 No Matching Alumni Profiles Found
               </h3>

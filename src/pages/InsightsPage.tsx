@@ -236,7 +236,7 @@ export const InsightsPage: React.FC = () => {
           <div
             role="group"
             aria-label="Filter analytics by batch"
-            className="flex flex-wrap items-center gap-1 p-1 bg-[#F7F3F9] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#321E3E] rounded-lg"
+            className="flex flex-wrap items-center gap-1 p-1 btm-glass-subtle rounded-lg"
           >
             <button
               type="button"
@@ -267,7 +267,7 @@ export const InsightsPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="my-8 p-5 rounded-xl bg-[#F7F3F9] dark:bg-[#1A0D22] border border-[#E8DFED] dark:border-[#352044] flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+      <div className="my-8 p-5 rounded-xl btm-glass-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
         <div className="space-y-1 text-[#716A79] dark:text-[#B69AD8]">
           <strong className="text-[#32143F] dark:text-[#F7F3F9]">
             Dataset Provenance &amp; Illustrative Labeling:
@@ -279,7 +279,7 @@ export const InsightsPage: React.FC = () => {
       </div>
 
       {totalCount === 0 ? (
-        <div className="p-14 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] text-center space-y-4 my-8">
+        <div className="p-14 rounded-2xl btm-glass text-center space-y-4 my-8">
           <h2 className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
             Insufficient Cohort Data for Visualization
           </h2>
@@ -299,7 +299,7 @@ export const InsightsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => navigate('/batch/17')}
-              className="px-4 py-2 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] border border-[#E8DFED] dark:border-[#352044] rounded-lg cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] btm-glass-subtle rounded-lg cursor-pointer"
             >
               Open BTM 17 Directory
             </button>
@@ -308,8 +308,8 @@ export const InsightsPage: React.FC = () => {
       ) : (
         <div className="space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <section className="p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-6">
-              <div className="flex items-start justify-between gap-4 border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
+            <section className="p-7 rounded-2xl btm-glass space-y-6">
+              <div className="flex items-start justify-between gap-4 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B] pb-4">
                 <div>
                   <h2 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     01. Industry Distribution
@@ -340,7 +340,7 @@ export const InsightsPage: React.FC = () => {
                         {item.count} ({item.pct}%)
                       </span>
                     </div>
-                    <div className="w-full h-2.5 rounded-full bg-[#F7F3F9] dark:bg-[#120917] overflow-hidden">
+                    <div className="w-full h-2.5 rounded-full bg-[#F7F3F9]/80 dark:bg-[#120917]/80 overflow-hidden">
                       <div
                         style={{ width: `${Math.max(item.pct, 4)}%` }}
                         className={`h-full rounded-full ${
@@ -355,8 +355,8 @@ export const InsightsPage: React.FC = () => {
               </div>
             </section>
 
-            <section className="p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-6">
-              <div className="flex items-start justify-between gap-4 border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
+            <section className="p-7 rounded-2xl btm-glass space-y-6">
+              <div className="flex items-start justify-between gap-4 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B] pb-4">
                 <div>
                   <h2 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     02. Career-Level &amp; Track Distribution
@@ -387,7 +387,7 @@ export const InsightsPage: React.FC = () => {
                         {item.count} ({item.pct}%)
                       </span>
                     </div>
-                    <div className="w-full h-2.5 rounded-full bg-[#F7F3F9] dark:bg-[#120917] overflow-hidden">
+                    <div className="w-full h-2.5 rounded-full bg-[#F7F3F9]/80 dark:bg-[#120917]/80 overflow-hidden">
                       <div
                         style={{ width: `${Math.max(item.pct, 4)}%` }}
                         className={`h-full rounded-full ${
@@ -404,8 +404,8 @@ export const InsightsPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <section className="lg:col-span-7 p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-6">
-              <div className="flex items-start justify-between gap-4 border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
+            <section className="lg:col-span-7 p-7 rounded-2xl btm-glass space-y-6">
+              <div className="flex items-start justify-between gap-4 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B] pb-4">
                 <div>
                   <h2 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     03. Geographic Distribution
@@ -423,7 +423,7 @@ export const InsightsPage: React.FC = () => {
                 </button>
               </div>
 
-              <div className="divide-y divide-[#E8DFED] dark:divide-[#2E1A3B]">
+              <div className="divide-y divide-[#E8DFED]/70 dark:divide-[#2E1A3B]">
                 {geoStats.map((g) => (
                   <div key={g.country} className="py-3 flex items-center justify-between gap-4 text-sm">
                     <div>
@@ -450,9 +450,9 @@ export const InsightsPage: React.FC = () => {
               </div>
             </section>
 
-            <section className="lg:col-span-5 p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] flex flex-col justify-between space-y-6">
+            <section className="lg:col-span-5 p-7 rounded-2xl btm-glass flex flex-col justify-between space-y-6">
               <div className="space-y-4">
-                <div className="border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
+                <div className="border-b border-[#E8DFED]/80 dark:border-[#2E1A3B] pb-4">
                   <h2 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                     04. Entrepreneurship &amp; Pathways
                   </h2>
@@ -462,7 +462,7 @@ export const InsightsPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 text-center">
-                  <div className="p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#140A1B] border border-[#E8DFED] dark:border-[#2E1A3B]">
+                  <div className="p-4 rounded-xl btm-glass-subtle">
                     <div className="font-mono text-2xl font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
                       {entrepreneurStats.foundersCount}
                     </div>
@@ -471,7 +471,7 @@ export const InsightsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#140A1B] border border-[#E8DFED] dark:border-[#2E1A3B]">
+                  <div className="p-4 rounded-xl btm-glass-subtle">
                     <div className="font-mono text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
                       {entrepreneurStats.employedCount}
                     </div>
@@ -480,7 +480,7 @@ export const InsightsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#140A1B] border border-[#E8DFED] dark:border-[#2E1A3B]">
+                  <div className="p-4 rounded-xl btm-glass-subtle">
                     <div className="font-mono text-2xl font-semibold text-[#716A79] dark:text-[#9A8FA6] tabular-nums">
                       {entrepreneurStats.unspecifiedCount}
                     </div>
@@ -499,7 +499,7 @@ export const InsightsPage: React.FC = () => {
                       <div
                         key={f.alumni.id}
                         onClick={() => navigate(`/alumni/${f.alumni.studentId}`)}
-                        className="p-3 rounded-lg border border-[#E8DFED] dark:border-[#2E1A3B] hover:border-[#663078] cursor-pointer transition-colors"
+                        className="p-3 rounded-lg btm-glass-card cursor-pointer"
                       >
                         <div className="text-sm font-semibold text-[#25212B] dark:text-[#F7F3F9]">
                           {f.alumni.fullName}
@@ -518,8 +518,8 @@ export const InsightsPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <section className="lg:col-span-6 p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
-              <div className="border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
+            <section className="lg:col-span-6 p-7 rounded-2xl btm-glass space-y-5">
+              <div className="border-b border-[#E8DFED]/80 dark:border-[#2E1A3B] pb-4">
                 <h2 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                   05. Organization &amp; Employer Representation
                 </h2>
@@ -531,7 +531,7 @@ export const InsightsPage: React.FC = () => {
               {orgStats.length === 0 ? (
                 <p className="text-sm text-[#716A79]">No current organizations recorded.</p>
               ) : (
-                <div className="divide-y divide-[#E8DFED] dark:divide-[#2E1A3B]">
+                <div className="divide-y divide-[#E8DFED]/70 dark:divide-[#2E1A3B]">
                   {orgStats.map((item) => (
                     <div
                       key={item.organization}
@@ -554,7 +554,7 @@ export const InsightsPage: React.FC = () => {
               )}
             </section>
 
-            <section className="lg:col-span-6 p-7 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
+            <section className="lg:col-span-6 p-7 rounded-2xl btm-glass space-y-5">
               <div className="border-b border-[#E8DFED] dark:border-[#2E1A3B] pb-4">
                 <h2 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
                   06. Archival Data Completeness

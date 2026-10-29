@@ -8,11 +8,19 @@ import { CompleteAlumniProfile } from '../types/models';
 interface LocationCluster {
   key: string;
   country: string;
-  city: string;
   lat: number;
   lng: number;
   profiles: CompleteAlumniProfile[];
 }
+
+const COUNTRY_COORDINATES: Record<string, { lat: number; lng: number }> = {
+  Bangladesh: { lat: 23.8103, lng: 90.4125 },
+  Australia: { lat: -33.8688, lng: 151.2093 },
+  Canada: { lat: 43.6532, lng: -79.3832 },
+  'United Kingdom': { lat: 53.8008, lng: -1.5491 },
+  Thailand: { lat: 13.7563, lng: 100.5018 },
+  'United States': { lat: 38.9072, lng: -77.0369 },
+};
 
 export const MapPage: React.FC = () => {
   const { batches, getAllPublicProfiles } = useData();
@@ -35,7 +43,7 @@ export const MapPage: React.FC = () => {
   useEffect(() => {
     updateDocumentMeta(
       'Global Alumni Map & Geographic Distribution',
-      'Interactive global footprint showing city and country distributions of BTM alumni from Islamic University of Technology (IUT).'
+      'Interactive global footprint showing country-wise distributions of BTM alumni from Islamic University of Technology (IUT).'
     );
   }, []);
 
@@ -44,38 +52,37 @@ export const MapPage: React.FC = () => {
   // Filter profiles that have public location records
   const locatedProfiles = useMemo(() => {
     return allProfiles.filter((p) => {
-      if (!p.location || p.location.visibility === 'hidden') return false;
+      if (!p.location || p.location.visibility === 'hidden' || !p.location.country) return false;
       if (selectedBatchId !== 'all' && p.batch.id !== selectedBatchId) return false;
       if (selectedCountry !== 'all' && p.location.country !== selectedCountry) return false;
       if (locationQuery.trim()) {
         const q = locationQuery.toLowerCase();
-        const matchCity = (p.location.city || '').toLowerCase().includes(q);
         const matchCountry = p.location.country.toLowerCase().includes(q);
         const matchName = p.alumni.fullName.toLowerCase().includes(q);
         const matchOrg = (p.currentPosition?.organization || '').toLowerCase().includes(q);
-        if (!matchCity && !matchCountry && !matchName && !matchOrg) return false;
+        if (!matchCountry && !matchName && !matchOrg) return false;
       }
       return true;
     });
   }, [allProfiles, selectedBatchId, selectedCountry, locationQuery]);
 
-  // Group into city/country clusters
+  // Group strictly by country
   const clusters: LocationCluster[] = useMemo(() => {
     const map = new Map<string, LocationCluster>();
     locatedProfiles.forEach((p) => {
       const loc = p.location!;
-      const displayCity = loc.visibility === 'city_and_country' ? loc.city : 'Country-Level Record';
-      const key = `${loc.country}__${displayCity}`;
+      const country = loc.country.trim();
+      const key = country;
       const existing = map.get(key);
       if (existing) {
         existing.profiles.push(p);
       } else {
+        const coords = COUNTRY_COORDINATES[country] || loc.coordinates;
         map.set(key, {
           key,
-          country: loc.country,
-          city: displayCity,
-          lat: loc.coordinates.lat,
-          lng: loc.coordinates.lng,
+          country,
+          lat: coords.lat,
+          lng: coords.lng,
           profiles: [p],
         });
       }
@@ -87,8 +94,8 @@ export const MapPage: React.FC = () => {
   const allCountries = useMemo(() => {
     const set = new Set<string>();
     allProfiles.forEach((p) => {
-      if (p.location && p.location.visibility !== 'hidden') {
-        set.add(p.location.country);
+      if (p.location && p.location.visibility !== 'hidden' && p.location.country) {
+        set.add(p.location.country.trim());
       }
     });
     return Array.from(set).sort();
@@ -135,8 +142,8 @@ export const MapPage: React.FC = () => {
             Global BTM Alumni Footprint
           </h1>
           <p className="mt-2.5 text-sm sm:text-base text-[#716A79] dark:text-[#B69AD8]/90 max-w-2xl leading-relaxed">
-            Select a city or country node on the map below to inspect alumni working or conducting research in
-            that region. Only city- and country-level data approved for public visibility is shown.
+            Select a country node on the map below to inspect alumni working or conducting research in that
+            country. Only country-level data approved for public visibility is shown.
           </p>
         </div>
 
@@ -144,7 +151,7 @@ export const MapPage: React.FC = () => {
         <div
           role="group"
           aria-label="Filter map by batch"
-          className="flex flex-wrap items-center gap-1 p-1 bg-[#F7F3F9] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#321E3E] rounded-lg shrink-0"
+          className="flex flex-wrap items-center gap-1 p-1 btm-glass-subtle rounded-lg shrink-0"
         >
           <button
             type="button"
@@ -175,14 +182,14 @@ export const MapPage: React.FC = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="my-8 p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#180C20] border border-[#E8DFED] dark:border-[#321E3E] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-        <div className="flex flex-1 items-center gap-3 bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3.5 py-2">
+      <div className="my-8 p-4 rounded-xl btm-glass flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+        <div className="flex flex-1 items-center gap-3 btm-glass-subtle rounded-lg px-3.5 py-2">
           <Search className="w-4 h-4 text-[#663078] dark:text-[#B69AD8] shrink-0" />
           <input
             type="text"
             value={locationQuery}
             onChange={(e) => setLocationQuery(e.target.value)}
-            placeholder="Filter map by city, country, alumnus name, or organization..."
+            placeholder="Filter map by country, alumnus name, or organization..."
             aria-label="Search locations"
             className="w-full bg-transparent text-sm text-[#25212B] dark:text-[#F7F3F9] placeholder-[#716A79] focus:outline-none"
           />
@@ -196,7 +203,7 @@ export const MapPage: React.FC = () => {
               setSelectedCountry(e.target.value);
               setActiveClusterKey(null);
             }}
-            className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3.5 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none"
+            className="btm-glass-subtle rounded-lg px-3.5 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none"
           >
             <option value="all">All Countries ({allCountries.length})</option>
             {allCountries.map((c) => (
@@ -227,21 +234,21 @@ export const MapPage: React.FC = () => {
       {/* Main Map + Location Inspector Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Interactive SVG World Map Canvas */}
-        <div className="lg:col-span-8 rounded-2xl border border-[#E8DFED] dark:border-[#352044] bg-[#210E2B] text-[#F7F3F9] overflow-hidden">
-          <div className="px-6 py-4 border-b border-[#B69AD8]/20 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[#B69AD8]">
-            <span>INTERACTIVE GEOGRAPHIC PROJECTION · PUBLIC CITY &amp; COUNTRY NODES</span>
+        <div className="lg:col-span-8 rounded-2xl btm-glass-dark text-[#F7F3F9] overflow-hidden">
+          <div className="px-6 py-4 border-b border-[#B69AD8]/20 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[#B69AD8] bg-[#FFFFFF]/5 backdrop-blur-md">
+            <span>INTERACTIVE GEOGRAPHIC PROJECTION · COUNTRY-WISE ALUMNI DISTRIBUTION</span>
             <span className="tabular-nums">
               {locatedProfiles.length} Located {locatedProfiles.length === 1 ? 'Alumnus' : 'Alumni'} Across{' '}
-              {clusters.length} {clusters.length === 1 ? 'Hub' : 'Hubs'}
+              {clusters.length} {clusters.length === 1 ? 'Country' : 'Countries'}
             </span>
           </div>
 
-          <div className="relative w-full aspect-[1000/480] bg-[#190A21]">
+          <div className="relative w-full aspect-[1000/480] bg-[#190A21]/85">
             <svg
               viewBox="0 0 1000 480"
               className="w-full h-full select-none"
               role="img"
-              aria-label="World map showing BTM alumni hubs"
+              aria-label="World map showing BTM alumni countries"
             >
               {/* Subtle Latitude / Longitude Graticule */}
               {[80, 160, 240, 320, 400].map((y) => (
@@ -384,7 +391,7 @@ export const MapPage: React.FC = () => {
                       fontWeight={isSelected ? '700' : '500'}
                       fill={isSelected ? '#FFFFFF' : '#E8DFED'}
                     >
-                      {cluster.city !== 'Country-Level Record' ? cluster.city : cluster.country}
+                      {cluster.country}
                     </text>
                   </g>
                 );
@@ -393,7 +400,7 @@ export const MapPage: React.FC = () => {
           </div>
 
           {/* Hub Selector Strip */}
-          <div className="p-4 bg-[#15081C] border-t border-[#B69AD8]/20 flex flex-wrap items-center gap-2">
+          <div className="p-4 bg-[#15081C]/75 backdrop-blur-md border-t border-[#B69AD8]/20 flex flex-wrap items-center gap-2">
             {clusters.map((cluster) => {
               const active = selectedCluster?.key === cluster.key;
               return (
@@ -403,15 +410,11 @@ export const MapPage: React.FC = () => {
                   onClick={() => setActiveClusterKey(cluster.key)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
                     active
-                      ? 'bg-[#F7F3F9] text-[#32143F] font-semibold'
-                      : 'bg-[#281235] text-[#E8DFED] hover:bg-[#663078]'
+                      ? 'bg-[#F7F3F9] text-[#32143F] font-semibold shadow-sm'
+                      : 'bg-[#FFFFFF]/10 border border-[#FFFFFF]/15 backdrop-blur-xs text-[#E8DFED] hover:bg-[#663078]/80'
                   }`}
                 >
-                  <span>
-                    {cluster.city !== 'Country-Level Record'
-                      ? `${cluster.city}, ${cluster.country}`
-                      : cluster.country}
-                  </span>
+                  <span>{cluster.country}</span>
                   <span className="ml-1.5 font-mono tabular-nums opacity-80">
                     ({cluster.profiles.length})
                   </span>
@@ -422,7 +425,7 @@ export const MapPage: React.FC = () => {
         </div>
 
         {/* Selected Location Alumni Panel */}
-        <aside className="lg:col-span-4 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 space-y-5">
+        <aside className="lg:col-span-4 rounded-2xl btm-glass p-6 space-y-5">
           {!selectedCluster ? (
             <div className="py-12 text-center space-y-2">
               <h2 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
@@ -434,14 +437,12 @@ export const MapPage: React.FC = () => {
             </div>
           ) : (
             <>
-              <div className="pb-4 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
+              <div className="pb-4 border-b border-[#E8DFED]/80 dark:border-[#2E1A3B]">
                 <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
-                  Selected Geographic Hub
+                  Selected Country
                 </div>
                 <h2 className="mt-1 font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
-                  {selectedCluster.city !== 'Country-Level Record'
-                    ? `${selectedCluster.city}, ${selectedCluster.country}`
-                    : selectedCluster.country}
+                  {selectedCluster.country}
                 </h2>
                 <p className="mt-1 text-xs font-mono text-[#716A79] dark:text-[#B69AD8] tabular-nums">
                   {selectedCluster.profiles.length} Recorded{' '}
@@ -454,7 +455,7 @@ export const MapPage: React.FC = () => {
                   <div
                     key={p.alumni.id}
                     onClick={() => navigate(`/alumni/${p.alumni.studentId}`)}
-                    className="group cursor-pointer p-4 rounded-xl border border-[#E8DFED] dark:border-[#2E1A3B] hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex items-start justify-between gap-3"
+                    className="group cursor-pointer p-4 rounded-xl btm-glass-card flex items-start justify-between gap-3"
                   >
                     <div className="flex items-start gap-3 min-w-0">
                       <AlumniPortrait
@@ -483,11 +484,11 @@ export const MapPage: React.FC = () => {
                 ))}
               </div>
 
-              <div className="pt-3 border-t border-[#E8DFED] dark:border-[#2E1A3B]">
+              <div className="pt-3 border-t border-[#E8DFED]/80 dark:border-[#2E1A3B]">
                 <button
                   type="button"
                   onClick={() => navigate(`/alumni?q=${encodeURIComponent(selectedCluster.country)}`)}
-                  className="w-full py-2.5 px-4 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#241330] hover:bg-[#E8DFED] rounded-lg transition-colors cursor-pointer"
+                  className="w-full py-2.5 px-4 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] btm-glass-subtle hover:bg-[#E8DFED]/80 dark:hover:bg-[#241330] rounded-lg transition-colors cursor-pointer"
                 >
                   Filter Full Directory by {selectedCluster.country} &rarr;
                 </button>
