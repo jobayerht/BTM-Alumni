@@ -4,8 +4,6 @@ import {
   ArrowRight,
   ArrowUpRight,
   Building2,
-  MapPin,
-  Briefcase,
   Globe,
   BarChart3,
   LayoutDashboard,
@@ -29,11 +27,6 @@ export const HomePage: React.FC = () => {
 
   const publicProfiles = getAllPublicProfiles();
   const totalProfiles = publicProfiles.length;
-
-  const featuredProfiles = useMemo(
-    () => publicProfiles.filter((p) => p.alumni.featured).slice(0, 6),
-    [publicProfiles]
-  );
 
   const uniqueCompanies = useMemo(() => {
     const set = new Set<string>();
@@ -288,98 +281,151 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Featured Alumni Profiles */}
-      {featuredProfiles.length > 0 && (
-        <section className="bg-[#F7F3F9]/60 dark:bg-[#160B1D] border-y border-[#E8DFED] dark:border-[#2E1A3B]">
-          <div className="max-w-[1280px] mx-auto px-6 py-16 lg:py-20">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
-              <div>
-                <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
-                  Alumni Directory Highlights
-                </div>
-                <h2 className="mt-1 font-serif text-3xl font-semibold tracking-tight text-[#32143F] dark:text-[#F7F3F9]">
-                  Featured BTM Alumni
-                </h2>
+      {/* 3. Platform Navigation Overview (Global Map, Overview, Insights, About) */}
+      <section className="bg-[#F7F3F9]/60 dark:bg-[#160B1D] border-y border-[#E8DFED] dark:border-[#2E1A3B]">
+        <div className="max-w-[1280px] mx-auto px-6 py-16 lg:py-20">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
+            <div>
+              <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
+                Explore the Portal
               </div>
-              <button
-                type="button"
-                onClick={() => navigate('/alumni')}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#663078] dark:text-[#B69AD8] hover:underline whitespace-nowrap shrink-0 cursor-pointer"
-              >
-                <span>Explore Full Alumni Directory</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+              <h2 className="mt-1 font-serif text-3xl font-semibold tracking-tight text-[#32143F] dark:text-[#F7F3F9]">
+                Platform Overview &amp; Quick Links
+              </h2>
             </div>
-
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredProfiles.map((profile) => {
-                const { alumni, batch, currentPosition, location } = profile;
-                const locationText =
-                  location && location.visibility !== 'hidden'
-                    ? location.visibility === 'city_and_country' && location.city
-                      ? `${location.city}, ${location.country}`
-                      : location.country
-                    : null;
-
-                return (
-                  <article
-                    key={alumni.id}
-                    onClick={() => navigate(`/alumni/${alumni.studentId}`)}
-                    className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between gap-2 text-xs font-mono text-[#716A79] dark:text-[#B69AD8]/80">
-                        <span className="font-semibold text-[#663078] dark:text-[#C8B2E6]">
-                          {batch.name}
-                        </span>
-                        <span className="tabular-nums">ID {alumni.studentId}</span>
-                      </div>
-
-                      <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9] group-hover:text-[#663078] dark:group-hover:text-[#B69AD8] transition-colors">
-                        {alumni.fullName}
-                      </h3>
-
-                      {currentPosition ? (
-                        <div className="space-y-1 text-sm text-[#25212B] dark:text-[#E8DFED]">
-                          <div className="font-medium flex items-center gap-2">
-                            <Briefcase className="w-3.5 h-3.5 text-[#663078] dark:text-[#B69AD8] shrink-0" />
-                            <span className="truncate">{currentPosition.designation}</span>
-                          </div>
-                          <div className="text-xs text-[#716A79] dark:text-[#B69AD8]/85 flex items-center gap-2">
-                            <Building2 className="w-3.5 h-3.5 text-[#716A79] dark:text-[#B69AD8]/70 shrink-0" />
-                            <span className="truncate">{currentPosition.organization}</span>
-                          </div>
-                        </div>
-                      ) : (
-                        <p className="text-xs text-[#716A79] dark:text-[#9A8FA6] italic">
-                          {alumni.headline || `${batch.name} Graduate`}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between gap-2 text-xs">
-                      <span className="text-[#716A79] dark:text-[#B69AD8]/80 inline-flex items-center gap-1 truncate">
-                        {locationText ? (
-                          <>
-                            <MapPin className="w-3.5 h-3.5 text-[#663078] dark:text-[#B69AD8] shrink-0" />
-                            <span className="truncate">{locationText}</span>
-                          </>
-                        ) : (
-                          <span>IUT BTM Alumnus</span>
-                        )}
-                      </span>
-                      <span className="inline-flex items-center gap-1 font-semibold text-[#663078] dark:text-[#B69AD8] shrink-0">
-                        <span>Profile</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/alumni')}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#663078] dark:text-[#B69AD8] hover:underline whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              <span>Search Full Alumni Directory</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
-        </section>
-      )}
+
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Global Map Preview Card */}
+            <article
+              onClick={() => navigate('/map')}
+              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
+                    {countryFootprint.length} {countryFootprint.length === 1 ? 'Country' : 'Countries'}
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9] group-hover:text-[#663078] dark:group-hover:text-[#B69AD8] transition-colors">
+                  Global Map
+                </h3>
+
+                <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/85 leading-relaxed">
+                  Explore the geographic distribution of BTM alumni across cities and countries worldwide on an interactive map.
+                </p>
+              </div>
+
+              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+                <span>Open Global Map</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </article>
+
+            {/* Overview Dashboard Preview Card */}
+            <article
+              onClick={() => navigate('/overview')}
+              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                    <LayoutDashboard className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
+                    {totalProfiles} Alumni
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9] group-hover:text-[#663078] dark:group-hover:text-[#B69AD8] transition-colors">
+                  Overview
+                </h3>
+
+                <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/85 leading-relaxed">
+                  View departmental metrics, batch breakdowns, higher education summaries, and community-wide statistics at a glance.
+                </p>
+              </div>
+
+              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+                <span>View Overview</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </article>
+
+            {/* Career Insights Preview Card */}
+            <article
+              onClick={() => navigate('/insights')}
+              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                    <BarChart3 className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
+                    {uniqueCompanies} Orgs
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9] group-hover:text-[#663078] dark:group-hover:text-[#B69AD8] transition-colors">
+                  Insights
+                </h3>
+
+                <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/85 leading-relaxed">
+                  Discover top employers, industry representation, designations, and post-graduation academic pathways across BTM graduates.
+                </p>
+              </div>
+
+              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+                <span>Explore Insights</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </article>
+
+            {/* About & Archival Charter Preview Card */}
+            <article
+              onClick={() => navigate('/about')}
+              className="group cursor-pointer rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-6 hover:border-[#663078] dark:hover:border-[#B69AD8] transition-colors flex flex-col justify-between gap-5"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="w-10 h-10 rounded-lg bg-[#F7F3F9] dark:bg-[#241332] border border-[#E8DFED] dark:border-[#352044] flex items-center justify-center text-[#663078] dark:text-[#B69AD8]">
+                    <Building2 className="w-5 h-5" />
+                  </div>
+                  <span className="text-xs font-mono font-semibold text-[#663078] dark:text-[#C8B2E6]">
+                    IUT · BTM
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-xl font-semibold text-[#32143F] dark:text-[#F7F3F9] group-hover:text-[#663078] dark:group-hover:text-[#B69AD8] transition-colors">
+                  About
+                </h3>
+
+                <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/85 leading-relaxed">
+                  Learn about the Department of Business and Technology Management at IUT, archival standards, and data privacy principles.
+                </p>
+              </div>
+
+              <div className="pt-3.5 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-between text-xs font-semibold text-[#663078] dark:text-[#B69AD8]">
+                <span>Read About BTM</span>
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
 
       {/* 4. Career Insights & Global Footprint */}
       <section className="max-w-[1280px] mx-auto px-6 py-16 lg:py-20">

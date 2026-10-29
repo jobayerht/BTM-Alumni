@@ -34,8 +34,37 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
   const [selectedIndustry, setSelectedIndustry] = useState<string>(initialParams.industry);
   const [selectedOrganization, setSelectedOrganization] = useState<string>(initialParams.org);
   const [selectedLocation, setSelectedLocation] = useState<string>(initialParams.country);
-  const [sortBy, setSortBy] = useState<'id_asc' | 'id_desc' | 'name_asc' | 'updated_desc'>('id_asc');
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'short'>('grid');
+  const [sortBy, setSortBy] = useState<'id_asc' | 'id_desc' | 'name_asc' | 'updated_desc'>(() => {
+    try {
+      const saved = sessionStorage.getItem('btm_directory_sort_by');
+      if (saved === 'id_asc' || saved === 'id_desc' || saved === 'name_asc' || saved === 'updated_desc') {
+        return saved;
+      }
+    } catch {
+      // ignore
+    }
+    return 'id_asc';
+  });
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'short'>(() => {
+    try {
+      const saved = sessionStorage.getItem('btm_directory_view_mode');
+      if (saved === 'grid' || saved === 'list' || saved === 'short') {
+        return saved;
+      }
+    } catch {
+      // ignore
+    }
+    return 'grid';
+  });
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem('btm_directory_sort_by', sortBy);
+      sessionStorage.setItem('btm_directory_view_mode', viewMode);
+    } catch {
+      // ignore
+    }
+  }, [sortBy, viewMode]);
 
   useEffect(() => {
     if (currentBatch) {

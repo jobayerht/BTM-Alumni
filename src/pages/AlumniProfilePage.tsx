@@ -201,8 +201,20 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
   return (
     <div className="min-h-screen bg-[#FAF8FC] dark:bg-[#100817] transition-colors">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 lg:py-12">
-        {/* A. Breadcrumbs & Return Navigation */}
+        {/* A. Return Navigation (Left) & Breadcrumbs (Right) */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <button
+            type="button"
+            onClick={() => navigate(`/batch/${batch.code}`, { restoreScroll: true })}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-[#E8DFED] dark:border-[#B69AD8]/25 bg-[#FFFFFF] dark:bg-[#180C22] text-xs sm:text-sm font-semibold text-[#32143F] dark:text-[#F7F3F9] hover:border-[#663078] dark:hover:border-[#B69AD8] hover:text-[#663078] dark:hover:text-[#B69AD8] transition-colors cursor-pointer group"
+          >
+            <ArrowLeft
+              className="w-5 h-5 text-[#663078] dark:text-[#B69AD8] group-hover:-translate-x-0.5 transition-transform shrink-0"
+              strokeWidth={2.4}
+            />
+            <span>Back to {batch.name} Directory</span>
+          </button>
+
           <nav
             aria-label="Breadcrumb"
             className="text-xs text-[#716A79] dark:text-[#C8B9D6] flex items-center gap-2"
@@ -211,7 +223,7 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
               href="/"
               onClick={(e) => {
                 e.preventDefault();
-                navigate('/');
+                navigate('/', { restoreScroll: true });
               }}
               className="hover:text-[#663078] dark:hover:text-[#FFFFFF] transition-colors"
             >
@@ -222,9 +234,9 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
               href={`/batch/${batch.code}`}
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/batch/${batch.code}`);
+                navigate(`/batch/${batch.code}`, { restoreScroll: true });
               }}
-              className="hover:text-[#663078] dark:hover:text-[#FFFFFF] transition-colors"
+              className="hover:text-[#663078] dark:hover:text-[#FFFFFF] transition-colors font-medium"
             >
               {batch.name}
             </a>
@@ -233,17 +245,6 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
               {alumni.studentId}
             </span>
           </nav>
-
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => navigate(`/batch/${batch.code}`)}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#716A79] dark:text-[#C8B9D6] hover:text-[#32143F] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to {batch.name} Directory</span>
-            </button>
-          </div>
         </div>
 
         {/* B. Alumni Profile Header */}
@@ -256,7 +257,7 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
                   href={`/batch/${batch.code}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    navigate(`/batch/${batch.code}`);
+                    navigate(`/batch/${batch.code}`, { restoreScroll: true });
                   }}
                   className="font-semibold hover:underline"
                 >
