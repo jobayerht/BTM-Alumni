@@ -84,7 +84,7 @@ export interface Experience {
     | 'Apprenticeship'
     | 'Research'
     | 'Other';
-  employmentStatusLabel?: 'Full-Time' | 'Internship' | 'Other';
+  employmentStatusLabel?: string;
   periodLabel?: string;
   industry: string;
   careerLevel?:

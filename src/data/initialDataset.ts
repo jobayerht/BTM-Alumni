@@ -10,7 +10,35 @@ import {
   CareerStatusCategory,
 } from '../types/models';
 import rawAlumniJson from './btmAlumniData.json';
+import polished12to45Json from './btmAlumniPolished12to45.json';
 import batchRosterJson from './btmBatchRoster.json';
+
+interface RawWorkExperienceInput {
+  organization: string;
+  designation: string;
+  employmentType?: string;
+  period?: string;
+  location?: string;
+}
+
+interface RawHigherEducationInput {
+  institution: string;
+  degreeProgram: string;
+  period?: string;
+}
+
+interface RawDetailedAlumniRecord {
+  studentId: string;
+  fullName: string;
+  batch?: string;
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  researchProfileUrl?: string;
+  currentCity?: string;
+  currentCountry?: string;
+  workExperience?: RawWorkExperienceInput[];
+  higherEducation?: RawHigherEducationInput[];
+}
 
 export const INITIAL_BATCHES: Batch[] = [
   {
@@ -119,7 +147,7 @@ function parseSortableDate(
   const clean = periodLabel.trim();
   const isCurrent = /\bpresent\b|\bcurrent\b/i.test(clean);
 
-  // Use a descending synthetic key based on array order so undated entries stay in their exact JSON sequence
+  // Use a descending synthetic key based on array order so entries stay in their curated JSON sequence
   const orderKey = String(Math.max(1, 99 - orderIndex)).padStart(2, '0');
   void totalItems;
 
@@ -161,8 +189,8 @@ function parseSortableDate(
   }
 
   return {
-    startDate: `2024-${orderKey}`,
-    endDate: `2024-${orderKey}`,
+    startDate: `1900-${orderKey}`,
+    endDate: `1900-${orderKey}`,
     isCurrent: false,
   };
 }
@@ -175,17 +203,11 @@ function normalizeOrganizationName(org: string): string {
   return trimmed;
 }
 
-function parseRawWorkExperience(raw: {
-  organization: string;
-  designation: string;
-  employmentType: string;
-  period: string;
-  location: string;
-}): {
+function parseRawWorkExperience(raw: RawWorkExperienceInput): {
   skip: boolean;
   organization: string;
   designation: string;
-  employmentStatusLabel: 'Full-Time' | 'Internship' | 'Other';
+  employmentStatusLabel: string;
   employmentType: Experience['employmentType'];
   periodLabel: string;
   location: string;
@@ -195,7 +217,7 @@ function parseRawWorkExperience(raw: {
       skip: true,
       organization: '',
       designation: '',
-      employmentStatusLabel: 'Other',
+      employmentStatusLabel: '',
       employmentType: 'Other',
       periodLabel: '',
       location: '',
@@ -206,6 +228,9 @@ function parseRawWorkExperience(raw: {
   let designation = raw.designation.trim();
   let location = (raw.location || '').trim();
   let periodRaw = (raw.period || '').trim();
+  const explicitMissingDates =
+    /dates? (and role )?not provided/i.test(raw.designation) ||
+    /dates? (and role )?not provided/i.test(periodRaw);
 
   designation = designation
     .replace(/\s*\(profile also describes duties.*?\)/i, '')
@@ -246,26 +271,40 @@ function parseRawWorkExperience(raw: {
   }
 
   let periodLabel = '';
-  if (!periodRaw || /dates? (and role )?not provided/i.test(periodRaw)) {
+  if (explicitMissingDates) {
     periodLabel = 'Dates not provided';
+  } else if (!periodRaw) {
+    periodLabel = '';
   } else if (/^current$/i.test(periodRaw)) {
     periodLabel = 'Present';
   } else {
     periodLabel = expandMonthNames(periodRaw);
   }
 
-  const rawType = (raw.employmentType || '').trim().toLowerCase();
-  let employmentStatusLabel: 'Full-Time' | 'Internship' | 'Other' = 'Other';
+  // Strip standalone "Other" while keeping remaining status words (e.g. "Part-Time / Other" -> "Part-Time")
+  const rawTypeStr = (raw.employmentType || '')
+    .replace(/\bother\b/gi, '')
+    .replace(/^\s*[/·,-]\s*|\s*[/·,-]\s*$/g, '')
+    .trim();
+  const lowerType = rawTypeStr.toLowerCase();
+
+  let employmentStatusLabel = '';
   let employmentType: Experience['employmentType'] = 'Other';
 
-  if (rawType === 'full-time' || rawType === 'full time') {
+  if (lowerType === 'full-time' || lowerType === 'full time') {
     employmentStatusLabel = 'Full-Time';
     employmentType = 'Full-time';
-  } else if (rawType === 'intern' || rawType === 'internship') {
+  } else if (lowerType === 'intern' || lowerType === 'internship') {
     employmentStatusLabel = 'Internship';
     employmentType = 'Internship';
-  } else {
-    employmentStatusLabel = 'Other';
+  } else if (lowerType === 'part-time' || lowerType === 'part time') {
+    employmentStatusLabel = 'Part-Time';
+    employmentType = 'Part-time';
+  } else if (lowerType.includes('full') && lowerType.includes('intern')) {
+    employmentStatusLabel = 'Full-Time / Internship';
+    employmentType = 'Full-time';
+  } else if (rawTypeStr) {
+    employmentStatusLabel = rawTypeStr;
     employmentType = 'Other';
   }
 
@@ -280,11 +319,7 @@ function parseRawWorkExperience(raw: {
   };
 }
 
-function parseRawHigherEducation(raw: {
-  institution: string;
-  degreeProgram: string;
-  period: string;
-}): {
+function parseRawHigherEducation(raw: RawHigherEducationInput): {
   exclude: boolean;
   institution: string;
   degree: string;
@@ -344,12 +379,49 @@ function parseRawHigherEducation(raw: {
 
   let locationLabel = '';
   let country: string | undefined = undefined;
-  if (/east west university|north south university|brac university/i.test(institution)) {
+  if (
+    /east west university|north south university|brac university|university of dhaka|bangladesh university of professionals|\bbup\b/i.test(
+      institution
+    )
+  ) {
     locationLabel = 'Dhaka, Bangladesh';
     country = 'Bangladesh';
-  } else if (/deakin university/i.test(institution) || /australia\/melbourne/i.test(periodRaw)) {
+  } else if (/jahangirnagar university/i.test(institution)) {
+    locationLabel = 'Savar, Dhaka, Bangladesh';
+    country = 'Bangladesh';
+  } else if (
+    /deakin university|la trobe university/i.test(institution) ||
+    /australia\/melbourne/i.test(periodRaw)
+  ) {
     locationLabel = 'Melbourne, Australia';
     country = 'Australia';
+  } else if (/macquarie university/i.test(institution)) {
+    locationLabel = 'Sydney, Australia';
+    country = 'Australia';
+  } else if (/charles darwin university/i.test(institution)) {
+    locationLabel = 'Darwin, Australia';
+    country = 'Australia';
+  } else if (/university of wollongong/i.test(institution)) {
+    locationLabel = 'Wollongong, Australia';
+    country = 'Australia';
+  } else if (/cquniversity/i.test(institution)) {
+    locationLabel = 'Australia';
+    country = 'Australia';
+  } else if (/ivey business school/i.test(institution)) {
+    locationLabel = 'London, Ontario, Canada';
+    country = 'Canada';
+  } else if (/humber institute/i.test(institution)) {
+    locationLabel = 'Toronto, Ontario, Canada';
+    country = 'Canada';
+  } else if (/concordia university/i.test(institution)) {
+    locationLabel = 'Montreal, Quebec, Canada';
+    country = 'Canada';
+  } else if (/university of arkansas/i.test(institution)) {
+    locationLabel = 'Fayetteville, Arkansas, United States';
+    country = 'United States';
+  } else if (/university of bedfordshire/i.test(institution)) {
+    locationLabel = 'Bedfordshire, United Kingdom';
+    country = 'United Kingdom';
   } else if (/scaler/i.test(institution)) {
     country = 'India';
   }
@@ -358,7 +430,7 @@ function parseRawHigherEducation(raw: {
   const startYear = years[0] || 2023;
   const endYear = years.length > 1 ? years[1] : years[0];
   const enrollmentStatus: 'completed' | 'currently_enrolled' =
-    (endYear && endYear >= 2026) || /march 2025/i.test(periodLabel)
+    (endYear && endYear >= 2026) || /march 2025|september 2025/i.test(periodLabel)
       ? 'currently_enrolled'
       : 'completed';
 
@@ -393,8 +465,22 @@ const PORTRAIT_TONES: Alumni['portraitTone'][] = [
 
 const CITY_COORDINATES: Record<string, { lat: number; lng: number }> = {
   'Dhaka|Bangladesh': { lat: 23.8103, lng: 90.4125 },
+  'Rajshahi|Bangladesh': { lat: 24.3745, lng: 88.6042 },
   '|Bangladesh': { lat: 23.8103, lng: 90.4125 },
   'Melbourne|Australia': { lat: -37.8136, lng: 144.9631 },
+  'Macquarie Park|Australia': { lat: -33.7775, lng: 151.1235 },
+  'Casuarina|Australia': { lat: -12.3731, lng: 130.8769 },
+  'North Wollongong|Australia': { lat: -34.4054, lng: 150.8939 },
+  'Wollongong|Australia': { lat: -34.4278, lng: 150.8931 },
+  '|Australia': { lat: -33.8688, lng: 151.2093 },
+  'Bangkok|Thailand': { lat: 13.7563, lng: 100.5018 },
+  '|Thailand': { lat: 13.7563, lng: 100.5018 },
+  'North York, Ontario|Canada': { lat: 43.7615, lng: -79.4111 },
+  'Westmount, Quebec|Canada': { lat: 45.4835, lng: -73.5968 },
+  'London, Ontario|Canada': { lat: 42.9849, lng: -81.2453 },
+  '|Canada': { lat: 43.6532, lng: -79.3832 },
+  'Greater Leeds Area|United Kingdom': { lat: 53.8008, lng: -1.5491 },
+  '|United Kingdom': { lat: 51.5072, lng: -0.1276 },
 };
 
 const builtAlumni: Alumni[] = [];
@@ -403,9 +489,14 @@ const builtEducations: Education[] = [];
 const builtLocations: LocationRecord[] = [];
 const builtSourceRecords: SourceRecord[] = [];
 
-// Index detailed records from btmAlumniData.json by studentId
-const detailedByStudentId = new Map<string, (typeof rawAlumniJson.alumni)[number]>();
-rawAlumniJson.alumni.forEach((rec) => {
+// Combine detailed records from btmAlumniData.json (170061001–170061011) and btmAlumniPolished12to45.json (170061012–170061045)
+const allDetailedRecords: RawDetailedAlumniRecord[] = [
+  ...(rawAlumniJson.alumni as RawDetailedAlumniRecord[]),
+  ...(polished12to45Json as RawDetailedAlumniRecord[]),
+];
+
+const detailedByStudentId = new Map<string, RawDetailedAlumniRecord>();
+allDetailedRecords.forEach((rec) => {
   detailedByStudentId.set(rec.studentId.trim(), rec);
 });
 
@@ -414,7 +505,7 @@ const mergedRoster: {
   studentId: string;
   fullName: string;
   batchLabel?: string;
-  detailed?: (typeof rawAlumniJson.alumni)[number];
+  detailed?: RawDetailedAlumniRecord;
 }[] = [];
 const seenStudentIds = new Set<string>();
 
@@ -426,18 +517,19 @@ batchRosterJson.forEach((entry) => {
   mergedRoster.push({
     studentId: sid,
     fullName: (detailed?.fullName || entry.name || '').trim(),
-    batchLabel: entry.batch,
+    batchLabel: detailed?.batch || entry.batch,
     detailed,
   });
 });
 
-rawAlumniJson.alumni.forEach((rec) => {
+allDetailedRecords.forEach((rec) => {
   const sid = rec.studentId.trim();
   if (!sid || seenStudentIds.has(sid)) return;
   seenStudentIds.add(sid);
   mergedRoster.push({
     studentId: sid,
     fullName: rec.fullName.trim(),
+    batchLabel: rec.batch,
     detailed: rec,
   });
 });
@@ -462,7 +554,7 @@ mergedRoster.forEach((item, index) => {
       if (seenExpKeys.has(dedupeKey)) return;
       seenExpKeys.add(dedupeKey);
 
-      const sortMeta = parseSortableDate(parsed.periodLabel, expIdx, record.workExperience.length);
+      const sortMeta = parseSortableDate(parsed.periodLabel, expIdx, record.workExperience!.length);
       const expId = `exp-${studentId}-${expIdx + 1}`;
       const country = parsed.location.includes('United Kingdom')
         ? 'United Kingdom'
@@ -487,14 +579,6 @@ mergedRoster.forEach((item, index) => {
       });
     });
   }
-
-  parsedExps.sort((a, b) => {
-    if (a.isCurrent !== b.isCurrent) return a.isCurrent ? -1 : 1;
-    const endA = a.endDate || a.startDate;
-    const endB = b.endDate || b.startDate;
-    if (endA !== endB) return endB.localeCompare(endA);
-    return b.startDate.localeCompare(a.startDate);
-  });
 
   parsedExps.forEach((e) => builtExperiences.push(e));
 
@@ -564,7 +648,10 @@ mergedRoster.forEach((item, index) => {
 
   if (currentCountry) {
     const coordKey = `${currentCity}|${currentCountry}`;
-    const coords = CITY_COORDINATES[coordKey] || { lat: 23.8103, lng: 90.4125 };
+    const countryFallbackKey = `|${currentCountry}`;
+    const coords =
+      CITY_COORDINATES[coordKey] ||
+      CITY_COORDINATES[countryFallbackKey] || { lat: 23.8103, lng: 90.4125 };
     builtLocations.push({
       id: `loc-${studentId}`,
       alumniId,
@@ -575,7 +662,10 @@ mergedRoster.forEach((item, index) => {
     });
   }
 
-  const hasDetailedRecords = parsedExps.length > 0 || parsedEdus.length > 0;
+  const hasDetailedRecords =
+    parsedExps.length > 0 ||
+    parsedEdus.length > 0 ||
+    Boolean(linkedinUrl || facebookUrl || researchProfileUrl || currentCountry);
   const verificationStatus = hasDetailedRecords ? 'verified' : 'unverified';
 
   const professionalHeadline = currentExp
@@ -611,10 +701,12 @@ mergedRoster.forEach((item, index) => {
     skills: [],
     publicLinks,
     publicVisibility: 'public',
-    featured: ['170061001', '170061002', '170061006', '170061011'].includes(studentId),
+    featured: ['170061001', '170061002', '170061006', '170061011', '170061015', '170061020'].includes(
+      studentId
+    ),
     verificationStatus,
     informationSource: record
-      ? 'BTM Alumni Website Data JSON (v2)'
+      ? 'BTM Alumni Website Data JSON (Polished)'
       : 'BTM Alumni Batch Roster JSON',
     lastUpdated: '2026-10-29',
     isSampleRecord: false,

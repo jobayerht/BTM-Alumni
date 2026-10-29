@@ -21,7 +21,7 @@ import {
   INITIAL_STORIES,
 } from '../data/initialDataset';
 
-const STORAGE_KEY = 'btm_alumni_store_v8_no_170061005';
+const STORAGE_KEY = 'btm_alumni_store_v9_polished_170061045';
 const LEGACY_KEYS = [
   'btm_alumni_store_v1',
   'btm_alumni_store_v2',
@@ -30,6 +30,7 @@ const LEGACY_KEYS = [
   'btm_alumni_store_v5_json',
   'btm_alumni_store_v6',
   'btm_alumni_store_v7_all_batches',
+  'btm_alumni_store_v8_no_170061005',
 ];
 const THEME_KEY = 'btm_alumni_theme';
 
@@ -159,16 +160,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         status: 'active',
       };
 
-    // Sort experiences from most recent to oldest
-    const experiences = store.experiences
-      .filter((e) => e.alumniId === alum.id)
-      .sort((a, b) => {
-        if (a.isCurrent !== b.isCurrent) return a.isCurrent ? -1 : 1;
-        const endA = a.endDate || a.startDate;
-        const endB = b.endDate || b.startDate;
-        if (endA !== endB) return endB.localeCompare(endA);
-        return b.startDate.localeCompare(a.startDate);
-      });
+    // Preserve curated chronological order from the dataset
+    const experiences = store.experiences.filter((e) => e.alumniId === alum.id);
 
     // Explicit current position resolution: only use currentPositionId or explicit isCurrent flag
     const currentPosition =
@@ -176,9 +169,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         ? experiences.find((e) => e.id === alum.currentPositionId)
         : undefined) || experiences.find((e) => e.isCurrent);
 
-    const educations = store.educations
-      .filter((ed) => ed.alumniId === alum.id)
-      .sort((a, b) => (b.endYear || b.startYear) - (a.endYear || a.startYear));
+    const educations = store.educations.filter((ed) => ed.alumniId === alum.id);
 
     const achievements = store.achievements
       .filter((ac) => ac.alumniId === alum.id)

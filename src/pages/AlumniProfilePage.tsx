@@ -50,24 +50,28 @@ function formatYearMonth(ym?: string): string {
 }
 
 function getExperiencePeriodDisplay(exp: Experience): string {
-  if (exp.periodLabel && exp.periodLabel.trim()) {
+  if (exp.periodLabel !== undefined) {
     return expandMonthNames(exp.periodLabel.trim());
   }
   const start = formatYearMonth(exp.startDate);
-  if (!start) return 'Dates not provided';
+  if (!start) return '';
   if (exp.isCurrent) return `${start} – Present`;
   const end = formatYearMonth(exp.endDate);
   return end && end !== start ? `${start} – ${end}` : start;
 }
 
-function getEmploymentStatusDisplay(exp: Experience): 'Full-Time' | 'Internship' | '' {
-  if (exp.employmentStatusLabel && exp.employmentStatusLabel.toLowerCase() !== 'other') {
-    return exp.employmentStatusLabel;
-  }
-  const raw = (exp.employmentType || '').toLowerCase();
-  if (raw.includes('full')) return 'Full-Time';
-  if (raw.includes('intern')) return 'Internship';
-  return '';
+function getEmploymentStatusDisplay(exp: Experience): string {
+  const rawLabel = (exp.employmentStatusLabel ?? exp.employmentType ?? '').trim();
+  if (!rawLabel) return '';
+  const cleaned = rawLabel
+    .replace(/\bother\b/gi, '')
+    .replace(/^\s*[/·,-]\s*|\s*[/·,-]\s*$/g, '')
+    .trim();
+  if (!cleaned) return '';
+  if (/^intern$/i.test(cleaned)) return 'Internship';
+  if (/^full[\s-]*time$/i.test(cleaned)) return 'Full-Time';
+  if (/^part[\s-]*time$/i.test(cleaned)) return 'Part-Time';
+  return cleaned;
 }
 
 function isPostIutHigherEducation(edu: Education): boolean {
