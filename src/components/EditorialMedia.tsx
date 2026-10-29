@@ -243,82 +243,10 @@ interface AlumniPortraitProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export const AlumniPortrait: React.FC<AlumniPortraitProps> = ({
-  profileImage,
-  initials,
-  fullName,
-  tone = 'plum',
-  size = 'md',
-}) => {
-  const [imgError, setImgError] = useState(false);
-
-  const sizeClasses = {
-    sm: 'w-11 h-11 text-xs',
-    md: 'w-16 h-16 text-base',
-    lg: 'w-24 h-24 text-xl',
-    xl: 'w-32 h-32 text-2xl',
-  }[size];
-
-  const toneClasses = {
-    plum: 'bg-[#32143F] text-[#F7F3F9] border-[#663078]/40',
-    amethyst: 'bg-[#4B225B] text-[#F7F3F9] border-[#B69AD8]/40',
-    mulberry: 'bg-[#582669] text-[#F7F3F9] border-[#B69AD8]/40',
-    'slate-violet': 'bg-[#2C1E38] text-[#E8DFED] border-[#716A79]/40',
-    'indigo-orchid': 'bg-[#3B1B4E] text-[#F7F3F9] border-[#B69AD8]/40',
-  }[tone];
-
-  if (profileImage && !imgError) {
-    return (
-      <div className={`${sizeClasses} relative shrink-0 overflow-hidden rounded-lg border border-[#E8DFED] dark:border-[#352044] bg-[#32143F]`}>
-        <img
-          src={profileImage}
-          alt={`Portrait of ${fullName}`}
-          referrerPolicy="no-referrer"
-          onError={() => setImgError(true)}
-          className="w-full h-full object-cover"
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div
-      role="img"
-      aria-label={`Monogram portrait placeholder for ${fullName}`}
-      className={`${sizeClasses} ${toneClasses} relative shrink-0 rounded-lg border flex flex-col items-center justify-center font-serif font-semibold tracking-tight select-none overflow-hidden`}
-    >
-      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_top_right,#B69AD8,transparent_70%)]" />
-      <span className="relative z-10">{initials}</span>
-    </div>
-  );
+export const AlumniPortrait: React.FC<AlumniPortraitProps> = () => {
+  return null;
 };
 
-export const VerificationLabel: React.FC<{ status: VerificationStatus }> = ({ status }) => {
-  switch (status) {
-    case 'verified':
-      return (
-        <span className="text-xs font-medium text-[#663078] dark:text-[#C8B2E6]">
-          Verified Departmental Record
-        </span>
-      );
-    case 'partially_verified':
-      return (
-        <span className="text-xs font-medium text-[#716A79] dark:text-[#B69AD8]">
-          Partially Verified Record
-        </span>
-      );
-    case 'sample_prototype':
-      return (
-        <span className="text-xs font-medium text-[#663078] dark:text-[#B69AD8]">
-          Prototype Sample Record
-        </span>
-      );
-    case 'unverified':
-    default:
-      return (
-        <span className="text-xs font-medium text-[#716A79] dark:text-[#9A8FA6]">
-          Unverified Archival Entry
-        </span>
-      );
-  }
+export const VerificationLabel: React.FC<{ status: VerificationStatus }> = () => {
+  return <span aria-hidden="true" />;
 };

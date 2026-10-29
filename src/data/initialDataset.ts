@@ -7,7 +7,10 @@ import {
   LocationRecord,
   SourceRecord,
   Story,
+  CareerStatusCategory,
 } from '../types/models';
+import rawAlumniJson from './btmAlumniData.json';
+import batchRosterJson from './btmBatchRoster.json';
 
 export const INITIAL_BATCHES: Batch[] = [
   {
@@ -17,7 +20,7 @@ export const INITIAL_BATCHES: Batch[] = [
     intakeYear: 2018,
     graduationYear: 2022,
     description:
-      'The inaugural pioneering cohort of the Department of Business and Technology Management at Islamic University of Technology (IUT), integrating quantitative business strategy with systems engineering, supply chain analytics, and industrial management.',
+      'The first graduating batch of the Department of Business and Technology Management at Islamic University of Technology (IUT), integrating business strategy with systems engineering, supply chain analytics, and technology management.',
     coverPlateVariant: 'campus-arch',
     status: 'active',
   },
@@ -28,9 +31,9 @@ export const INITIAL_BATCHES: Batch[] = [
     intakeYear: 2019,
     graduationYear: 2023,
     description:
-      'The second cohort of Business and Technology Management graduates. Record compilation, archival verification, and employment mapping are scheduled for the next release phase.',
+      'The second graduating batch of the Department of Business and Technology Management at Islamic University of Technology (IUT).',
     coverPlateVariant: 'seminar-hall',
-    status: 'coming_soon',
+    status: 'active',
   },
   {
     id: 'btm-19',
@@ -39,9 +42,9 @@ export const INITIAL_BATCHES: Batch[] = [
     intakeYear: 2020,
     graduationYear: 2024,
     description:
-      'The third undergraduate cohort of the BTM department. Cohort records are currently under departmental review and structured intake.',
+      'The third graduating batch of the Department of Business and Technology Management at Islamic University of Technology (IUT).',
     coverPlateVariant: 'quadrangle',
-    status: 'coming_soon',
+    status: 'active',
   },
   {
     id: 'btm-20',
@@ -50,1317 +53,591 @@ export const INITIAL_BATCHES: Batch[] = [
     intakeYear: 2021,
     graduationYear: 2025,
     description:
-      'The fourth cohort of Business and Technology Management students transitioning into the global alumni archive.',
+      'The fourth graduating batch of the Department of Business and Technology Management at Islamic University of Technology (IUT).',
     coverPlateVariant: 'library-wing',
-    status: 'coming_soon',
+    status: 'active',
   },
 ];
 
-export const INITIAL_ALUMNI: Alumni[] = [
-  {
-    id: 'alum-170061001',
-    studentId: '170061001',
-    fullName: 'Maisha Maliha',
-    batchId: 'btm-17',
-    portraitInitials: 'MM',
-    portraitTone: 'plum',
-    professionalHeadline:
-      'Demand Planner — Singer Beko | Supply Chain Professional | Data Science Enthusiast',
-    professionalSummary:
-      'An enthusiastic learner with a driving ambition and intense will to succeed. Endowed with a growth mindset and a never-give-up attitude, focused on leadership in supply chain operations, demand forecasting, foreign procurement, and e-commerce with result-driven outcomes. Holds a Master’s in Data Science and Analytics (Statistics) from East West University alongside her BBA in Business and Technology Management from IUT.',
-    areasOfInterest: [
-      'Product Forecasting',
-      'Sales & Operations Planning (S&OP)',
-      'Demand Forecasting',
-      'Foreign Procurement',
-      'Data Science & Statistics',
-      'E-Commerce Supply Chain',
-    ],
-    currentPositionId: 'exp-001-1',
-    primaryIndustry: 'FMCG, Consumer Durables & Supply Chain',
-    careerStatus: 'Employed',
-    isEntrepreneur: false,
-    skills: [
-      'Product Forecasting',
-      'S&OP',
-      'Demand Forecasting',
-      'Inventory Control',
-      'Supply Chain Planning',
-      'Foreign Procurement',
-      'Excel Skills for Business',
-      'Data Science & Analytics',
-    ],
-    publicLinks: [
-      { id: 'lnk-001-1', label: 'LinkedIn', url: 'https://www.linkedin.com/in/malihamaisha' },
-      { id: 'lnk-001-2', label: 'Archival CV (PDF)', url: '/assets/aistudio/170061001_c092c2e4.pdf' },
-    ],
-    publicVisibility: 'public',
-    featured: true,
-    featuredNote:
-      'Exemplifies quantitative demand planning, S&OP leadership, and postgraduate data science specialization among BTM 17 graduates.',
-    verificationStatus: 'verified',
-    informationSource: 'Departmental Archival PDF Submission (170061001 — LinkedIn CV Dossier)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061002',
-    studentId: '170061002',
-    fullName: 'Saad Mahmud',
-    batchId: 'btm-17',
-    portraitInitials: 'SM',
-    portraitTone: 'amethyst',
-    professionalHeadline: 'Senior Officer — Technology & General Procurement at bKash Limited | FinTech',
-    professionalSummary:
-      'Technology and General Procurement specialist in the Supply Chain Management department at bKash Limited, the leading Mobile Financial Services (MFS) provider in Bangladesh. Experienced in ERP procurement roadmaps, 360-degree TCO analysis, strategic negotiations, and ATL/digital media planning at Mindshare Bangladesh, as well as co-founding the online confectionery venture BakeVille.',
-    areasOfInterest: [
-      'Technology & General Procurement',
-      'Strategic Negotiations',
-      'Oracle ERP Procurement',
-      '360-Degree TCO Analysis',
-      'FinTech Supply Chain',
-      'ATL & Digital Marketing Strategy',
-    ],
-    currentPositionId: 'exp-002-1',
-    primaryIndustry: 'Financial Technology (FinTech)',
-    careerStatus: 'Employed',
-    isEntrepreneur: true,
-    skills: [
-      'Procurement',
-      'Strategic Negotiations',
-      'Oracle Procurement',
-      '360-Degree TCO Analysis',
-      'ERP RFQ Management',
-      'Python for Finance',
-      'Excel Skills for Business',
-      'Media Planning & Strategy',
-    ],
-    publicLinks: [
-      { id: 'lnk-002-1', label: 'LinkedIn', url: 'https://www.linkedin.com/in/thesaadmahmud' },
-      { id: 'lnk-002-2', label: 'Archival CV (PDF)', url: '/assets/aistudio/170061002_1d45b11d.pdf' },
-    ],
-    publicVisibility: 'public',
-    featured: true,
-    featuredNote:
-      'Demonstrates progression in FinTech technology procurement at bKash Limited alongside early-stage venture co-founding.',
-    verificationStatus: 'verified',
-    informationSource: 'Departmental Archival PDF Submission (170061002 — LinkedIn CV Dossier)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061003',
-    studentId: '170061003',
-    fullName: 'Serajur Rakeen Rafid',
-    batchId: 'btm-17',
-    portraitInitials: 'SR',
-    portraitTone: 'mulberry',
-    professionalHeadline: 'Director at Inventive Trade Holdings Limited',
-    professionalSummary:
-      'Director at Inventive Trade Holdings Limited in Dhaka, Bangladesh. Holds a BBA in Technology Management (Project Management concentration) from Islamic University of Technology (IUT), with prior industry roles as Coordinator at Banglamark Limited, Trainee at Jetpatcher Corporation Limited in the United Kingdom, and Intern at Saif Powertec Ltd.',
-    areasOfInterest: [
-      'Corporate Direction & Governance',
-      'Project Management',
-      'International Trade Holdings',
-      'Industrial Coordination',
-      'Cross-Border Operations',
-    ],
-    currentPositionId: 'exp-003-1',
-    primaryIndustry: 'International Trade & Industrial Holdings',
-    careerStatus: 'Employed',
-    isEntrepreneur: true,
-    skills: [
-      'Project Management',
-      'Technology Management',
-      'Corporate Governance',
-      'Trade Operations',
-      'Operations Coordination',
-    ],
-    publicLinks: [
-      {
-        id: 'lnk-003-1',
-        label: 'LinkedIn',
-        url: 'https://www.linkedin.com/in/serajur-rakeen-rafid-1023a7195',
-      },
-      { id: 'lnk-003-2', label: 'Archival CV (PDF)', url: '/assets/aistudio/170061003_bd436f51.pdf' },
-    ],
-    publicVisibility: 'public',
-    featured: false,
-    verificationStatus: 'verified',
-    informationSource: 'Departmental Archival PDF Submission (170061003 — LinkedIn CV Dossier)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061005',
-    studentId: '170061005',
-    fullName: 'Isa Sayek Huda',
-    batchId: 'btm-17',
-    portraitInitials: 'IH',
-    portraitTone: 'slate-violet',
-    professionalHeadline:
-      'Postgraduate Scholar at Deakin University (Melbourne, Australia) | Former CSE Student Tutor at BRAC University',
-    professionalSummary:
-      'BTM 17 cohort member currently residing in Melbourne, Victoria, Australia and pursuing higher studies at Deakin University (commenced March 2025). Previously matriculated at IUT (2018–2019) and completed undergraduate studies at BRAC University (2023), where he served as a Student Tutor (ST) in the Department of Computer Science and Engineering and as a Member of Strategic Planning for the Robotics Club of BRAC University (ROBU).',
-    areasOfInterest: [
-      'Computer Science & Engineering',
-      'Robotics & Strategic Planning',
-      'Academic Tutoring',
-      'International Higher Studies',
-    ],
-    currentPositionId: undefined,
-    primaryIndustry: 'Higher Education & Academic Research',
-    careerStatus: 'Higher studies',
-    isEntrepreneur: false,
-    skills: [
-      'Computer Science Tutoring',
-      'Strategic Planning',
-      'Robotics Operations',
-      'Programming & Systems',
-    ],
-    publicLinks: [
-      { id: 'lnk-005-1', label: 'Archival Profile (PDF)', url: '/assets/aistudio/170061005_2f111e92.pdf' },
-    ],
-    publicVisibility: 'public',
-    featured: false,
-    verificationStatus: 'verified',
-    informationSource: 'Departmental Archival PDF Submission (170061005 — Profile Dossier)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061006',
-    studentId: '170061006',
-    fullName: 'Samia Jahan Ilma',
-    batchId: 'btm-17',
-    portraitInitials: 'SJ',
-    portraitTone: 'indigo-orchid',
-    professionalHeadline:
-      'Data Science | Machine Learning | Generative AI | Former Officer, Fraud & Dispute Management at bKash Limited',
-    professionalSummary:
-      'Data enthusiast focused on implementing technology into business needs, data-driven solutions, and product building. Currently pursuing a Graduate Certificate in Data Science and Machine Learning with specialisation in AI at Scaler (Bengaluru, India). Brings over 1.5 years of hands-on experience at bKash Limited in Financial Crime, Transactional Fraud & Dispute Management, and AML/CFT compliance in MFS, plus research experience at IUT on Hybrid Modelling and AI/ML integration with Blockchain security.',
-    areasOfInterest: [
-      'Data Science & Machine Learning',
-      'Generative AI & NLP',
-      'Feature Engineering & Outlier Treatment',
-      'Transactional Fraud & Dispute Analytics',
-      'AML/CFT Compliance in MFS',
-      'AI & Blockchain Security',
-    ],
-    currentPositionId: 'exp-006-1',
-    primaryIndustry: 'Financial Technology (FinTech)',
-    careerStatus: 'Higher studies',
-    isEntrepreneur: false,
-    skills: [
-      'Feature Engineering',
-      'Outlier Treatment',
-      'Seaborn',
-      'Advanced SQL & Query Optimization',
-      'R & Statistics',
-      'Excel Financial Reconciliation',
-      'Fraud & Dispute Analysis',
-      'Machine Learning & Deep Learning',
-    ],
-    publicLinks: [
-      { id: 'lnk-006-1', label: 'LinkedIn', url: 'https://www.linkedin.com/in/samia-jahan-ilma' },
-      { id: 'lnk-006-2', label: 'IUT Academic Email', url: 'mailto:samiajahan@iut-dhaka.edu' },
-      { id: 'lnk-006-3', label: 'Archival CV (PDF)', url: '/assets/aistudio/170061006_84c5eccc.pdf' },
-    ],
-    publicVisibility: 'public',
-    featured: true,
-    featuredNote:
-      'Highlights the intersection of FinTech fraud analytics at bKash Limited, published AI-Blockchain security research at IUT, and advanced Data Science studies.',
-    verificationStatus: 'verified',
-    informationSource: 'Departmental Archival PDF Submission (170061006 — LinkedIn CV Dossier)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061009',
-    studentId: '170061009',
-    fullName: 'Almusabbir Sakib',
-    batchId: 'btm-17',
-    portraitInitials: 'AS',
-    portraitTone: 'plum',
-    professionalHeadline: 'BTM 17 Alumnus | Corporate Internship at IPDC Finance Limited',
-    professionalSummary:
-      'Member of the inaugural BTM 17 cohort at the Department of Business and Technology Management, Islamic University of Technology (IUT). Completed his undergraduate corporate internship at IPDC Finance Limited in Dhaka, Bangladesh.',
-    areasOfInterest: [
-      'Financial Services & NBFI',
-      'Corporate Finance',
-      'Business & Technology Management',
-    ],
-    currentPositionId: undefined,
-    primaryIndustry: 'Financial Services & NBFI',
-    careerStatus: 'Unknown',
-    isEntrepreneur: false,
-    skills: ['Financial Services Operations', 'Business & Technology Management'],
-    publicLinks: [
-      { id: 'lnk-009-1', label: 'Archival Record (PDF)', url: '/assets/aistudio/170061009_833656cc.pdf' },
-    ],
-    publicVisibility: 'public',
-    featured: false,
-    verificationStatus: 'partially_verified',
-    informationSource: 'Departmental Archival PDF Submission (170061009 — IPDC Finance Internship Note)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061010',
-    studentId: '170061010',
-    fullName: 'Didar Md. Mosaddek Hossain',
-    batchId: 'btm-17',
-    portraitInitials: 'DM',
-    portraitTone: 'amethyst',
-    professionalHeadline:
-      'BTM 17 Alumnus | Medium Market Enterprise Department Operations — IPDC Finance Limited',
-    professionalSummary:
-      'Graduate of the BBA in Business and Technology Management (BTM 17) program at Islamic University of Technology (IUT). Authored and submitted his permanent archival internship report on "Operations of the Medium Market Enterprise Department of IPDC Finance Limited", approved by Dr. Md. Abul Kalam Azad, Associate Professor, Department of BTM, IUT.',
-    areasOfInterest: [
-      'Medium Market Enterprise (MME) Financing',
-      'NBFI Operations',
-      'Enterprise Credit & Relationship Management',
-      'Business Process Management',
-    ],
-    currentPositionId: undefined,
-    primaryIndustry: 'Financial Services & NBFI',
-    careerStatus: 'Unknown',
-    isEntrepreneur: false,
-    skills: [
-      'Medium Market Enterprise (MME) Operations',
-      'NBFI Credit Workflows',
-      'Financial Operations Analysis',
-      'Business & Technology Management',
-    ],
-    publicLinks: [
-      {
-        id: 'lnk-010-1',
-        label: 'Signed Internship Report (PDF)',
-        url: '/assets/aistudio/170061010_4d7dff60.pdf',
-      },
-    ],
-    publicVisibility: 'public',
-    featured: false,
-    verificationStatus: 'verified',
-    informationSource: 'Departmental Archival PDF Submission (170061010 — Signed IUT BBA Internship Report)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
-  {
-    id: 'alum-170061011',
-    studentId: '170061011',
-    fullName: 'Tasnim Ahmed Jarin',
-    batchId: 'btm-17',
-    profileImage: '/assets/aistudio/170061011_portrait.jpg',
-    portraitInitials: 'TJ',
-    portraitTone: 'mulberry',
-    professionalHeadline: 'Lecturer, Department of Business Administration — East West University',
-    professionalSummary:
-      'Tasnim Ahmed Jarin is a Lecturer in the Department of Business Administration (Faculty of Business and Economics) at East West University, Dhaka. She completed her Master of Business Administration (MBA) in 2024 with a specialization in Management & Information Systems from North South University, and received her Bachelor of Business Administration (BBA) in Technology Management from the Islamic University of Technology (IUT). Prior to her faculty appointment, she worked as a Business Analyst in the Commercial Team at Kona Software Lab Ltd. and served as a Graduate Teaching Assistant at North South University.',
-    areasOfInterest: [
-      'Big Data Analytics in Decision Making',
-      'Artificial Intelligence in Management Information Systems',
-      'Automation in MIS',
-      'Business Analytics and Data Science',
-      'Blockchain Technology and Business Applications',
-      'Data-driven Organizational Decision Making',
-      'Technology-enabled Strategic Planning',
-      'User-centric Information Systems',
-    ],
-    currentPositionId: 'exp-011-1',
-    primaryIndustry: 'Higher Education & Academic Research',
-    careerStatus: 'Employed',
-    isEntrepreneur: false,
-    skills: [
-      'Management Information Systems (MIS)',
-      'Big Data Analytics',
-      'AI in MIS',
-      'Blockchain Business Applications',
-      'Business Analysis & Technical Proposals',
-      'Academic Teaching & Research',
-      'Data-Driven Decision Making',
-    ],
-    publicLinks: [
-      {
-        id: 'lnk-011-1',
-        label: 'EWU Faculty Profile',
-        url: 'https://fbe.ewubd.edu/business-administration',
-      },
-      {
-        id: 'lnk-011-2',
-        label: 'ResearchGate',
-        url: 'https://www.researchgate.net/profile/Tasnim-Jarin',
-      },
-      {
-        id: 'lnk-011-3',
-        label: 'Faculty Email',
-        url: 'mailto:tasnima.jarin@ewubd.edu',
-      },
-      {
-        id: 'lnk-011-4',
-        label: 'Archival Dossier (PDF)',
-        url: '/assets/aistudio/170061011_700b7ad1.pdf',
-      },
-    ],
-    publicVisibility: 'public',
-    featured: true,
-    featuredNote:
-      'Represents BTM 17 in university academia as a Lecturer in Business Administration at East West University, specializing in Management Information Systems and AI.',
-    verificationStatus: 'verified',
-    informationSource:
-      'Departmental Archival PDF Submission (170061011 — East West University Faculty Dossier & ResearchGate)',
-    lastUpdated: '2026-10-27',
-    isSampleRecord: false,
-  },
+const MONTH_MAP: Record<string, { full: string; num: string }> = {
+  jan: { full: 'January', num: '01' },
+  january: { full: 'January', num: '01' },
+  feb: { full: 'February', num: '02' },
+  february: { full: 'February', num: '02' },
+  mar: { full: 'March', num: '03' },
+  march: { full: 'March', num: '03' },
+  apr: { full: 'April', num: '04' },
+  april: { full: 'April', num: '04' },
+  may: { full: 'May', num: '05' },
+  jun: { full: 'June', num: '06' },
+  june: { full: 'June', num: '06' },
+  jul: { full: 'July', num: '07' },
+  july: { full: 'July', num: '07' },
+  aug: { full: 'August', num: '08' },
+  august: { full: 'August', num: '08' },
+  sep: { full: 'September', num: '09' },
+  sept: { full: 'September', num: '09' },
+  september: { full: 'September', num: '09' },
+  oct: { full: 'October', num: '10' },
+  october: { full: 'October', num: '10' },
+  nov: { full: 'November', num: '11' },
+  november: { full: 'November', num: '11' },
+  dec: { full: 'December', num: '12' },
+  december: { full: 'December', num: '12' },
+};
+
+export function expandMonthNames(input: string): string {
+  if (!input) return '';
+  const isoMatch = input.trim().match(/^(\d{4})-(\d{2})-\d{2}(?:\s+\d{2}:\d{2}:\d{2})?$/);
+  if (isoMatch) {
+    const year = isoMatch[1];
+    const monthNum = isoMatch[2];
+    const entry = Object.values(MONTH_MAP).find((m) => m.num === monthNum);
+    return entry ? `${entry.full} ${year}` : year;
+  }
+
+  return input
+    .replace(
+      /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?(\s+\d{4})/gi,
+      (_, m, rest) => {
+        const mapped = MONTH_MAP[m.toLowerCase()];
+        return mapped ? `${mapped.full}${rest}` : `${m}${rest}`;
+      }
+    )
+    .replace(/\s*[–—-]\s*/g, ' – ');
+}
+
+function parseSortableDate(
+  periodLabel: string,
+  orderIndex: number,
+  totalItems: number
+): {
+  startDate: string;
+  endDate?: string;
+  isCurrent: boolean;
+} {
+  const clean = periodLabel.trim();
+  const isCurrent = /\bpresent\b|\bcurrent\b/i.test(clean);
+
+  // Use a descending synthetic key based on array order so undated entries stay in their exact JSON sequence
+  const orderKey = String(Math.max(1, 99 - orderIndex)).padStart(2, '0');
+  void totalItems;
+
+  const monthYearMatches = Array.from(
+    clean.matchAll(
+      /\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})\b/gi
+    )
+  );
+
+  if (monthYearMatches.length >= 2) {
+    const m1 = MONTH_MAP[monthYearMatches[0][1].toLowerCase()]?.num || '01';
+    const y1 = monthYearMatches[0][2];
+    const m2 = MONTH_MAP[monthYearMatches[1][1].toLowerCase()]?.num || '01';
+    const y2 = monthYearMatches[1][2];
+    return {
+      startDate: `${y1}-${m1}`,
+      endDate: isCurrent ? undefined : `${y2}-${m2}`,
+      isCurrent,
+    };
+  }
+
+  if (monthYearMatches.length === 1) {
+    const m1 = MONTH_MAP[monthYearMatches[0][1].toLowerCase()]?.num || '01';
+    const y1 = monthYearMatches[0][2];
+    const secondYearMatch = clean.match(/–\s*(\d{4})\b/);
+    return {
+      startDate: `${y1}-${m1}`,
+      endDate: isCurrent ? undefined : secondYearMatch ? `${secondYearMatch[1]}-01` : `${y1}-${m1}`,
+      isCurrent,
+    };
+  }
+
+  if (isCurrent) {
+    return {
+      startDate: `2026-${orderKey}`,
+      endDate: undefined,
+      isCurrent: true,
+    };
+  }
+
+  return {
+    startDate: `2024-${orderKey}`,
+    endDate: `2024-${orderKey}`,
+    isCurrent: false,
+  };
+}
+
+function normalizeOrganizationName(org: string): string {
+  const trimmed = org.trim();
+  if (/^Singer Bangladesh Ltd\s*\/\s*Singer Beko$/i.test(trimmed)) {
+    return 'Singer Bangladesh Ltd. (Singer Beko)';
+  }
+  return trimmed;
+}
+
+function parseRawWorkExperience(raw: {
+  organization: string;
+  designation: string;
+  employmentType: string;
+  period: string;
+  location: string;
+}): {
+  skip: boolean;
+  organization: string;
+  designation: string;
+  employmentStatusLabel: 'Full-Time' | 'Internship' | 'Other';
+  employmentType: Experience['employmentType'];
+  periodLabel: string;
+  location: string;
+} {
+  if (/\(second entry in source\)/i.test(raw.designation)) {
+    return {
+      skip: true,
+      organization: '',
+      designation: '',
+      employmentStatusLabel: 'Other',
+      employmentType: 'Other',
+      periodLabel: '',
+      location: '',
+    };
+  }
+
+  const organization = normalizeOrganizationName(raw.organization);
+  let designation = raw.designation.trim();
+  let location = (raw.location || '').trim();
+  let periodRaw = (raw.period || '').trim();
+
+  designation = designation
+    .replace(/\s*\(profile also describes duties.*?\)/i, '')
+    .replace(/\s*\(source also lists.*?\)/i, '')
+    .trim();
+
+  if (designation.includes('—')) {
+    const [leftPart, rightPart = ''] = designation.split(/\s*—\s*/, 2);
+    designation = leftPart.trim();
+
+    if (rightPart.includes(';')) {
+      const [dateFragment, locFragment] = rightPart.split(/\s*;\s*/, 2);
+      if (locFragment && !location) {
+        location = locFragment.trim();
+      }
+      if (dateFragment) {
+        const df = dateFragment.trim();
+        if (/^current$/i.test(df)) {
+          periodRaw = 'Present';
+        } else if (
+          !periodRaw ||
+          periodRaw === raw.designation.trim() ||
+          /^\d{4}-\d{2}-\d{2}/.test(periodRaw)
+        ) {
+          periodRaw = df;
+        }
+      }
+    } else if (
+      /dates? and role not provided/i.test(rightPart) ||
+      /dates? not provided/i.test(rightPart)
+    ) {
+      periodRaw = 'Dates not provided';
+    }
+  }
+
+  if (/^Internship report:\s*/i.test(designation)) {
+    designation = designation.replace(/^Internship report:\s*/i, 'Internship — ');
+  }
+
+  let periodLabel = '';
+  if (!periodRaw || /dates? (and role )?not provided/i.test(periodRaw)) {
+    periodLabel = 'Dates not provided';
+  } else if (/^current$/i.test(periodRaw)) {
+    periodLabel = 'Present';
+  } else {
+    periodLabel = expandMonthNames(periodRaw);
+  }
+
+  const rawType = (raw.employmentType || '').trim().toLowerCase();
+  let employmentStatusLabel: 'Full-Time' | 'Internship' | 'Other' = 'Other';
+  let employmentType: Experience['employmentType'] = 'Other';
+
+  if (rawType === 'full-time' || rawType === 'full time') {
+    employmentStatusLabel = 'Full-Time';
+    employmentType = 'Full-time';
+  } else if (rawType === 'intern' || rawType === 'internship') {
+    employmentStatusLabel = 'Internship';
+    employmentType = 'Internship';
+  } else {
+    employmentStatusLabel = 'Other';
+    employmentType = 'Other';
+  }
+
+  return {
+    skip: false,
+    organization,
+    designation,
+    employmentStatusLabel,
+    employmentType,
+    periodLabel,
+    location,
+  };
+}
+
+function parseRawHigherEducation(raw: {
+  institution: string;
+  degreeProgram: string;
+  period: string;
+}): {
+  exclude: boolean;
+  institution: string;
+  degree: string;
+  periodLabel: string;
+  locationLabel: string;
+  country?: string;
+  startYear: number;
+  endYear?: number;
+  enrollmentStatus: 'completed' | 'currently_enrolled';
+} {
+  const institution = (raw.institution || '').trim();
+  const degreeRaw = (raw.degreeProgram || '').trim();
+  const periodRaw = (raw.period || '').trim();
+
+  if (
+    /islamic university of technology|\biut\b/i.test(institution) ||
+    /\b(ssc|hsc|high school|secondary school|higher secondary|o levels|a levels)\b/i.test(degreeRaw)
+  ) {
+    return {
+      exclude: true,
+      institution: '',
+      degree: '',
+      periodLabel: '',
+      locationLabel: '',
+      startYear: 2022,
+      enrollmentStatus: 'completed',
+    };
+  }
+
+  let degree = degreeRaw
+    .replace(/\s*\(as listed\)/gi, '')
+    .replace(/\s*\(listed\)/gi, '')
+    .trim();
+
+  let periodLabel = '';
+
+  const listedDateMatch = degree.match(/listed as ['"](?:In\s+)?([^'"]+)['"]/i);
+  if (listedDateMatch) {
+    periodLabel = expandMonthNames(listedDateMatch[1].trim());
+    degree = 'Degree / program not specified';
+  } else if (/exact qualification\/year unclear/i.test(degree)) {
+    degree = 'Degree / program not specified';
+    periodLabel = '';
+  } else if (degree.includes('—')) {
+    const [degPart, datePart = ''] = degree.split(/\s*—\s*/, 2);
+    degree = degPart.trim();
+    if (datePart && !/dates? not provided/i.test(datePart)) {
+      periodLabel = expandMonthNames(datePart.trim());
+    }
+  }
+
+  if (!periodLabel && periodRaw && !periodRaw.includes('/')) {
+    if (!/dates? not provided/i.test(periodRaw)) {
+      periodLabel = expandMonthNames(periodRaw);
+    }
+  }
+
+  let locationLabel = '';
+  let country: string | undefined = undefined;
+  if (/east west university|north south university|brac university/i.test(institution)) {
+    locationLabel = 'Dhaka, Bangladesh';
+    country = 'Bangladesh';
+  } else if (/deakin university/i.test(institution) || /australia\/melbourne/i.test(periodRaw)) {
+    locationLabel = 'Melbourne, Australia';
+    country = 'Australia';
+  } else if (/scaler/i.test(institution)) {
+    country = 'India';
+  }
+
+  const years = Array.from(periodLabel.matchAll(/\b(20\d{2})\b/g)).map((m) => Number(m[1]));
+  const startYear = years[0] || 2023;
+  const endYear = years.length > 1 ? years[1] : years[0];
+  const enrollmentStatus: 'completed' | 'currently_enrolled' =
+    (endYear && endYear >= 2026) || /march 2025/i.test(periodLabel)
+      ? 'currently_enrolled'
+      : 'completed';
+
+  return {
+    exclude: false,
+    institution,
+    degree,
+    periodLabel,
+    locationLabel,
+    country,
+    startYear,
+    endYear,
+    enrollmentStatus,
+  };
+}
+
+function getInitials(fullName: string): string {
+  const cleaned = fullName.replace(/^Md\.?\s+/i, '').trim();
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return 'BA';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+const PORTRAIT_TONES: Alumni['portraitTone'][] = [
+  'plum',
+  'amethyst',
+  'mulberry',
+  'slate-violet',
+  'indigo-orchid',
 ];
 
-export const INITIAL_EXPERIENCES: Experience[] = [
-  // 170061001 — Maisha Maliha
-  {
-    id: 'exp-001-1',
-    alumniId: 'alum-170061001',
-    organization: 'Singer Bangladesh Ltd',
-    designation: 'Demand Planner (Singer Beko)',
-    employmentType: 'Full-time',
-    industry: 'FMCG, Consumer Durables & Supply Chain',
-    careerLevel: 'Mid-Level / Specialist',
-    startDate: '2024-04',
-    isCurrent: true,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Analyzes sales trends to align demand, production, and inventory control; manages year-end inventory by advising production on seasonality trends and controlling purchase orders to maintain efficient stock levels; develops supply plans to streamline production and supply chain operations.',
-  },
-  {
-    id: 'exp-001-2',
-    alumniId: 'alum-170061001',
-    organization: 'Daraz',
-    designation: "Management Trainee (DFLP'22)",
-    employmentType: 'Full-time',
-    industry: 'E-Commerce & Digital Retail',
-    careerLevel: 'Entry / Associate',
-    startDate: '2022-11',
-    endDate: '2024-04',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      "Completed 1 year 6 months in the Daraz Future Leadership Program (DFLP'22) across e-commerce operations, procurement, and supply chain planning.",
-  },
-  {
-    id: 'exp-001-3',
-    alumniId: 'alum-170061001',
-    organization: 'Igloo Ice Cream',
-    designation: 'Executive, Supply Chain Management',
-    employmentType: 'Full-time',
-    industry: 'FMCG, Consumer Durables & Supply Chain',
-    careerLevel: 'Entry / Associate',
-    startDate: '2022-02',
-    endDate: '2022-11',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Managed supply chain coordination, inventory planning, and procurement execution over a 10-month tenure.',
-  },
-  {
-    id: 'exp-001-4',
-    alumniId: 'alum-170061001',
-    organization: 'Igloo Ice Cream',
-    designation: 'Supply Chain Management Intern',
-    employmentType: 'Internship',
-    industry: 'FMCG, Consumer Durables & Supply Chain',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-11',
-    endDate: '2022-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description: 'Completed 3-month undergraduate internship in supply chain management in Dhaka.',
-  },
+const CITY_COORDINATES: Record<string, { lat: number; lng: number }> = {
+  'Dhaka|Bangladesh': { lat: 23.8103, lng: 90.4125 },
+  '|Bangladesh': { lat: 23.8103, lng: 90.4125 },
+  'Melbourne|Australia': { lat: -37.8136, lng: 144.9631 },
+};
 
-  // 170061002 — Saad Mahmud
-  {
-    id: 'exp-002-1',
-    alumniId: 'alum-170061002',
-    organization: 'bKash Limited',
-    designation: 'Senior Officer - Technology & General Procurement',
-    employmentType: 'Full-time',
-    industry: 'Financial Technology (FinTech)',
-    careerLevel: 'Senior / Lead',
-    startDate: '2025-05',
-    isCurrent: true,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Leads technology and general procurement initiatives within the Supply Chain Management department at bKash Limited; reviews scopes of work, arranges stakeholder kick-off meetings to define procurement roadmaps and evaluation methods, manages ERP material codes and RFQs, coordinates technical evaluations, and performs 360-degree TCO analysis.',
-  },
-  {
-    id: 'exp-002-2',
-    alumniId: 'alum-170061002',
-    organization: 'bKash Limited',
-    designation: 'Officer - Technology & General Procurement',
-    employmentType: 'Full-time',
-    industry: 'Financial Technology (FinTech)',
-    careerLevel: 'Mid-Level / Specialist',
-    startDate: '2022-09',
-    endDate: '2025-05',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Executed technology and corporate procurement workflows, supplier management requests, ERP RFQ issuance, bidder follow-up, and 360-degree TCO analysis over 2 years 9 months.',
-  },
-  {
-    id: 'exp-002-3',
-    alumniId: 'alum-170061002',
-    organization: 'Mindshare Bangladesh',
-    designation: 'Planning Strategist',
-    employmentType: 'Full-time',
-    industry: 'Media, Marketing & Advertising',
-    careerLevel: 'Entry / Associate',
-    startDate: '2022-04',
-    endDate: '2022-09',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Prepared ATL plans (TV, Press, Radio), campaign performance reports, and competitor market analysis for major accounts including Pepsi, 7Up, Mountain Dew, KurKure, Dano, Milvik, and BEOL.',
-  },
-  {
-    id: 'exp-002-4',
-    alumniId: 'alum-170061002',
-    organization: 'Daraz',
-    designation: 'Xpedite Campus Ambassador',
-    employmentType: 'Part-time',
-    industry: 'E-Commerce & Digital Retail',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-02',
-    endDate: '2022-03',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Promoted Daraz campaigns and university outreach initiatives across a 14-month tenure.',
-  },
-  {
-    id: 'exp-002-5',
-    alumniId: 'alum-170061002',
-    organization: 'bKash Limited',
-    designation: 'bNext Intern - Digital Marketing',
-    employmentType: 'Internship',
-    industry: 'Financial Technology (FinTech)',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-10',
-    endDate: '2022-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Performed market research and digital audience behavior analysis across Facebook and Google platforms, wrote blogs for the official website, and generated campaign creative concepts.',
-  },
-  {
-    id: 'exp-002-6',
-    alumniId: 'alum-170061002',
-    organization: 'BakeVille',
-    designation: 'Co-Founder',
-    employmentType: 'Founder / Self-employed',
-    industry: 'Food & E-Commerce Venture',
-    careerLevel: 'Founder / Executive',
-    startDate: '2020-12',
-    endDate: '2022-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Co-founded and operated an online dessert and pastry shop in Dhaka delivering artisanal confections.',
-  },
-  {
-    id: 'exp-002-7',
-    alumniId: 'alum-170061002',
-    organization: 'FBCCI (Federation of Bangladesh Chambers of Commerce and Industries)',
-    designation: 'Intern - Trade Facilitation & Policy Advocacy',
-    employmentType: 'Internship',
-    industry: 'Trade Policy & Chambers of Commerce',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-10',
-    endDate: '2021-10',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Supported trade facilitation and private-sector policy advocacy at the apex trade organization of Bangladesh.',
-  },
-  {
-    id: 'exp-002-8',
-    alumniId: 'alum-170061002',
-    organization: 'Malamal.xyz',
-    designation: 'Business Development Executive',
-    employmentType: 'Part-time',
-    industry: 'E-Commerce & Digital Retail',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-07',
-    endDate: '2021-10',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Worked on B2B industrial supply e-commerce sales, market opportunity research, and digital marketing schedules.',
-  },
-  {
-    id: 'exp-002-9',
-    alumniId: 'alum-170061002',
-    organization: 'Catalytic Interactive',
-    designation: 'Business Development Intern',
-    employmentType: 'Internship',
-    industry: 'Media, Marketing & Advertising',
-    careerLevel: 'Entry / Associate',
-    startDate: '2019-12',
-    endDate: '2021-07',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Managed online client media pages, customer communications, copywriting, and market research.',
-  },
+const builtAlumni: Alumni[] = [];
+const builtExperiences: Experience[] = [];
+const builtEducations: Education[] = [];
+const builtLocations: LocationRecord[] = [];
+const builtSourceRecords: SourceRecord[] = [];
 
-  // 170061003 — Serajur Rakeen Rafid
-  {
-    id: 'exp-003-1',
-    alumniId: 'alum-170061003',
-    organization: 'Inventive Trade Holdings Limited',
-    designation: 'Director',
-    employmentType: 'Full-time',
-    industry: 'International Trade & Industrial Holdings',
-    careerLevel: 'Management / Director',
-    startDate: '2022-08',
-    isCurrent: true,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Serves as Director overseeing trade holdings, strategic operations, and commercial administration in Dhaka, Bangladesh.',
-  },
-  {
-    id: 'exp-003-2',
-    alumniId: 'alum-170061003',
-    organization: 'BANGLAMARK LIMITED',
-    designation: 'Coordinator',
-    employmentType: 'Full-time',
-    industry: 'International Trade & Industrial Holdings',
-    careerLevel: 'Mid-Level / Specialist',
-    startDate: '2021-06',
-    endDate: '2022-07',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description: 'Coordinated commercial projects and industrial trading operations in Dhaka.',
-  },
-  {
-    id: 'exp-003-3',
-    alumniId: 'alum-170061003',
-    organization: 'JETPATCHER CORPORATION LIMITED',
-    designation: 'Trainee',
-    employmentType: 'Internship',
-    industry: 'Engineering & Infrastructure Services',
-    careerLevel: 'Entry / Associate',
-    startDate: '2019-10',
-    endDate: '2019-10',
-    isCurrent: false,
-    location: 'United Kingdom',
-    country: 'United Kingdom',
-    description: 'Completed international operational traineeship in the United Kingdom.',
-  },
-  {
-    id: 'exp-003-4',
-    alumniId: 'alum-170061003',
-    organization: 'Saif Powertec Ltd',
-    designation: 'Intern',
-    employmentType: 'Internship',
-    industry: 'Engineering & Infrastructure Services',
-    careerLevel: 'Entry / Associate',
-    startDate: '2018-11',
-    endDate: '2019-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description: 'Completed winter corporate internship at Saif Powertec Ltd in Dhaka.',
-  },
+// Index detailed records from btmAlumniData.json by studentId
+const detailedByStudentId = new Map<string, (typeof rawAlumniJson.alumni)[number]>();
+rawAlumniJson.alumni.forEach((rec) => {
+  detailedByStudentId.set(rec.studentId.trim(), rec);
+});
 
-  // 170061005 — Isa Sayek Huda
-  {
-    id: 'exp-005-1',
-    alumniId: 'alum-170061005',
-    organization: 'BRAC University',
-    designation: 'Student Tutor (ST), Department of CSE',
-    employmentType: 'Part-time',
-    industry: 'Higher Education & Academic Research',
-    careerLevel: 'Academic / Research',
-    startDate: '2022-10',
-    endDate: '2023-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Served as Student Tutor (ST) in the Department of Computer Science and Engineering at BRAC University.',
-  },
-  {
-    id: 'exp-005-2',
-    alumniId: 'alum-170061005',
-    organization: 'Robotics Club of BRAC University (ROBU)',
-    designation: 'Member of Strategic Planning',
-    employmentType: 'Part-time',
-    industry: 'Higher Education & Academic Research',
-    careerLevel: 'Entry / Associate',
-    startDate: '2019-06',
-    endDate: '2023-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Contributed to strategic planning and robotics initiatives over a 3.5-year period.',
-  },
+// Merge full batch roster (BTM 17, 18, 19, 20) with detailed records
+const mergedRoster: {
+  studentId: string;
+  fullName: string;
+  batchLabel?: string;
+  detailed?: (typeof rawAlumniJson.alumni)[number];
+}[] = [];
+const seenStudentIds = new Set<string>();
 
-  // 170061006 — Samia Jahan Ilma
-  {
-    id: 'exp-006-1',
-    alumniId: 'alum-170061006',
-    organization: 'bKash Limited',
-    designation: 'Officer, Fraud and Dispute Management, External & Corporate Affairs',
-    employmentType: 'Full-time',
-    industry: 'Financial Technology (FinTech)',
-    careerLevel: 'Mid-Level / Specialist',
-    startDate: '2022-10',
-    endDate: '2024-02',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Analyzed and validated 86,000–125,000 fraud and mistaken-transaction cases; consolidated monthly case data for Bangladesh Bank and BRAC Bank (~1,000 fraud and 3,000 mistaken-transaction cases per cycle); performed financial reconciliation of ~10–12 crore BDT in reimbursement transactions; developed SLA and performance reports for 34 employees contributing to a 36% reduction in reimbursement turnaround time; and facilitated anti-fraud awareness training for 50+ wage earners in Manikganj as part of educating 5,000+ Ayesha Abed Foundation artisans.',
-  },
-  {
-    id: 'exp-006-2',
-    alumniId: 'alum-170061006',
-    organization: 'Islamic University of Technology (IUT)',
-    designation: 'Research Assistant (Concentration: Hybrid Modelling)',
-    employmentType: 'Research',
-    industry: 'Higher Education & Academic Research',
-    careerLevel: 'Academic / Research',
-    startDate: '2022-04',
-    endDate: '2022-09',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Worked under Principal Investigator Dr. Mohammad Shamsu Uddin on AI/ML integration with Blockchain security and IoT across banking and FinTech systems, investigating data security, privacy, scalability, and transaction risk.',
-  },
-  {
-    id: 'exp-006-3',
-    alumniId: 'alum-170061006',
-    organization: 'bKash Limited',
-    designation: 'Intern — Fraud & Dispute Management, External & Corporate Affairs Division',
-    employmentType: 'Internship',
-    industry: 'Financial Technology (FinTech)',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-10',
-    endDate: '2022-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Handled compliance monitoring, customer feedback recording, issuance of fraud and mistaken-transaction letters, and co-ordinated the bNext Flagship Internship Program.',
-  },
-  {
-    id: 'exp-006-4',
-    alumniId: 'alum-170061006',
-    organization: 'Youth School for Social Entrepreneurs (YSSE)',
-    designation: 'Business Development',
-    employmentType: 'Internship',
-    industry: 'Non-Profit & Social Enterprise',
-    careerLevel: 'Entry / Associate',
-    startDate: '2020-05',
-    endDate: '2020-07',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Researched new business opportunities, developed sales and marketing strategies, and managed lead generation.',
-  },
-  {
-    id: 'exp-006-5',
-    alumniId: 'alum-170061006',
-    organization: 'Janata Bank Limited',
-    designation: 'General Banking Intern',
-    employmentType: 'Internship',
-    industry: 'Financial Services & Banking',
-    careerLevel: 'Entry / Associate',
-    startDate: '2018-11',
-    endDate: '2019-03',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Supported customer service, account opening, cash services, bank draft fund transfers, bill collection, and clearing operations.',
-  },
+batchRosterJson.forEach((entry) => {
+  const sid = entry.studentId.trim();
+  if (!sid || seenStudentIds.has(sid)) return;
+  seenStudentIds.add(sid);
+  const detailed = detailedByStudentId.get(sid);
+  mergedRoster.push({
+    studentId: sid,
+    fullName: (detailed?.fullName || entry.name || '').trim(),
+    batchLabel: entry.batch,
+    detailed,
+  });
+});
 
-  // 170061009 — Almusabbir Sakib
-  {
-    id: 'exp-009-1',
-    alumniId: 'alum-170061009',
-    organization: 'IPDC Finance Limited',
-    designation: 'Corporate Intern',
-    employmentType: 'Internship',
-    industry: 'Financial Services & NBFI',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-10',
-    endDate: '2022-01',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description: 'Completed undergraduate corporate internship at IPDC Finance Limited.',
-  },
+rawAlumniJson.alumni.forEach((rec) => {
+  const sid = rec.studentId.trim();
+  if (!sid || seenStudentIds.has(sid)) return;
+  seenStudentIds.add(sid);
+  mergedRoster.push({
+    studentId: sid,
+    fullName: rec.fullName.trim(),
+    detailed: rec,
+  });
+});
 
-  // 170061010 — Didar Md. Mosaddek Hossain
-  {
-    id: 'exp-010-1',
-    alumniId: 'alum-170061010',
-    organization: 'IPDC Finance Limited',
-    designation: 'Intern — Medium Market Enterprise (MME) Department',
-    employmentType: 'Internship',
-    industry: 'Financial Services & NBFI',
-    careerLevel: 'Entry / Associate',
-    startDate: '2021-10',
-    endDate: '2022-02',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Completed undergraduate industry internship in the Medium Market Enterprise Department of IPDC Finance Limited and authored the BBA research report on departmental operations.',
-  },
+mergedRoster.forEach((item, index) => {
+  const studentId = item.studentId;
+  const alumniId = `alum-${studentId}`;
+  const batchMatch = item.batchLabel?.match(/\b(17|18|19|20)\b/);
+  const batchPrefix = batchMatch ? batchMatch[1] : studentId.slice(0, 2);
+  const batchId = ['17', '18', '19', '20'].includes(batchPrefix) ? `btm-${batchPrefix}` : 'btm-17';
 
-  // 170061011 — Tasnim Ahmed Jarin
-  {
-    id: 'exp-011-1',
-    alumniId: 'alum-170061011',
-    organization: 'East West University',
-    designation: 'Lecturer, Department of Business Administration',
-    employmentType: 'Full-time',
-    industry: 'Higher Education & Academic Research',
-    careerLevel: 'Academic / Research',
-    startDate: '2024-06',
-    isCurrent: true,
-    location: 'Aftabnagar, Dhaka-1212, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Faculty member in the Faculty of Business and Economics (Room No# AB-1 803, Ext: 574), teaching undergraduate business courses and conducting research on Big Data Analytics, AI in Management Information Systems, Automation in MIS, and Blockchain applications.',
-  },
-  {
-    id: 'exp-011-2',
-    alumniId: 'alum-170061011',
-    organization: 'North South University',
-    designation: 'Graduate Teaching Assistant — School of Business & Economics',
-    employmentType: 'Part-time',
-    industry: 'Higher Education & Academic Research',
-    careerLevel: 'Academic / Research',
-    startDate: '2023-01',
-    endDate: '2024-05',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Assisted faculty members with academic research, lecture preparation, examination grading, and test proctoring during her MBA program.',
-  },
-  {
-    id: 'exp-011-3',
-    alumniId: 'alum-170061011',
-    organization: 'Kona Software Lab Ltd.',
-    designation: 'Business Analyst — Commercial Team',
-    employmentType: 'Full-time',
-    industry: 'Software Engineering & IT Services',
-    careerLevel: 'Entry / Associate',
-    startDate: '2022-06',
-    endDate: '2023-06',
-    isCurrent: false,
-    location: 'Dhaka, Bangladesh',
-    country: 'Bangladesh',
-    description:
-      'Worked on technical proposals, cross-functional coordination, client presentations and product demonstrations, and explored business opportunities related to blockchain technologies.',
-  },
-];
+  const record = item.detailed;
+  const seenExpKeys = new Set<string>();
+  const parsedExps: Experience[] = [];
 
-export const INITIAL_EDUCATIONS: Education[] = [
-  // 170061001 — Maisha Maliha
-  {
-    id: 'edu-001-1',
-    alumniId: 'alum-170061001',
-    institution: 'East West University',
-    degree: "Master's in Data Science and Analytics",
-    fieldOfStudy: 'Data Science, Analytics & Statistics',
-    studyLevel: 'Masters',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2022,
-    endYear: 2023,
-    description: 'Postgraduate degree in Data Science and Analytics, Statistics (June 2023).',
-  },
-  {
-    id: 'edu-001-2',
-    alumniId: 'alum-170061001',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA) in Business and Technology Management',
-    fieldOfStudy: 'Business and Technology Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2022,
-    certifications: ['Certified Supply Chain Analyst, CSCA™', 'Excel Skills for Business'],
-  },
-  {
-    id: 'edu-001-3',
-    alumniId: 'alum-170061001',
-    institution: 'Viqarunnisa Noon School and College',
-    degree: 'Higher Secondary Certificate (HSC) & Secondary School Certificate (SSC)',
-    fieldOfStudy: 'Science',
-    studyLevel: 'Other',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2005,
-    endYear: 2017,
-    description: 'HSC in Science (2015–2017) and SSC in Science (2005–2015).',
-  },
+  if (record && Array.isArray(record.workExperience)) {
+    record.workExperience.forEach((rawExp, expIdx) => {
+      const parsed = parseRawWorkExperience(rawExp);
+      if (parsed.skip) return;
 
-  // 170061002 — Saad Mahmud
-  {
-    id: 'edu-002-1',
-    alumniId: 'alum-170061002',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA) in Business and Technology Management',
-    fieldOfStudy: 'Business and Technology Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2022,
-    certifications: [
-      'Intermediate Python for Finance',
-      'Introduction to Python for Finance',
-      'Excel Skills for Business: Essentials',
-    ],
-  },
-  {
-    id: 'edu-002-2',
-    alumniId: 'alum-170061002',
-    institution: 'Notre Dame College & Ideal School and College',
-    degree: 'Higher Secondary Certificate (HSC) & Secondary School Certificate (SSC)',
-    fieldOfStudy: 'Science',
-    studyLevel: 'Other',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2005,
-    endYear: 2017,
-    description: 'HSC in Science at Notre Dame College (2015–2017); SSC at Ideal School and College (2005–2015).',
-  },
+      const dedupeKey = `${parsed.organization.toLowerCase()}|${parsed.designation.toLowerCase()}|${parsed.periodLabel.toLowerCase()}`;
+      if (seenExpKeys.has(dedupeKey)) return;
+      seenExpKeys.add(dedupeKey);
 
-  // 170061003 — Serajur Rakeen Rafid
-  {
-    id: 'edu-003-1',
-    alumniId: 'alum-170061003',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA) in Technology Management',
-    fieldOfStudy: 'Technology Management & Project Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2017,
-    endYear: 2021,
-    description: 'Major in Technology Management and Project Management.',
-  },
-  {
-    id: 'edu-003-2',
-    alumniId: 'alum-170061003',
-    institution: 'Delhi Public School - Bangladesh',
-    degree: 'O Levels & A Levels',
-    fieldOfStudy: 'Mixed',
-    studyLevel: 'Other',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2010,
-    endYear: 2017,
-  },
+      const sortMeta = parseSortableDate(parsed.periodLabel, expIdx, record.workExperience.length);
+      const expId = `exp-${studentId}-${expIdx + 1}`;
+      const country = parsed.location.includes('United Kingdom')
+        ? 'United Kingdom'
+        : parsed.location.includes('Bangladesh')
+        ? 'Bangladesh'
+        : undefined;
 
-  // 170061005 — Isa Sayek Huda
-  {
-    id: 'edu-005-1',
-    alumniId: 'alum-170061005',
-    institution: 'Deakin University',
-    degree: 'Postgraduate Studies (Melbourne Campus)',
-    fieldOfStudy: 'Information Technology & Engineering Studies',
-    studyLevel: 'Masters',
-    enrollmentStatus: 'currently_enrolled',
-    country: 'Australia',
-    startYear: 2025,
-    description: 'Currently pursuing postgraduate studies at Deakin University in Melbourne, Victoria, Australia (commenced March 2025).',
-  },
-  {
-    id: 'edu-005-2',
-    alumniId: 'alum-170061005',
-    institution: 'BRAC University',
-    degree: 'Bachelor of Science in Computer Science and Engineering (CSE)',
-    fieldOfStudy: 'Computer Science and Engineering',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2019,
-    endYear: 2023,
-    description: 'Graduated Class of 2023; served as Student Tutor in the CSE Department and Strategic Planner at ROBU.',
-  },
-  {
-    id: 'edu-005-3',
-    alumniId: 'alum-170061005',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'BTM 17 Undergraduate Cohort Enrollment',
-    fieldOfStudy: 'Business and Technology Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2019,
-    description: 'Enrolled with the inaugural BTM 17 cohort (January 2018 – March 2019).',
-  },
-  {
-    id: 'edu-005-4',
-    alumniId: 'alum-170061005',
-    institution: 'Dhaka City College & Government Laboratory High School & College',
-    degree: 'Higher Secondary Certificate (HSC 2017) & Secondary School Certificate (SSC 2015)',
-    fieldOfStudy: 'Science',
-    studyLevel: 'Other',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2013,
-    endYear: 2017,
-  },
+      parsedExps.push({
+        id: expId,
+        alumniId,
+        organization: parsed.organization,
+        designation: parsed.designation,
+        employmentType: parsed.employmentType,
+        employmentStatusLabel: parsed.employmentStatusLabel,
+        periodLabel: parsed.periodLabel,
+        industry: '',
+        startDate: sortMeta.startDate,
+        endDate: sortMeta.endDate,
+        isCurrent: sortMeta.isCurrent,
+        location: parsed.location,
+        country,
+      });
+    });
+  }
 
-  // 170061006 — Samia Jahan Ilma
-  {
-    id: 'edu-006-1',
-    alumniId: 'alum-170061006',
-    institution: 'Scaler (Bengaluru, India)',
-    degree: 'Graduate Certificate in Data Science and Machine Learning with Specialisation in AI',
-    fieldOfStudy: 'Data Science, Machine Learning & Artificial Intelligence',
-    studyLevel: 'Postgraduate Diploma / Certificate',
-    enrollmentStatus: 'currently_enrolled',
-    country: 'India',
-    startYear: 2024,
-    endYear: 2026,
-    description: 'Postgraduate program in Data Science, Machine Learning, Deep Learning, NLP, and Generative AI (March 2024 – December 2026).',
-  },
-  {
-    id: 'edu-006-2',
-    alumniId: 'alum-170061006',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA), Major: Technology Management, Minor: Information Systems',
-    fieldOfStudy: 'Technology Management & Information Systems',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2022,
-    certifications: [
-      'Advanced SQL, Database Design & Query Optimization',
-      'edX Verified Certificate for Data Science: R Basics',
-      'SQL Fundamentals',
-      'Statistics Foundation 2',
-      'Data Analysis with Excel',
-    ],
-  },
-  {
-    id: 'edu-006-3',
-    alumniId: 'alum-170061006',
-    institution: "Holy Cross College & Holy Cross Girls' High School",
-    degree: 'Higher Secondary Certificate (HSC) & Secondary School Certificate (SSC)',
-    fieldOfStudy: 'Science / Physical Sciences',
-    studyLevel: 'Other',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2010,
-    endYear: 2017,
-    description: "HSC in Science at Holy Cross College (2015–2017); SSC in Science at Holy Cross Girls' High School (2010–2015).",
-  },
+  parsedExps.sort((a, b) => {
+    if (a.isCurrent !== b.isCurrent) return a.isCurrent ? -1 : 1;
+    const endA = a.endDate || a.startDate;
+    const endB = b.endDate || b.startDate;
+    if (endA !== endB) return endB.localeCompare(endA);
+    return b.startDate.localeCompare(a.startDate);
+  });
 
-  // 170061009 — Almusabbir Sakib
-  {
-    id: 'edu-009-1',
-    alumniId: 'alum-170061009',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA) in Business and Technology Management (BTM)',
-    fieldOfStudy: 'Business and Technology Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2022,
-  },
+  parsedExps.forEach((e) => builtExperiences.push(e));
 
-  // 170061010 — Didar Md. Mosaddek Hossain
-  {
-    id: 'edu-010-1',
-    alumniId: 'alum-170061010',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA) in Business and Technology Management (BTM)',
-    fieldOfStudy: 'Business and Technology Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2022,
-    description:
-      'Submitted permanent archival BBA internship report on "Operations of the Medium Market Enterprise Department of IPDC Finance Limited", approved by Dr. Md. Abul Kalam Azad, Associate Professor, BTM, IUT.',
-  },
+  const currentExp = parsedExps.find((e) => e.isCurrent);
+  const latestExp = currentExp || parsedExps[0];
 
-  // 170061011 — Tasnim Ahmed Jarin
-  {
-    id: 'edu-011-1',
-    alumniId: 'alum-170061011',
-    institution: 'North South University',
-    degree: 'Master of Business Administration (MBA)',
-    fieldOfStudy: 'Management & Information Systems (MIS)',
-    studyLevel: 'Masters',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2022,
-    endYear: 2024,
-    description:
-      'Completed MBA in 2024 with a specialization in Management & Information Systems while serving as a Graduate Teaching Assistant in the School of Business & Economics.',
-  },
-  {
-    id: 'edu-011-2',
-    alumniId: 'alum-170061011',
-    institution: 'Islamic University of Technology (IUT)',
-    degree: 'Bachelor of Business Administration (BBA) in Technology Management',
-    fieldOfStudy: 'Technology Management',
-    studyLevel: 'Bachelors',
-    enrollmentStatus: 'completed',
-    country: 'Bangladesh',
-    startYear: 2018,
-    endYear: 2022,
-  },
-];
+  const parsedEdus: Education[] = [];
+  if (record && Array.isArray(record.higherEducation)) {
+    record.higherEducation.forEach((rawEdu, eduIdx) => {
+      const parsed = parseRawHigherEducation(rawEdu);
+      if (parsed.exclude) return;
 
-export const INITIAL_ACHIEVEMENTS: Achievement[] = [
-  {
-    id: 'ach-001-1',
-    alumniId: 'alum-170061001',
-    title: 'Certified Supply Chain Analyst (CSCA™)',
-    category: 'Certification',
-    year: 2022,
-    issuerOrContext: 'ISCEA (International Supply Chain Education Alliance)',
-    description:
-      'Professional supply chain analyst credential covering S&OP, demand forecasting, and inventory control.',
-  },
-  {
-    id: 'ach-002-1',
-    alumniId: 'alum-170061002',
-    title: 'Co-Founder — BakeVille Artisanal Confectionery Venture',
-    category: 'Entrepreneurship',
-    year: 2020,
-    issuerOrContext: 'BakeVille (Dhaka, Bangladesh)',
-    description:
-      'Co-founded and operated an online dessert and pastry venture from December 2020 to January 2022.',
-  },
-  {
-    id: 'ach-003-1',
-    alumniId: 'alum-170061003',
-    title: 'Director Appointment — Inventive Trade Holdings Limited',
-    category: 'Milestone',
-    year: 2022,
-    issuerOrContext: 'Inventive Trade Holdings Limited',
-    description:
-      'Appointed Director overseeing corporate trade operations and strategic administration in Dhaka.',
-  },
-  {
-    id: 'ach-006-1',
-    alumniId: 'alum-170061006',
-    title: 'Integrating Artificial Intelligence and Machine Learning with Blockchain Security',
-    category: 'Publication',
-    year: 2022,
-    issuerOrContext: 'IUT Hybrid Modelling & FinTech Security Research',
-    description:
-      'Authored research on integrating AI and Machine Learning algorithms with Blockchain security for financial systems and digital currencies.',
-  },
-  {
-    id: 'ach-006-2',
-    alumniId: 'alum-170061006',
-    title: 'Finalist — Top 15 Ideas',
-    category: 'Award',
-    year: 2022,
-    issuerOrContext: 'Innovation & Business Idea Competition',
-    description: 'Selected among the Top 15 Finalist Ideas for technology-enabled business innovation.',
-  },
-  {
-    id: 'ach-006-3',
-    alumniId: 'alum-170061006',
-    title: '36% Reduction in Reimbursement Turnaround Time at bKash Limited',
-    category: 'Milestone',
-    year: 2023,
-    issuerOrContext: 'bKash Limited — Fraud & Dispute Management',
-    description:
-      'Translated analytical findings across 86,000–125,000 fraud/mistaken-transaction cases and ~10–12 crore BDT reimbursements into process improvements.',
-  },
-  {
-    id: 'ach-010-1',
-    alumniId: 'alum-170061010',
-    title: 'Operations of the Medium Market Enterprise Department of IPDC Finance Limited',
-    category: 'Publication',
-    year: 2022,
-    issuerOrContext: 'Permanent Collection of IUT BBA in BTM Program (Approved by Dr. Md. Abul Kalam Azad)',
-    description:
-      'Completed and defended institutional internship report examining Medium Market Enterprise (MME) financing operations at IPDC Finance Limited.',
-  },
-  {
-    id: 'ach-011-1',
-    alumniId: 'alum-170061011',
-    title: 'Appointed Lecturer — Department of Business Administration, East West University',
-    category: 'Milestone',
-    year: 2024,
-    issuerOrContext: 'Faculty of Business and Economics, East West University',
-    description:
-      'Joined the Faculty of Business and Economics at East West University following completion of MBA in Management & Information Systems at North South University.',
-  },
-];
+      const eduObj: Education = {
+        id: `edu-${studentId}-${eduIdx + 1}`,
+        alumniId,
+        institution: parsed.institution,
+        degree: parsed.degree,
+        fieldOfStudy: parsed.degree,
+        studyLevel: /certificate|diploma/i.test(parsed.degree)
+          ? 'Postgraduate Diploma / Certificate'
+          : 'Masters',
+        enrollmentStatus: parsed.enrollmentStatus,
+        country: parsed.country,
+        locationLabel: parsed.locationLabel,
+        periodLabel: parsed.periodLabel,
+        isPostIutHigherEd: true,
+        startYear: parsed.startYear,
+        endYear: parsed.endYear,
+      };
+      parsedEdus.push(eduObj);
+      builtEducations.push(eduObj);
+    });
+  }
 
-export const INITIAL_LOCATIONS: LocationRecord[] = [
-  {
-    id: 'loc-001',
-    alumniId: 'alum-170061001',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-002',
-    alumniId: 'alum-170061002',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-003',
-    alumniId: 'alum-170061003',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-005',
-    alumniId: 'alum-170061005',
-    country: 'Australia',
-    city: 'Melbourne',
-    coordinates: { lat: -37.8136, lng: 144.9631 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-006',
-    alumniId: 'alum-170061006',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-009',
-    alumniId: 'alum-170061009',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-010',
-    alumniId: 'alum-170061010',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-  {
-    id: 'loc-011',
-    alumniId: 'alum-170061011',
-    country: 'Bangladesh',
-    city: 'Dhaka',
-    coordinates: { lat: 23.8103, lng: 90.4125 },
-    visibility: 'city_and_country',
-  },
-];
+  let careerStatus: CareerStatusCategory = 'Unknown';
+  if (currentExp) {
+    careerStatus = 'Employed';
+  } else if (parsedEdus.some((ed) => ed.enrollmentStatus === 'currently_enrolled')) {
+    careerStatus = 'Higher studies';
+  }
 
-export const INITIAL_SOURCE_RECORDS: SourceRecord[] = [
-  {
-    id: 'src-001',
-    alumniId: 'alum-170061001',
-    sourceType: 'Departmental Archival PDF (LinkedIn CV)',
-    sourceReference: '170061001_c092c2e4.pdf — Maisha Maliha',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-002',
-    alumniId: 'alum-170061002',
-    sourceType: 'Departmental Archival PDF (LinkedIn CV)',
-    sourceReference: '170061002_1d45b11d.pdf — Saad Mahmud',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-003',
-    alumniId: 'alum-170061003',
-    sourceType: 'Departmental Archival PDF (LinkedIn CV)',
-    sourceReference: '170061003_bd436f51.pdf — Serajur Rakeen Rafid',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-005',
-    alumniId: 'alum-170061005',
-    sourceType: 'Departmental Archival PDF (Profile Dossier)',
-    sourceReference: '170061005_2f111e92.pdf — Isa Sayek Huda',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-006',
-    alumniId: 'alum-170061006',
-    sourceType: 'Departmental Archival PDF (LinkedIn CV)',
-    sourceReference: '170061006_84c5eccc.pdf — Samia Jahan Ilma',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-009',
-    alumniId: 'alum-170061009',
-    sourceType: 'Departmental Archival PDF (Internship Record)',
-    sourceReference: '170061009_833656cc.pdf — Almusabbir Sakib',
-    verificationStatus: 'partially_verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-010',
-    alumniId: 'alum-170061010',
-    sourceType: 'Departmental Archival PDF (Signed IUT BBA Internship Report)',
-    sourceReference: '170061010_4d7dff60.pdf — Didar Md. Mosaddek Hossain',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-  {
-    id: 'src-011',
-    alumniId: 'alum-170061011',
-    sourceType: 'Departmental Archival PDF (EWU Faculty Profile & ResearchGate)',
-    sourceReference: '170061011_700b7ad1.pdf — Tasnim Ahmed Jarin',
-    verificationStatus: 'verified',
-    checkedAt: '2026-10-27',
-  },
-];
+  const isEntrepreneur = parsedExps.some((e) =>
+    /\bfounder\b|\bco-founder\b|\bdirector\b/i.test(e.designation)
+  );
+
+  const publicLinks: Alumni['publicLinks'] = [];
+  const linkedinUrl = (record?.linkedinUrl || '').trim();
+  const facebookUrl = (record?.facebookUrl || '').trim();
+  const researchProfileUrl = (record?.researchProfileUrl || '').trim();
+
+  if (linkedinUrl) {
+    publicLinks.push({ id: `lnk-${studentId}-li`, label: 'LinkedIn', url: linkedinUrl });
+  }
+  if (facebookUrl) {
+    publicLinks.push({ id: `lnk-${studentId}-fb`, label: 'Facebook', url: facebookUrl });
+  }
+  if (researchProfileUrl) {
+    publicLinks.push({
+      id: `lnk-${studentId}-res`,
+      label: 'Research Profile',
+      url: researchProfileUrl,
+    });
+  }
+
+  const currentCity = (record?.currentCity || '').trim();
+  const currentCountry = (record?.currentCountry || '').trim();
+
+  if (currentCountry) {
+    const coordKey = `${currentCity}|${currentCountry}`;
+    const coords = CITY_COORDINATES[coordKey] || { lat: 23.8103, lng: 90.4125 };
+    builtLocations.push({
+      id: `loc-${studentId}`,
+      alumniId,
+      country: currentCountry,
+      city: currentCity,
+      coordinates: coords,
+      visibility: currentCity ? 'city_and_country' : 'country_only',
+    });
+  }
+
+  const hasDetailedRecords = parsedExps.length > 0 || parsedEdus.length > 0;
+  const verificationStatus = hasDetailedRecords ? 'verified' : 'unverified';
+
+  const professionalHeadline = currentExp
+    ? `${currentExp.designation} at ${currentExp.organization}`
+    : parsedEdus[0]
+    ? `${parsedEdus[0].institution}${
+        parsedEdus[0].degree && !/not specified/i.test(parsedEdus[0].degree)
+          ? ` — ${parsedEdus[0].degree}`
+          : ''
+      }`
+    : latestExp
+    ? `${latestExp.designation} — ${latestExp.organization}`
+    : undefined;
+
+  builtAlumni.push({
+    id: alumniId,
+    studentId,
+    fullName: item.fullName,
+    batchId,
+    profileImage: undefined,
+    portraitInitials: getInitials(item.fullName),
+    portraitTone: PORTRAIT_TONES[index % PORTRAIT_TONES.length],
+    facebookUrl: facebookUrl || undefined,
+    linkedinUrl: linkedinUrl || undefined,
+    researchProfileUrl: researchProfileUrl || undefined,
+    currentCity: currentCity || undefined,
+    currentCountry: currentCountry || undefined,
+    professionalHeadline,
+    currentPositionId: currentExp?.id,
+    primaryIndustry: undefined,
+    careerStatus,
+    isEntrepreneur,
+    skills: [],
+    publicLinks,
+    publicVisibility: 'public',
+    featured: ['170061001', '170061002', '170061006', '170061011'].includes(studentId),
+    verificationStatus,
+    informationSource: record
+      ? 'BTM Alumni Website Data JSON (v2)'
+      : 'BTM Alumni Batch Roster JSON',
+    lastUpdated: '2026-10-29',
+    isSampleRecord: false,
+  });
+
+  builtSourceRecords.push({
+    id: `src-${studentId}`,
+    alumniId,
+    sourceType: 'BTM Alumni Structured JSON Dataset',
+    sourceReference: record
+      ? `BTM_Alumni_Data_for_AI_Studio_v2 (${studentId})`
+      : `BTM_Alumni_ID_Name_Batches (${studentId})`,
+    verificationStatus,
+    checkedAt: '2026-10-29',
+  });
+});
+
+export const INITIAL_ALUMNI: Alumni[] = builtAlumni;
+export const INITIAL_EXPERIENCES: Experience[] = builtExperiences;
+export const INITIAL_EDUCATIONS: Education[] = builtEducations;
+export const INITIAL_ACHIEVEMENTS: Achievement[] = [];
+export const INITIAL_LOCATIONS: LocationRecord[] = builtLocations;
+export const INITIAL_SOURCE_RECORDS: SourceRecord[] = builtSourceRecords;
 
 export const INITIAL_STORIES: Story[] = [
   {
@@ -1371,62 +648,58 @@ export const INITIAL_STORIES: Story[] = [
       'How Tasnim Ahmed Jarin (BTM 17) bridged software business analysis, an MBA in MIS, and academic leadership as a Lecturer at East West University.',
     category: 'Alumni Spotlight',
     excerpt:
-      'Tracing a path from the inaugural BTM cohort at IUT through commercial software analysis at Kona Software Lab Ltd. to university teaching and research in AI, Big Data Analytics, and Management Information Systems.',
+      'Tracing a path from BTM 17 at IUT through commercial software analysis at Kona Software Lab Ltd. to university teaching and research in Management Information Systems.',
     pullQuote:
-      'Working at the intersection of technology, data, and business management allows us to transform emerging tools like AI and blockchain into user-centric organizational decisions.',
+      'Working at the intersection of technology, data, and business management allows us to transform emerging analytical methods into organizational decisions.',
     content: [
-      'After completing her Bachelor of Business Administration (BBA) in Technology Management with the pioneering BTM 17 cohort at the Islamic University of Technology (IUT), Tasnim Ahmed Jarin began her industry career as a Business Analyst in the Commercial Team at Kona Software Lab Ltd.',
-      'In industry, she worked directly on technical proposals, cross-functional coordination, client demonstrations, and emerging blockchain business use cases—experiencing firsthand how software architecture and commercial strategy converge.',
-      'Pursuing her Master of Business Administration (MBA) with a specialization in Management & Information Systems at North South University (graduating in 2024), she concurrently served as a Graduate Teaching Assistant in the School of Business & Economics before joining East West University as a Lecturer in the Department of Business Administration.',
-      'Today, her research and teaching focus on Big Data Analytics in Decision Making, Artificial Intelligence and Automation in MIS, Blockchain Business Applications, and User-Centric Information Systems.',
+      'After completing her studies with BTM 17 at the Islamic University of Technology (IUT), Tasnim Ahmed Jarin worked as a Commercial Intern and Business Analyst (Commercial Department) at Kona Software Lab Ltd. in Gulshan, Dhaka.',
+      'Pursuing her Master of Business Administration (MBA) in Management & Information Systems at North South University, she served as a Graduate Teaching Assistant before joining East West University as a Lecturer in the Department of Business Administration.',
     ],
     coverPlateVariant: 'campus-dusk',
     associatedAlumniId: 'alum-170061011',
     batchId: 'btm-17',
     status: 'published',
     publishedAt: '2026-10-27',
-    readTimeMinutes: 5,
+    readTimeMinutes: 4,
     isSampleStory: false,
   },
   {
     id: 'sty-2',
     slug: 'combating-financial-fraud-with-data-science-and-hybrid-ai',
-    title: 'Combating Financial Fraud in Mobile Financial Services with Data Science & Hybrid AI',
+    title: 'Safeguarding Digital Financial Services Through Fraud Analytics & Data Science',
     subtitle:
-      'Samia Jahan Ilma (BTM 17) on analyzing 100,000+ transaction cases at bKash Limited, researching AI-Blockchain security at IUT, and advancing in Machine Learning.',
+      'Samia Jahan Ilma (BTM 17) on fraud and dispute management at bKash Limited, research at IUT, and postgraduate studies in Data Science and Machine Learning.',
     category: 'Career Journeys',
     excerpt:
-      'An inside look at how large-scale transaction reconciliation, AML/CFT compliance, and hybrid AI/ML modeling safeguard digital financial inclusion across Bangladesh.',
+      'An inside look at how transaction analysis, research assistance at IUT, and advanced training in Data Science and Machine Learning connect business and technology.',
     pullQuote:
-      'Translating analytical findings across intra- and inter-divisional teams contributed to a 36% reduction in reimbursement turnaround time while strengthening digital transaction safety.',
+      'Combining domain proficiency in mobile financial services with machine learning opens new opportunities for data-driven impact.',
     content: [
-      'During her tenure as an Officer in Fraud and Dispute Management at bKash Limited, Samia Jahan Ilma (ID 170061006) analyzed and validated between 86,000 and 125,000 fraud and mistaken-transaction cases, reconciling 10 to 12 crore BDT in reimbursement transactions and consolidating regulatory reporting for Bangladesh Bank and BRAC Bank.',
-      'Her work extended beyond operational dashboards into community impact—facilitating anti-fraud awareness sessions in Manikganj to educate wage earners and Ayesha Abed Foundation artisans on secure digital transactions.',
-      'Prior to her full-time appointment at bKash, she served as a Research Assistant at IUT under Dr. Mohammad Shamsu Uddin, publishing research on integrating Artificial Intelligence and Machine Learning with Blockchain security for FinTech and banking institutions, and is currently advancing her specialization in Data Science, Machine Learning, and AI at Scaler.',
+      'During her tenure as an Officer in Fraud and Dispute Management at bKash Limited, Samia Jahan Ilma (ID 170061006) worked at the forefront of digital transaction compliance in Dhaka, Bangladesh.',
+      'Previously a Research Assistant at Islamic University of Technology (IUT) and an intern across bKash Limited and Janata Bank Limited, she is completing a Graduate Certificate in Data Science and Machine Learning with AI specialization at Scaler.',
     ],
     coverPlateVariant: 'executive-desk',
     associatedAlumniId: 'alum-170061006',
     batchId: 'btm-17',
     status: 'published',
     publishedAt: '2026-10-27',
-    readTimeMinutes: 5,
+    readTimeMinutes: 4,
     isSampleStory: false,
   },
   {
     id: 'sty-3',
     slug: 'quantitative-demand-planning-and-supply-chain-leadership',
-    title: 'Quantitative Demand Planning and S&OP Across E-Commerce and Consumer Durables',
+    title: 'Quantitative Demand Planning Across E-Commerce and Consumer Durables',
     subtitle:
-      'Maisha Maliha (BTM 17) on progressing from Igloo Ice Cream and Daraz DFLP’22 to Demand Planning at Singer Bangladesh Ltd alongside a Master’s in Data Science.',
+      'Maisha Maliha (BTM 17) on progressing from Igloo Ice Cream and Daraz DFLP’22 to Demand Planning at Singer Bangladesh Ltd. alongside a Master’s in Data Science.',
     category: 'Lessons Learned',
     excerpt:
-      'How combining an IUT BTM undergraduate foundation with a Master’s in Data Science and Analytics powers seasonality modeling, purchase order control, and S&OP alignment.',
+      'How combining a BTM foundation with a Master’s in Data Science and Analytics supports supply chain management and demand planning.',
     pullQuote:
-      'Aligning sales trends, production schedules, and seasonality forecasts is where statistical data science directly governs physical inventory efficiency.',
+      'Aligning demand, production, and inventory control requires pairing supply chain operations with rigorous data analytics.',
     content: [
-      'Starting with supply chain roles at Igloo Ice Cream and completing a 18-month rotational tenure as a Management Trainee (DFLP’22) at Daraz, Maisha Maliha (ID 170061001) built deep operational fluency across cold-chain logistics, foreign procurement, and e-commerce fulfillment.',
-      'Complementing her IUT BBA in Business and Technology Management with a Master’s in Data Science and Analytics (Statistics) from East West University and a Certified Supply Chain Analyst (CSCA™) credential, she now serves as a Demand Planner at Singer Bangladesh Ltd (Singer Beko).',
-      'Her trajectory illustrates how BTM alumni pair statistical forecasting with cross-functional S&OP execution to maintain resilient stock levels in complex consumer markets.',
+      'Starting with supply chain roles at Igloo Ice Cream and completing her tenure as a Management Trainee (DFLP’22) at Daraz, Maisha Maliha (ID 170061001) built operational experience across FMCG and e-commerce supply networks.',
+      'Alongside earning a Master’s in Data Science and Analytics (Statistics) from East West University, she serves as a Demand Planner at Singer Bangladesh Ltd. (Singer Beko) in Dhaka.',
     ],
     coverPlateVariant: 'global-supply',
     associatedAlumniId: 'alum-170061001',
@@ -1439,25 +712,24 @@ export const INITIAL_STORIES: Story[] = [
   {
     id: 'sty-4',
     slug: 'technology-procurement-in-fintech-and-venture-building',
-    title: 'Driving Technology Procurement in FinTech & Building Student Ventures',
+    title: 'Driving Technology & General Procurement in Mobile Financial Services',
     subtitle:
-      'Saad Mahmud (BTM 17) on 360-degree TCO analysis and ERP procurement roadmaps as Senior Officer at bKash Limited.',
+      'Saad Mahmud (BTM 17) on technology procurement at bKash Limited, media strategy at Mindshare Bangladesh, and co-founding BakeVille.',
     category: 'Founder Stories',
     excerpt:
-      'From co-founding BakeVille and planning media campaigns at Mindshare Bangladesh to leading technology and general procurement at bKash Limited.',
+      'From co-founding BakeVille and planning strategy at Mindshare Bangladesh to serving as Senior Officer in Technology & General Procurement at bKash Limited.',
     pullQuote:
-      'Whenever an idea pops in my head, I dive in to solve a real-world problem and create meaningful, positive impact across supply chain and technology operations.',
+      'Solving real-world procurement and operational challenges starts with structured negotiation and clear cross-functional alignment.',
     content: [
-      'While studying Business and Technology Management at IUT, Saad Mahmud (ID 170061002) co-founded BakeVille—an online dessert and pastry venture in Dhaka—while gaining multi-industry experience across Catalytic Interactive, Malamal.xyz, FBCCI, Daraz, and bKash’s bNext internship program.',
-      'After serving as a Planning Strategist at Mindshare Bangladesh managing ATL and digital campaigns for major consumer brands, he joined the Supply Chain Management department at bKash Limited in September 2022 and was promoted to Senior Officer — Technology & General Procurement in May 2025.',
-      'At bKash, he orchestrates procurement roadmaps, ERP RFQ workflows, supplier evaluations, and 360-degree Total Cost of Ownership (TCO) analyses powering national mobile financial infrastructure.',
+      'Across roles spanning Catalytic Interactive, Malamal.xyz, FBCCI, Daraz, and co-founding BakeVille, Saad Mahmud (ID 170061002) developed a versatile foundation in business development and operations.',
+      'After serving as a Planning Strategist at Mindshare Bangladesh, he joined bKash Limited in September 2022 and advanced to Senior Officer – Technology & General Procurement in May 2025.',
     ],
     coverPlateVariant: 'strategy-studio',
     associatedAlumniId: 'alum-170061002',
     batchId: 'btm-17',
     status: 'published',
     publishedAt: '2026-10-27',
-    readTimeMinutes: 5,
+    readTimeMinutes: 4,
     isSampleStory: false,
   },
 ];

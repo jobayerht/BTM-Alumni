@@ -386,13 +386,13 @@ export function computeOverviewAnalytics(
     },
     {
       id: 'currently-employed',
-      label: 'Currently Employed / Active Role',
+      label: 'Active Role Recorded',
       confirmedCount: currentlyEmployed.length,
       eligibleDenominator: totalAlumni,
       unknownOrMissingCount: unknownEmployment.length,
       percentageOfEligible: pct(currentlyEmployed.length, totalAlumni),
       denominatorLabel: `of ${totalAlumni} total records`,
-      subtext: `${unknownEmployment.length} with unrecorded employment`,
+      subtext: `${unknownEmployment.length} with unrecorded role`,
     },
     {
       id: 'entrepreneurs',

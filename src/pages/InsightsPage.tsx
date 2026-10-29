@@ -276,13 +276,6 @@ export const InsightsPage: React.FC = () => {
           {totalCount === 1 ? 'record' : 'records'} ({sampleCount} labeled as Prototype Sample Records,{' '}
           {verifiedCount} marked Verified). No external or fabricated real-world statistics are injected.
         </div>
-        <button
-          type="button"
-          onClick={() => navigate('/admin')}
-          className="text-xs font-semibold text-[#663078] dark:text-[#C8B2E6] hover:underline whitespace-nowrap shrink-0 cursor-pointer"
-        >
-          Manage Dataset in Admin &rarr;
-        </button>
       </div>
 
       {totalCount === 0 ? (

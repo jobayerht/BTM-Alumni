@@ -17,6 +17,7 @@ export type StudyLevel =
   | 'Bachelors'
   | 'Masters'
   | 'PhD / Doctoral'
+  | 'Postgraduate Diploma / Certificate'
   | 'Postgraduate Diploma'
   | 'Professional Qualification'
   | 'Other';
@@ -46,7 +47,7 @@ export interface Batch {
 
 export interface PublicLink {
   id: string;
-  label: 'LinkedIn' | 'Portfolio' | 'Website' | 'Google Scholar' | 'GitHub';
+  label: string;
   url: string;
 }
 
@@ -59,6 +60,9 @@ export interface Education {
   studyLevel?: StudyLevel;
   enrollmentStatus?: EnrollmentStatus;
   country?: string;
+  locationLabel?: string;
+  periodLabel?: string;
+  isPostIutHigherEd?: boolean;
   startYear: number;
   endYear?: number;
   description?: string;
@@ -71,11 +75,27 @@ export interface Experience {
   alumniId: string;
   organization: string;
   designation: string;
-  employmentType?: 'Full-time' | 'Part-time' | 'Contract' | 'Founder / Self-employed' | 'Apprenticeship' | 'Research';
+  employmentType?:
+    | 'Full-time'
+    | 'Part-time'
+    | 'Contract'
+    | 'Internship'
+    | 'Founder / Self-employed'
+    | 'Apprenticeship'
+    | 'Research'
+    | 'Other';
+  employmentStatusLabel?: 'Full-Time' | 'Internship' | 'Other';
+  periodLabel?: string;
   industry: string;
-  careerLevel?: 'Entry / Associate' | 'Mid-Level / Specialist' | 'Senior / Lead' | 'Management / Director' | 'Founder / Executive' | 'Academic / Research';
-  startDate: string; // YYYY-MM
-  endDate?: string; // YYYY-MM or undefined if ongoing
+  careerLevel?:
+    | 'Entry / Associate'
+    | 'Mid-Level / Specialist'
+    | 'Senior / Lead'
+    | 'Management / Director'
+    | 'Founder / Executive'
+    | 'Academic / Research';
+  startDate: string; // YYYY-MM for sorting
+  endDate?: string; // YYYY-MM or undefined
   isCurrent: boolean;
   location: string;
   country?: string;
@@ -86,7 +106,14 @@ export interface Achievement {
   id: string;
   alumniId: string;
   title: string;
-  category: 'Award' | 'Project' | 'Publication' | 'Leadership' | 'Entrepreneurship' | 'Milestone';
+  category:
+    | 'Award'
+    | 'Project'
+    | 'Publication'
+    | 'Leadership'
+    | 'Entrepreneurship'
+    | 'Milestone'
+    | 'Certification';
   year: number;
   issuerOrContext: string;
   description: string;
@@ -107,7 +134,7 @@ export interface LocationRecord {
 export interface SourceRecord {
   id: string;
   alumniId: string;
-  sourceType: 'Departmental Archive' | 'Direct Alumnus Submission' | 'Public Professional Profile' | 'Prototype Sample Dataset';
+  sourceType: string;
   sourceReference: string;
   verificationStatus: VerificationStatus;
   checkedAt: string; // YYYY-MM-DD
@@ -115,12 +142,17 @@ export interface SourceRecord {
 
 export interface Alumni {
   id: string;
-  studentId: string; // e.g. '170061101'
+  studentId: string; // e.g. '170061001'
   fullName: string;
   batchId: string; // e.g. 'btm-17'
   profileImage?: string;
   portraitInitials: string;
   portraitTone: 'plum' | 'amethyst' | 'mulberry' | 'slate-violet' | 'indigo-orchid';
+  facebookUrl?: string;
+  linkedinUrl?: string;
+  researchProfileUrl?: string;
+  currentCity?: string;
+  currentCountry?: string;
   professionalHeadline?: string;
   professionalSummary?: string;
   areasOfInterest?: string[];

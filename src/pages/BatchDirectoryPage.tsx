@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, LayoutGrid, List, RotateCcw, PlusCircle, ArrowLeft } from 'lucide-react';
+import { Search, LayoutGrid, List, AlignJustify, RotateCcw, ArrowLeft } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useRouter, updateDocumentMeta } from '../utils/router';
 import { AlumniCard } from '../components/AlumniCard';
@@ -35,7 +35,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
   const [selectedOrganization, setSelectedOrganization] = useState<string>(initialParams.org);
   const [selectedLocation, setSelectedLocation] = useState<string>(initialParams.country);
   const [sortBy, setSortBy] = useState<'id_asc' | 'id_desc' | 'name_asc' | 'updated_desc'>('id_asc');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'short'>('grid');
 
   useEffect(() => {
     if (currentBatch) {
@@ -46,7 +46,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
     } else {
       updateDocumentMeta(
         'Global Alumni Directory & Search',
-        'Search and filter BTM alumni across batches, industries, organizations, designations, and global locations.'
+        'Search and filter BTM alumni across batches, organizations, designations, and global locations.'
       );
     }
   }, [currentBatch]);
@@ -57,22 +57,6 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
     }
     return getAllPublicProfiles();
   }, [currentBatch, getBatchProfiles, getAllPublicProfiles]);
-
-  const availableIndustries = useMemo(() => {
-    const set = new Set<string>();
-    baseProfiles.forEach((p) => {
-      if (p.alumni.primaryIndustry) set.add(p.alumni.primaryIndustry);
-    });
-    return Array.from(set).sort();
-  }, [baseProfiles]);
-
-  const availableOrganizations = useMemo(() => {
-    const set = new Set<string>();
-    baseProfiles.forEach((p) => {
-      if (p.currentPosition?.organization) set.add(p.currentPosition.organization);
-    });
-    return Array.from(set).sort();
-  }, [baseProfiles]);
 
   const availableLocations = useMemo(() => {
     const set = new Set<string>();
@@ -111,7 +95,6 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
         const matchId = p.alumni.studentId.toLowerCase().includes(q);
         const matchCompany = (p.currentPosition?.organization || '').toLowerCase().includes(q);
         const matchDesignation = (p.currentPosition?.designation || '').toLowerCase().includes(q);
-        const matchIndustry = (p.alumni.primaryIndustry || '').toLowerCase().includes(q);
         const matchCity = (p.location?.city || '').toLowerCase().includes(q);
         const matchCountry = (p.location?.country || '').toLowerCase().includes(q);
         const matchSkill = p.alumni.skills.some((s) => s.toLowerCase().includes(q));
@@ -121,15 +104,20 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
           matchId ||
           matchCompany ||
           matchDesignation ||
-          matchIndustry ||
           matchCity ||
           matchCountry ||
           matchSkill
         );
       })
       .sort((a, b) => {
-        if (sortBy === 'id_asc') return a.alumni.studentId.localeCompare(b.alumni.studentId);
-        if (sortBy === 'id_desc') return b.alumni.studentId.localeCompare(a.alumni.studentId);
+        const getRollSortKey = (sid: string) =>
+          sid.length >= 4 ? `${sid.slice(0, 2)}-${sid.slice(-2)}-${sid}` : sid;
+        if (sortBy === 'id_asc') {
+          return getRollSortKey(a.alumni.studentId).localeCompare(getRollSortKey(b.alumni.studentId));
+        }
+        if (sortBy === 'id_desc') {
+          return getRollSortKey(b.alumni.studentId).localeCompare(getRollSortKey(a.alumni.studentId));
+        }
         if (sortBy === 'name_asc') return a.alumni.fullName.localeCompare(b.alumni.fullName);
         if (sortBy === 'updated_desc') return b.alumni.lastUpdated.localeCompare(a.alumni.lastUpdated);
         return 0;
@@ -168,7 +156,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
           Batch Directory Not Found
         </h1>
         <p className="text-sm text-[#716A79] dark:text-[#B69AD8]">
-          The requested cohort code (&ldquo;{batchCode}&rdquo;) does not match an existing BTM batch archive.
+          The requested batch code (&ldquo;{batchCode}&rdquo;) does not match an existing BTM batch archive.
         </p>
         <button
           type="button"
@@ -216,12 +204,12 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
       </nav>
 
       {currentBatch ? (
-        <div className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] overflow-hidden mb-10">
+        <div className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] overflow-hidden mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
             <div className="lg:col-span-7 p-8 lg:p-10 flex flex-col justify-between space-y-6">
               <div>
                 <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#663078] dark:text-[#B69AD8] tabular-nums">
-                  <span>COHORT DIRECTORY</span>
+                  <span>BATCH DIRECTORY</span>
                   <span aria-hidden="true">·</span>
                   <span>
                     INTAKE {currentBatch.intakeYear} – GRADUATION {currentBatch.graduationYear}
@@ -298,8 +286,8 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
               Global BTM Alumni Directory
             </h1>
             <p className="mt-2 text-sm sm:text-base text-[#716A79] dark:text-[#B69AD8]/90 max-w-2xl">
-              Search and filter across all published BTM cohorts by name, 9-digit Student ID, organization,
-              designation, industry, or geographic location.
+              Search and filter across all published BTM batches by name, 9-digit Student ID, organization,
+              designation, or geographic location.
             </p>
           </div>
           <div className="font-mono text-xs text-[#716A79] dark:text-[#B69AD8] tabular-nums">
@@ -311,7 +299,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
       {currentBatch && baseProfiles.length === 0 ? (
         <div className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9]/60 dark:bg-[#190D21] p-10 lg:p-14 text-center max-w-3xl mx-auto my-8 space-y-5">
           <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
-            {currentBatch.name} · Cohort Directory Status
+            {currentBatch.name} · Batch Directory Status
           </div>
           <h2 className="font-serif text-3xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
             {currentBatch.name} Records Coming Soon
@@ -320,7 +308,7 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
             The reusable directory architecture for {currentBatch.name} ({currentBatch.intakeYear}–
             {currentBatch.graduationYear}) is configured and ready. In accordance with departmental data
             integrity standards, no fabricated counts or placeholder alumni identities are shown for this
-            batch until records are uploaded by an administrator.
+            batch until verified records are added.
           </p>
           <div className="pt-3 flex flex-wrap items-center justify-center gap-4">
             <button
@@ -331,43 +319,35 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Explore Active BTM 17 Directory</span>
             </button>
-            <button
-              type="button"
-              onClick={() => navigate('/admin')}
-              className="px-5 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#FFFFFF] dark:bg-[#241330] border border-[#E8DFED] dark:border-[#392249] hover:border-[#663078] rounded-lg transition-colors inline-flex items-center gap-2 cursor-pointer"
-            >
-              <PlusCircle className="w-3.5 h-3.5" />
-              <span>Add {currentBatch.name} Records in Admin</span>
-            </button>
           </div>
         </div>
       ) : (
         <>
-          <div className="bg-[#F7F3F9] dark:bg-[#180C20] border border-[#E8DFED] dark:border-[#321E3E] rounded-xl p-5 mb-8 space-y-4">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-              <div className="lg:col-span-5 relative flex items-center bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3.5 py-2">
-                <Search className="w-4 h-4 text-[#663078] dark:text-[#B69AD8] shrink-0 mr-2.5" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search name, Student ID, company, role, skill, or city..."
-                  aria-label="Filter alumni records"
-                  className="w-full bg-transparent text-sm text-[#25212B] dark:text-[#F7F3F9] placeholder-[#716A79] focus:outline-none"
-                />
-                {searchQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setSearchQuery('')}
-                    className="text-xs text-[#716A79] hover:text-[#25212B] dark:hover:text-[#FFFFFF] ml-2"
-                  >
-                    Clear
-                  </button>
-                )}
-              </div>
+          {!currentBatch && (
+            <div className="bg-[#F7F3F9] dark:bg-[#180C20] border border-[#E8DFED] dark:border-[#321E3E] rounded-xl p-5 mb-6 space-y-4">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div className="lg:col-span-6 relative flex items-center bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3.5 py-2">
+                  <Search className="w-4 h-4 text-[#663078] dark:text-[#B69AD8] shrink-0 mr-2.5" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search name, Student ID, company, role, or city..."
+                    aria-label="Filter alumni records"
+                    className="w-full bg-transparent text-sm text-[#25212B] dark:text-[#F7F3F9] placeholder-[#716A79] focus:outline-none"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      className="text-xs text-[#716A79] hover:text-[#25212B] dark:hover:text-[#FFFFFF] ml-2"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
 
-              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {!currentBatch && (
+                <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <select
                     aria-label="Filter by Batch"
                     value={selectedBatchFilter}
@@ -381,61 +361,25 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                       </option>
                     ))}
                   </select>
-                )}
 
-                <select
-                  aria-label="Filter by Industry"
-                  value={selectedIndustry}
-                  onChange={(e) => setSelectedIndustry(e.target.value)}
-                  className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
-                >
-                  <option value="all">All Industries ({availableIndustries.length})</option>
-                  {availableIndustries.map((ind) => (
-                    <option key={ind} value={ind}>
-                      {ind}
-                    </option>
-                  ))}
-                </select>
-
-                {currentBatch && (
                   <select
-                    aria-label="Filter by Organization"
-                    value={selectedOrganization}
-                    onChange={(e) => setSelectedOrganization(e.target.value)}
+                    aria-label="Filter by Country"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
                     className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
                   >
-                    <option value="all">All Organizations ({availableOrganizations.length})</option>
-                    {availableOrganizations.map((org) => (
-                      <option key={org} value={org}>
-                        {org}
+                    <option value="all">All Locations ({availableLocations.length})</option>
+                    {availableLocations.map((loc) => (
+                      <option key={loc} value={loc}>
+                        {loc}
                       </option>
                     ))}
                   </select>
-                )}
-
-                <select
-                  aria-label="Filter by Country"
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-3 py-2 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none focus:border-[#663078]"
-                >
-                  <option value="all">All Locations ({availableLocations.length})</option>
-                  {availableLocations.map((loc) => (
-                    <option key={loc} value={loc}>
-                      {loc}
-                    </option>
-                  ))}
-                </select>
+                </div>
               </div>
-            </div>
 
-            <div className="pt-3 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3 text-xs text-[#716A79] dark:text-[#B69AD8]">
-                <span className="font-mono tabular-nums">
-                  Showing <strong className="text-[#25212B] dark:text-[#F7F3F9]">{filteredProfiles.length}</strong> of{' '}
-                  {baseProfiles.length} {baseProfiles.length === 1 ? 'record' : 'records'}
-                </span>
-                {hasActiveFilters && (
+              {hasActiveFilters && (
+                <div className="pt-3 border-t border-[#E8DFED] dark:border-[#2E1A3B] flex items-center justify-end">
                   <button
                     type="button"
                     onClick={resetFilters}
@@ -444,57 +388,76 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                     <RotateCcw className="w-3 h-3" />
                     <span>Reset Filters</span>
                   </button>
-                )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Directory View Mode & Sort Bar (Grid / List / Short List) */}
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
+            <div className="text-xs font-mono text-[#716A79] dark:text-[#B69AD8] tabular-nums">
+              Showing <strong className="text-[#25212B] dark:text-[#F7F3F9]">{filteredProfiles.length}</strong>{' '}
+              {filteredProfiles.length === 1 ? 'alumnus' : 'alumni'}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex items-center gap-2 text-xs">
+                <label htmlFor="sort-select" className="text-[#716A79] dark:text-[#B69AD8] whitespace-nowrap">
+                  Sort:
+                </label>
+                <select
+                  id="sort-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                  className="bg-[#FFFFFF] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none"
+                >
+                  <option value="id_asc">Student ID (Ascending)</option>
+                  <option value="id_desc">Student ID (Descending)</option>
+                  <option value="name_asc">Full Name (A–Z)</option>
+                </select>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 text-xs">
-                  <label htmlFor="sort-select" className="text-[#716A79] dark:text-[#B69AD8] whitespace-nowrap">
-                    Sort by:
-                  </label>
-                  <select
-                    id="sort-select"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                    className="bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg px-2.5 py-1.5 text-xs font-medium text-[#25212B] dark:text-[#F7F3F9] focus:outline-none"
-                  >
-                    <option value="id_asc">Student ID (Ascending)</option>
-                    <option value="id_desc">Student ID (Descending)</option>
-                    <option value="name_asc">Full Name (A–Z)</option>
-                    <option value="updated_desc">Recently Updated</option>
-                  </select>
-                </div>
-
-                <div
-                  role="group"
-                  aria-label="Directory layout view mode"
-                  className="flex items-center gap-1 p-1 bg-[#FFFFFF] dark:bg-[#120917] border border-[#E8DFED] dark:border-[#352044] rounded-lg"
+              <div
+                role="group"
+                aria-label="Directory layout view mode"
+                className="flex items-center gap-1 p-1 bg-[#F7F3F9] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#352044] rounded-lg"
+              >
+                <button
+                  type="button"
+                  onClick={() => setViewMode('grid')}
+                  className={`px-2.5 py-1.5 text-xs font-medium rounded-md inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                    viewMode === 'grid'
+                      ? 'bg-[#663078] text-[#FFFFFF]'
+                      : 'text-[#716A79] dark:text-[#B69AD8] hover:text-[#25212B] dark:hover:text-[#FFFFFF]'
+                  }`}
                 >
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('grid')}
-                    className={`px-2.5 py-1 text-xs font-medium rounded-md inline-flex items-center gap-1 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
-                      viewMode === 'grid'
-                        ? 'bg-[#663078] text-[#FFFFFF]'
-                        : 'text-[#716A79] dark:text-[#B69AD8] hover:text-[#25212B]'
-                    }`}
-                  >
-                    <LayoutGrid className="w-3.5 h-3.5" />
-                    <span>Grid</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('list')}
-                    className={`px-2.5 py-1 text-xs font-medium rounded-md inline-flex items-center gap-1 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
-                      viewMode === 'list'
-                        ? 'bg-[#663078] text-[#FFFFFF]'
-                        : 'text-[#716A79] dark:text-[#B69AD8] hover:text-[#25212B]'
-                    }`}
-                  >
-                    <List className="w-3.5 h-3.5" />
-                    <span>List</span>
-                  </button>
-                </div>
+                  <LayoutGrid className="w-3.5 h-3.5" />
+                  <span>Grid</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('list')}
+                  className={`px-2.5 py-1.5 text-xs font-medium rounded-md inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                    viewMode === 'list'
+                      ? 'bg-[#663078] text-[#FFFFFF]'
+                      : 'text-[#716A79] dark:text-[#B69AD8] hover:text-[#25212B] dark:hover:text-[#FFFFFF]'
+                  }`}
+                >
+                  <List className="w-3.5 h-3.5" />
+                  <span>List</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode('short')}
+                  className={`px-2.5 py-1.5 text-xs font-medium rounded-md inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 ${
+                    viewMode === 'short'
+                      ? 'bg-[#663078] text-[#FFFFFF]'
+                      : 'text-[#716A79] dark:text-[#B69AD8] hover:text-[#25212B] dark:hover:text-[#FFFFFF]'
+                  }`}
+                >
+                  <AlignJustify className="w-3.5 h-3.5" />
+                  <span>Short List</span>
+                </button>
               </div>
             </div>
           </div>
@@ -522,11 +485,28 @@ export const BatchDirectoryPage: React.FC<BatchDirectoryPageProps> = ({ batchCod
                 <AlumniCard key={profile.alumni.id} profile={profile} viewMode="grid" />
               ))}
             </div>
-          ) : (
+          ) : viewMode === 'list' ? (
             <div className="space-y-3">
               {filteredProfiles.map((profile) => (
                 <AlumniCard key={profile.alumni.id} profile={profile} viewMode="list" />
               ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 items-start">
+              <div className="space-y-2.5">
+                {filteredProfiles
+                  .slice(0, Math.ceil(filteredProfiles.length / 2))
+                  .map((profile) => (
+                    <AlumniCard key={profile.alumni.id} profile={profile} viewMode="short" />
+                  ))}
+              </div>
+              <div className="space-y-2.5">
+                {filteredProfiles
+                  .slice(Math.ceil(filteredProfiles.length / 2))
+                  .map((profile) => (
+                    <AlumniCard key={profile.alumni.id} profile={profile} viewMode="short" />
+                  ))}
+              </div>
             </div>
           )}
         </>

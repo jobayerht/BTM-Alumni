@@ -95,12 +95,11 @@ export const AboutPage: React.FC = () => {
                 <strong className="text-[#25212B] dark:text-[#F7F3F9]">Explicit Verification Taxonomy:</strong>{' '}
                 Every profile carries an explicit provenance status (<em>Verified Departmental Record</em>,{' '}
                 <em>Partially Verified Record</em>, <em>Prototype Sample Record</em>, or{' '}
-                <em>Unverified Archival Entry</em>). Creating a record in the Admin Workspace never
-                automatically claims institutional verification without documented review.
+                <em>Unverified Archival Entry</em>).
               </li>
               <li>
                 <strong className="text-[#25212B] dark:text-[#F7F3F9]">Honest Missing-Data Handling:</strong>{' '}
-                Alumni are never excluded from their cohort roll simply because current employment data is
+                Alumni are never excluded from their batch roll simply because current employment data is
                 unavailable, nor are missing fields silently assigned to arbitrary analytics categories.
               </li>
             </ul>
@@ -113,7 +112,7 @@ export const AboutPage: React.FC = () => {
             <p className="text-base text-[#25212B]/90 dark:text-[#E8DFED]/90 leading-relaxed max-w-[68ch]">
               This application is currently operating in its <strong>Frontend Architecture &amp; Prototype Phase</strong>.
               Its relational TypeScript data layer separates `Batch`, `Alumni`, `Education`, `Experience`,
-              `Achievement`, `Story`, `LocationRecord`, and `SourceRecord` entities so that the local store
+              `Achievement`, `LocationRecord`, and `SourceRecord` entities so that the local store
               can be connected directly to a production PostgreSQL / Cloud SQL or Firestore backend, role-based
               authentication, and cloud media storage when authorized by the department.
             </p>
@@ -129,10 +128,6 @@ export const AboutPage: React.FC = () => {
               This website is a prototype developed for the BTM alumni community. It does not claim to be an
               officially operated university system of Islamic University of Technology (IUT) unless formal
               institutional authorization is established.
-            </p>
-            <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/90 leading-relaxed">
-              All preloaded profiles in BTM 17 are clearly labeled as illustrative prototype records for
-              demonstrating the directory interface.
             </p>
           </div>
 
@@ -151,10 +146,10 @@ export const AboutPage: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => navigate('/admin')}
+                onClick={() => navigate('/overview')}
                 className="w-full py-2.5 px-4 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#23122E] hover:bg-[#E8DFED] rounded-lg transition-colors inline-flex items-center justify-between cursor-pointer"
               >
-                <span>Open Prototype Admin Panel</span>
+                <span>Explore Overview Dashboard</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

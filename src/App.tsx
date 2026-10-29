@@ -13,10 +13,8 @@ import { BatchesPage } from './pages/BatchesPage';
 import { BatchDirectoryPage } from './pages/BatchDirectoryPage';
 import { AlumniProfilePage } from './pages/AlumniProfilePage';
 import { InsightsPage } from './pages/InsightsPage';
-import { StoriesPage } from './pages/StoriesPage';
 import { MapPage } from './pages/MapPage';
 import { AboutPage } from './pages/AboutPage';
-import { AdminPage } from './pages/AdminPage';
 
 const AppRoutes: React.FC = () => {
   const { path, navigate } = useRouter();
@@ -54,15 +52,6 @@ const AppRoutes: React.FC = () => {
     return <InsightsPage />;
   }
 
-  if (cleanPath === '/stories') {
-    return <StoriesPage />;
-  }
-
-  if (cleanPath.startsWith('/stories/')) {
-    const slug = decodeURIComponent(cleanPath.replace('/stories/', '').trim());
-    return <StoriesPage key={`story-${slug}`} slug={slug} />;
-  }
-
   if (cleanPath === '/map') {
     return <MapPage />;
   }
@@ -71,22 +60,18 @@ const AppRoutes: React.FC = () => {
     return <AboutPage />;
   }
 
-  if (cleanPath === '/admin') {
-    return <AdminPage />;
-  }
-
-  // Invalid route fallback (Section 19)
+  // Invalid route fallback
   return (
     <div className="max-w-[1280px] mx-auto px-6 py-24 text-center space-y-5">
       <div className="text-xs font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8]">
-        404 · Archival Route Not Found
+        404 · Route Not Found
       </div>
       <h1 className="font-serif text-4xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
         Page Not Found in BTM Alumni Directory
       </h1>
       <p className="text-sm sm:text-base text-[#716A79] dark:text-[#B69AD8]/85 max-w-md mx-auto">
         The address <code className="font-mono">{cleanPath}</code> does not correspond to a valid batch
-        directory, alumni dossier, or editorial page.
+        directory or alumni page.
       </p>
       <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
         <button

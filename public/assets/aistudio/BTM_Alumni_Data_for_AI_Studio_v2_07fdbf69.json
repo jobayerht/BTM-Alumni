@@ -1,0 +1,372 @@
+{
+  "schemaVersion": "1.0",
+  "dataset": "BTM Alumni Website Data",
+  "description": "Converted from the user's latest edited Excel workbook. Empty strings indicate information not provided in the source; do not infer missing facts.",
+  "recordsCount": 10,
+  "alumni": [
+    {
+      "studentId": "170061001",
+      "fullName": "Maisha Maliha",
+      "facebookUrl": "",
+      "linkedinUrl": "https://www.linkedin.com/in/malihamaisha",
+      "researchProfileUrl": "",
+      "currentCity": "Dhaka",
+      "currentCountry": "Bangladesh",
+      "workExperience": [
+        {
+          "organization": "Singer Bangladesh Ltd / Singer Beko",
+          "designation": "Demand Planner — ; Dhaka, Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "April 2024 – Present",
+          "location": ""
+        },
+        {
+          "organization": "Daraz",
+          "designation": "Management Trainee (DFLP’22) — ; Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "November 2022 – April 2024",
+          "location": ""
+        },
+        {
+          "organization": "Igloo Ice Cream",
+          "designation": "Executive, Supply Chain Management",
+          "employmentType": "Full-Time",
+          "period": "February 2022 – November 2022",
+          "location": ""
+        },
+        {
+          "organization": "Igloo Ice Cream",
+          "designation": "Supply Chain Management Intern — ; Dhaka, Bangladesh",
+          "employmentType": "Intern",
+          "period": "November 2021 – January 2022",
+          "location": ""
+        }
+      ],
+      "higherEducation": [
+        {
+          "institution": "East West University",
+          "degreeProgram": "Master's in Data Science and Analytics, Statistics — Jun 2023 (as listed)",
+          "period": "Asia/Dhaka"
+        }
+      ]
+    },
+    {
+      "studentId": "170061002",
+      "fullName": "Saad Mahmud",
+      "facebookUrl": "",
+      "linkedinUrl": "https://www.linkedin.com/in/thesaadmahmud",
+      "researchProfileUrl": "",
+      "currentCity": "Dhaka",
+      "currentCountry": "Bangladesh",
+      "workExperience": [
+        {
+          "organization": "bKash Limited",
+          "designation": "Senior Officer – Technology & General Procurement — ; Dhaka, Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "May 2025 – Present",
+          "location": ""
+        },
+        {
+          "organization": "bKash Limited",
+          "designation": "Officer – Technology & General Procurement — ; Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "September 2022 – May 2025",
+          "location": ""
+        },
+        {
+          "organization": "Mindshare Bangladesh",
+          "designation": "Planning Strategist — ; Dhaka, Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "April 2022 – September 2022",
+          "location": ""
+        },
+        {
+          "organization": "Daraz",
+          "designation": "Xpedite Campus Ambassador — ; Dhaka, Bangladesh",
+          "employmentType": "Other",
+          "period": "February 2021 – March 2022",
+          "location": ""
+        },
+        {
+          "organization": "bKash Limited",
+          "designation": "bNext Intern – Digital Marketing — ; Bangladesh",
+          "employmentType": "Intern",
+          "period": "October 2021 – January 2022",
+          "location": ""
+        },
+        {
+          "organization": "BakeVille",
+          "designation": "Co-Founder — ; Dhaka, Bangladesh",
+          "employmentType": "Other",
+          "period": "December 2020 – January 2022",
+          "location": ""
+        },
+        {
+          "organization": "FBCCI",
+          "designation": "Intern – Trade Facilitation & Policy Advocacy — Oct 2021; Dhaka, Bangladesh",
+          "employmentType": "Intern",
+          "period": "2021-10-01 00:00:00",
+          "location": ""
+        },
+        {
+          "organization": "Malamal.xyz",
+          "designation": "Business Development Executive — ; Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "July 2021 – October 2021",
+          "location": ""
+        },
+        {
+          "organization": "Catalytic Interactive",
+          "designation": "Business Development Intern — ; Dhaka, Bangladesh",
+          "employmentType": "Intern",
+          "period": "December 2019 – July 2021",
+          "location": ""
+        }
+      ],
+      "higherEducation": []
+    },
+    {
+      "studentId": "170061003",
+      "fullName": "Serajur Rakeen Rafid",
+      "facebookUrl": "",
+      "linkedinUrl": "https://www.linkedin.com/in/serajur-rakeen-rafid-1023a7195",
+      "researchProfileUrl": "",
+      "currentCity": "Dhaka",
+      "currentCountry": "Bangladesh",
+      "workExperience": [
+        {
+          "organization": "Inventive Trade Holdings Limited",
+          "designation": "Director — ; Dhaka, Bangladesh",
+          "employmentType": "Other",
+          "period": "August 2022 – Present",
+          "location": ""
+        },
+        {
+          "organization": "BANGLAMARK LIMITED",
+          "designation": "Coordinator — ; Dhaka, Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "June 2021 – July 2022",
+          "location": ""
+        },
+        {
+          "organization": "JETPATCHER CORPORATION LIMITED",
+          "designation": "Trainee — Oct 2019; United Kingdom",
+          "employmentType": "Intern",
+          "period": "2019-10-01 00:00:00",
+          "location": ""
+        },
+        {
+          "organization": "Saif Powertec Ltd",
+          "designation": "Intern — ; Dhaka, Bangladesh",
+          "employmentType": "Intern",
+          "period": "November 2018 – January 2019",
+          "location": ""
+        },
+        {
+          "organization": "Saif Powertec Ltd",
+          "designation": "Intern — ; Dhaka, Bangladesh (second entry in source)",
+          "employmentType": "Intern",
+          "period": "November 2018 – January 2019",
+          "location": ""
+        }
+      ],
+      "higherEducation": []
+    },
+    {
+      "studentId": "170061005",
+      "fullName": "Md. Isa Sayek Huda",
+      "facebookUrl": "https://www.facebook.com/Isa.Sayek",
+      "linkedinUrl": "",
+      "researchProfileUrl": "",
+      "currentCity": "Melbourne",
+      "currentCountry": "Australia",
+      "workExperience": [
+        {
+          "organization": "BRAC University",
+          "designation": "Student Tutor, School of CSE Department — Oct 2022–2023; Bangladesh",
+          "employmentType": "Other",
+          "period": "Student Tutor, School of CSE Department — Oct 2022–2023; Bangladesh",
+          "location": ""
+        },
+        {
+          "organization": "Robotics Club of BRAC University (ROBU)",
+          "designation": "Member of Strategic Planning — Jun 2019–2023; Bangladesh",
+          "employmentType": "Other",
+          "period": "Member of Strategic Planning — Jun 2019–2023; Bangladesh",
+          "location": ""
+        }
+      ],
+      "higherEducation": [
+        {
+          "institution": "Deakin University",
+          "degreeProgram": "Education entry listed as 'In March 2025'; degree/program not specified",
+          "period": "Australia/Melbourne"
+        },
+        {
+          "institution": "BRAC University",
+          "degreeProgram": "School year listed; exact qualification/year unclear in source screenshot",
+          "period": "Asia/Dhaka"
+        }
+      ]
+    },
+    {
+      "studentId": "170061006",
+      "fullName": "Samia Jahan Ilma",
+      "facebookUrl": "https://www.facebook.com/samiailma.tarshaan",
+      "linkedinUrl": "https://www.linkedin.com/in/samia-jahan-ilma",
+      "researchProfileUrl": "",
+      "currentCity": "Dhaka",
+      "currentCountry": "Bangladesh",
+      "workExperience": [
+        {
+          "organization": "bKash Limited",
+          "designation": "Officer, Fraud and Dispute Management — ; Dhaka, Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "October 2022 – February 2024",
+          "location": ""
+        },
+        {
+          "organization": "Islamic University of Technology",
+          "designation": "Research Assistant — ; Dhaka, Bangladesh",
+          "employmentType": "Other",
+          "period": "April 2022 – September 2022",
+          "location": ""
+        },
+        {
+          "organization": "bKash Limited",
+          "designation": "Intern – External Affairs / Fraud & Dispute Management — ; Dhaka, Bangladesh (profile also describes duties through Feb 2022)",
+          "employmentType": "Intern",
+          "period": "October 2021 – January 2022",
+          "location": ""
+        },
+        {
+          "organization": "Youth School for Social Entrepreneurs (YSSE)",
+          "designation": "Business Development — ; Dhaka, Bangladesh",
+          "employmentType": "Other",
+          "period": "May 2020 – July 2020",
+          "location": ""
+        },
+        {
+          "organization": "Janata Bank Limited",
+          "designation": "General Banking — ; Dhaka, Bangladesh",
+          "employmentType": "Other",
+          "period": "December 2018 – March 2019",
+          "location": ""
+        },
+        {
+          "organization": "Janata Bank Bangladesh LTD",
+          "designation": "Intern — ; source also lists separate overlapping internship entry",
+          "employmentType": "Intern",
+          "period": "November 2018 – January 2019",
+          "location": ""
+        }
+      ],
+      "higherEducation": [
+        {
+          "institution": "Scaler",
+          "degreeProgram": "Graduate Certificate, Data Science and Machine Learning with AI specialization — Mar 2024–Dec 2026 (listed)",
+          "period": "Asia/Kolkata"
+        }
+      ]
+    },
+    {
+      "studentId": "170061007",
+      "fullName": "Md. Rajibul Hassan Majumder",
+      "facebookUrl": "",
+      "linkedinUrl": "",
+      "researchProfileUrl": "",
+      "currentCity": "",
+      "currentCountry": "",
+      "workExperience": [],
+      "higherEducation": []
+    },
+    {
+      "studentId": "170061008",
+      "fullName": "Fahima Raisa",
+      "facebookUrl": "",
+      "linkedinUrl": "",
+      "researchProfileUrl": "",
+      "currentCity": "",
+      "currentCountry": "",
+      "workExperience": [],
+      "higherEducation": []
+    },
+    {
+      "studentId": "170061009",
+      "fullName": "Almusabbir Sakib",
+      "facebookUrl": "https://www.facebook.com/almusabbir.sakib.2024",
+      "linkedinUrl": "https://www.linkedin.com/in/almusabbir-sakib-413012165/",
+      "researchProfileUrl": "",
+      "currentCity": "",
+      "currentCountry": "Bangladesh",
+      "workExperience": [
+        {
+          "organization": "IPDC Finance",
+          "designation": "Internship — dates and role not provided in uploaded source",
+          "employmentType": "Intern",
+          "period": "Internship — dates and role not provided in uploaded source",
+          "location": ""
+        }
+      ],
+      "higherEducation": []
+    },
+    {
+      "studentId": "170061010",
+      "fullName": "Didar Md. Mosaddek Hossain",
+      "facebookUrl": "",
+      "linkedinUrl": "",
+      "researchProfileUrl": "",
+      "currentCity": "Dhaka",
+      "currentCountry": "Bangladesh",
+      "workExperience": [
+        {
+          "organization": "IPDC Finance Limited",
+          "designation": "Internship report: Operations of the Medium Market Enterprise Department — date not provided",
+          "employmentType": "Intern",
+          "period": "Internship report: Operations of the Medium Market Enterprise Department — date not provided",
+          "location": ""
+        }
+      ],
+      "higherEducation": []
+    },
+    {
+      "studentId": "170061011",
+      "fullName": "Tasnim Ahmed Jarin",
+      "facebookUrl": "",
+      "linkedinUrl": "https://www.linkedin.com/in/tasnim-ahmed-j-367b76161/",
+      "researchProfileUrl": "https://www.researchgate.net/profile/Tasnim-Jarin",
+      "currentCity": "",
+      "currentCountry": "",
+      "workExperience": [
+        {
+          "organization": "East West University",
+          "designation": "Lecturer, Department of Business Administration — current; Dhaka, Bangladesh",
+          "employmentType": "Full-Time",
+          "period": "Lecturer, Department of Business Administration — current; Dhaka, Bangladesh",
+          "location": ""
+        },
+        {
+          "organization": "North South University",
+          "designation": "Graduate Teaching Assistant — dates not provided",
+          "employmentType": "Other",
+          "period": "Graduate Teaching Assistant — dates not provided",
+          "location": ""
+        },
+        {
+          "organization": "Kona Software Lab Ltd.",
+          "designation": "Business Analyst — dates not provided",
+          "employmentType": "Full-Time",
+          "period": "Business Analyst — dates not provided",
+          "location": ""
+        }
+      ],
+      "higherEducation": [
+        {
+          "institution": "North South University",
+          "degreeProgram": "MBA, Management & Information Systems — dates not provided",
+          "period": "Asia/Dhaka"
+        }
+      ]
+    }
+  ]
+}

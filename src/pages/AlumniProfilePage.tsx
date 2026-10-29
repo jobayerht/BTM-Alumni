@@ -1,8 +1,111 @@
 import React, { useEffect } from 'react';
-import { ArrowLeft, ArrowUpRight, Edit3 } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  MapPin,
+  Building2,
+  BookOpen,
+} from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useRouter, updateDocumentMeta } from '../utils/router';
-import { AlumniPortrait, VerificationLabel } from '../components/EditorialMedia';
+import { Education, Experience } from '../types/models';
+import { expandMonthNames } from '../data/initialDataset';
+
+const MONTH_NAMES = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+function isValidHttpUrl(value?: string | null): value is string {
+  if (!value || !value.trim()) return false;
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function formatYearMonth(ym?: string): string {
+  if (!ym) return '';
+  const match = ym.trim().match(/^(\d{4})-(\d{2})$/);
+  if (!match) return expandMonthNames(ym);
+  const year = Number(match[1]);
+  const monthIdx = Number(match[2]) - 1;
+  if (year <= 1905) return '';
+  if (monthIdx >= 0 && monthIdx < 12) {
+    return `${MONTH_NAMES[monthIdx]} ${year}`;
+  }
+  return String(year);
+}
+
+function getExperiencePeriodDisplay(exp: Experience): string {
+  if (exp.periodLabel && exp.periodLabel.trim()) {
+    return expandMonthNames(exp.periodLabel.trim());
+  }
+  const start = formatYearMonth(exp.startDate);
+  if (!start) return 'Dates not provided';
+  if (exp.isCurrent) return `${start} – Present`;
+  const end = formatYearMonth(exp.endDate);
+  return end && end !== start ? `${start} – ${end}` : start;
+}
+
+function getEmploymentStatusDisplay(exp: Experience): 'Full-Time' | 'Internship' | '' {
+  if (exp.employmentStatusLabel && exp.employmentStatusLabel.toLowerCase() !== 'other') {
+    return exp.employmentStatusLabel;
+  }
+  const raw = (exp.employmentType || '').toLowerCase();
+  if (raw.includes('full')) return 'Full-Time';
+  if (raw.includes('intern')) return 'Internship';
+  return '';
+}
+
+function isPostIutHigherEducation(edu: Education): boolean {
+  if (edu.isPostIutHigherEd === true) return true;
+  if (edu.isPostIutHigherEd === false) return false;
+  const inst = (edu.institution || '').toLowerCase();
+  const deg = (edu.degree || '').toLowerCase();
+  const level = (edu.studyLevel || '').toLowerCase();
+
+  if (inst.includes('islamic university of technology') || /\biut\b/.test(inst)) {
+    return false;
+  }
+  if (
+    /\b(ssc|hsc|high school|secondary school|higher secondary|o levels|a levels|school|college)\b/i.test(
+      deg
+    ) &&
+    !/\b(master|mba|msc|phd|doctoral|graduate certificate|postgraduate)\b/i.test(deg)
+  ) {
+    return false;
+  }
+  if (level === 'bachelors' || level === 'other') {
+    return false;
+  }
+  return true;
+}
+
+function getEducationPeriodDisplay(edu: Education): string {
+  if (edu.periodLabel !== undefined) {
+    return expandMonthNames(edu.periodLabel.trim());
+  }
+  if (edu.startYear && edu.endYear) {
+    return edu.startYear === edu.endYear
+      ? `${edu.startYear}`
+      : `${edu.startYear} – ${edu.endYear}`;
+  }
+  if (edu.startYear) return `${edu.startYear}`;
+  return '';
+}
 
 export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }) => {
   const { getCompleteProfile } = useData();
@@ -28,514 +131,422 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
         <h1 className="font-serif text-3xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
           Alumni Profile Not Found
         </h1>
-        <p className="text-sm text-[#716A79] dark:text-[#B69AD8]">
+        <p className="text-sm text-[#716A79] dark:text-[#C8B9D6]">
           No alumni record matching Student ID &ldquo;{studentId}&rdquo; was found in the active directory.
         </p>
         <div className="flex items-center justify-center gap-3 pt-2">
           <button
             type="button"
             onClick={() => navigate('/alumni')}
-            className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078] rounded-lg cursor-pointer"
+            className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078] hover:bg-[#32143F] rounded-lg cursor-pointer transition-colors"
           >
             Browse Alumni Directory
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate('/admin')}
-            className="px-5 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] border border-[#E8DFED] dark:border-[#352044] rounded-lg cursor-pointer"
-          >
-            Create Record in Admin
           </button>
         </div>
       </div>
     );
   }
 
-  const {
-    alumni,
-    batch,
-    currentPosition,
-    experiences,
-    educations,
-    achievements,
-    location,
-    sourceRecords,
-    stories,
-  } = profile;
+  const { alumni, batch, currentPosition, experiences, educations, location } = profile;
+
+  // Resolve social & research URLs strictly from JSON / profile fields
+  const linkedinUrl =
+    alumni.linkedinUrl ||
+    alumni.publicLinks.find((l) => l.label.toLowerCase() === 'linkedin')?.url ||
+    '';
+  const facebookUrl =
+    alumni.facebookUrl ||
+    alumni.publicLinks.find((l) => l.label.toLowerCase() === 'facebook')?.url ||
+    '';
+  const researchProfileUrl =
+    alumni.researchProfileUrl ||
+    alumni.publicLinks.find((l) =>
+      ['research profile', 'researchgate', 'google scholar', 'orcid'].includes(
+        l.label.toLowerCase()
+      )
+    )?.url ||
+    '';
+
+  const hasValidLinkedIn = isValidHttpUrl(linkedinUrl);
+  const hasValidFacebook = isValidHttpUrl(facebookUrl);
+  const hasValidResearch = isValidHttpUrl(researchProfileUrl);
+  const hasAnySocialButton = hasValidLinkedIn || hasValidFacebook || hasValidResearch;
+
+  // Resolve current city and country strictly from actual data
+  const currentCity =
+    alumni.currentCity !== undefined
+      ? alumni.currentCity
+      : location && location.visibility === 'city_and_country'
+      ? location.city
+      : '';
+  const currentCountry =
+    alumni.currentCountry !== undefined
+      ? alumni.currentCountry
+      : location && location.visibility !== 'hidden'
+      ? location.country
+      : '';
+
+  const formattedLocation =
+    currentCity && currentCountry
+      ? `${currentCity}, ${currentCountry}`
+      : currentCountry || currentCity || '';
+
+  // Filter higher education strictly to post-IUT entries
+  const higherEducationList = educations.filter(isPostIutHigherEducation);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-6 py-10 lg:py-14">
-      {/* Breadcrumb & Back Navigation */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-        <nav aria-label="Breadcrumb" className="text-xs text-[#716A79] dark:text-[#B69AD8]/80 flex items-center gap-2">
-          <a
-            href="/"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate('/');
-            }}
-            className="hover:text-[#663078] dark:hover:text-[#FFFFFF]"
+    <div className="min-h-screen bg-[#FAF8FC] dark:bg-[#100817] transition-colors">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-8 lg:py-12">
+        {/* A. Breadcrumbs & Return Navigation */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <nav
+            aria-label="Breadcrumb"
+            className="text-xs text-[#716A79] dark:text-[#C8B9D6] flex items-center gap-2"
           >
-            Home
-          </a>
-          <span aria-hidden="true">/</span>
-          <a
-            href={`/batch/${batch.code}`}
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(`/batch/${batch.code}`);
-            }}
-            className="hover:text-[#663078] dark:hover:text-[#FFFFFF]"
-          >
-            {batch.name}
-          </a>
-          <span aria-hidden="true">/</span>
-          <span className="text-[#25212B] dark:text-[#F7F3F9] font-medium font-mono tabular-nums">
-            {alumni.studentId}
-          </span>
-        </nav>
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/');
+              }}
+              className="hover:text-[#663078] dark:hover:text-[#FFFFFF] transition-colors"
+            >
+              Home
+            </a>
+            <span aria-hidden="true">/</span>
+            <a
+              href={`/batch/${batch.code}`}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(`/batch/${batch.code}`);
+              }}
+              className="hover:text-[#663078] dark:hover:text-[#FFFFFF] transition-colors"
+            >
+              {batch.name}
+            </a>
+            <span aria-hidden="true">/</span>
+            <span className="text-[#25212B] dark:text-[#F7F3F9] font-medium font-mono tabular-nums">
+              {alumni.studentId}
+            </span>
+          </nav>
 
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(`/batch/${batch.code}`)}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-[#716A79] dark:text-[#B69AD8] hover:text-[#25212B] dark:hover:text-[#FFFFFF] cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to {batch.name} Directory</span>
-          </button>
-          <span aria-hidden="true" className="text-[#E8DFED] dark:text-[#352044]">
-            |
-          </span>
-          <button
-            type="button"
-            onClick={() => navigate(`/admin?edit=${encodeURIComponent(alumni.studentId)}`)}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#663078] dark:text-[#B69AD8] hover:underline cursor-pointer"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>Edit Record in Admin</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Prototype Sample Transparency Banner if Sample Record */}
-      {alumni.isSampleRecord && (
-        <div className="mb-8 px-5 py-3.5 rounded-xl bg-[#F7F3F9] dark:bg-[#1B0E24] border border-[#E8DFED] dark:border-[#362046] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-[#716A79] dark:text-[#B69AD8]">
-          <div>
-            <strong className="text-[#32143F] dark:text-[#F7F3F9]">Prototype Sample Dossier:</strong> This
-            entry is an illustrative profile demonstrating the BTM 17 archival schema and career timeline
-            structure. It does not depict an actual individual.
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate(`/batch/${batch.code}`)}
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-[#716A79] dark:text-[#C8B9D6] hover:text-[#32143F] dark:hover:text-[#FFFFFF] transition-colors cursor-pointer"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to {batch.name} Directory</span>
+            </button>
           </div>
-          <span className="font-mono uppercase tracking-wider text-[11px] text-[#663078] dark:text-[#C8B2E6] shrink-0">
-            SCHEMA VALIDATION RECORD
-          </span>
         </div>
-      )}
 
-      {/* A. Profile Header */}
-      <section className="rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] p-8 lg:p-10 mb-10">
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-8">
-          <div className="flex flex-col sm:flex-row items-start gap-6">
-            <AlumniPortrait
-              profileImage={alumni.profileImage}
-              initials={alumni.portraitInitials}
-              fullName={alumni.fullName}
-              tone={alumni.portraitTone}
-              size="xl"
-            />
-
-            <div className="space-y-3">
-              {/* Unboxed Metadata Line */}
-              <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-[#716A79] dark:text-[#B69AD8] tabular-nums">
+        {/* B. Alumni Profile Header */}
+        <header className="rounded-2xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-6 sm:p-8 mb-8 shadow-2xs">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="space-y-2 min-w-0">
+              {/* Identity Metadata Row */}
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-[#663078] dark:text-[#B69AD8] tabular-nums">
                 <a
                   href={`/batch/${batch.code}`}
                   onClick={(e) => {
                     e.preventDefault();
                     navigate(`/batch/${batch.code}`);
                   }}
-                  className="font-semibold text-[#663078] dark:text-[#C8B2E6] hover:underline"
+                  className="font-semibold hover:underline"
                 >
                   {batch.name}
                 </a>
-                <span aria-hidden="true">·</span>
-                <span>Student ID {alumni.studentId}</span>
-                {location && location.visibility !== 'hidden' && (
+                <span aria-hidden="true" className="text-[#716A79] dark:text-[#C8B9D6]/50">
+                  ·
+                </span>
+                <span className="text-[#716A79] dark:text-[#C8B9D6]">
+                  ID {alumni.studentId}
+                </span>
+                {formattedLocation && (
                   <>
-                    <span aria-hidden="true">·</span>
-                    <span className="font-sans">
-                      {location.visibility === 'city_and_country'
-                        ? `${location.city}, ${location.country}`
-                        : location.country}
+                    <span aria-hidden="true" className="text-[#716A79] dark:text-[#C8B9D6]/50">
+                      ·
                     </span>
-                  </>
-                )}
-                {alumni.primaryIndustry && (
-                  <>
-                    <span aria-hidden="true">·</span>
-                    <span className="font-sans">{alumni.primaryIndustry}</span>
+                    <span className="font-sans inline-flex items-center gap-1 text-[#716A79] dark:text-[#C8B9D6]">
+                      <MapPin className="w-3 h-3 text-[#663078] dark:text-[#B69AD8] shrink-0" />
+                      <span>{formattedLocation}</span>
+                    </span>
                   </>
                 )}
               </div>
 
-              <h1 className="font-serif text-3xl sm:text-4xl font-semibold tracking-tight text-[#32143F] dark:text-[#F7F3F9]">
+              {/* Full Name */}
+              <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-[#32143F] dark:text-[#F7F3F9] break-words">
                 {alumni.fullName}
               </h1>
 
-              {alumni.professionalHeadline ? (
-                <p className="text-base sm:text-lg font-medium text-[#25212B] dark:text-[#E8DFED]">
-                  {alumni.professionalHeadline}
-                </p>
+              {/* Current Position & Current Organization */}
+              {currentPosition ? (
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm sm:text-base text-[#25212B] dark:text-[#F7F3F9]">
+                  <span className="font-medium">{currentPosition.designation}</span>
+                  <span className="text-[#716A79] dark:text-[#C8B9D6]">at</span>
+                  <span className="font-semibold text-[#663078] dark:text-[#B69AD8]">
+                    {currentPosition.organization}
+                  </span>
+                </div>
               ) : (
-                <p className="text-sm italic text-[#716A79] dark:text-[#9A8FA6]">
-                  Professional headline not yet provided
+                <p className="text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                  {batch.name}
                 </p>
               )}
-
-              {/* Explicit Current Position Box */}
-              <div className="pt-2">
-                {currentPosition ? (
-                  <div className="text-sm text-[#716A79] dark:text-[#B69AD8]">
-                    <span className="font-medium text-[#25212B] dark:text-[#F7F3F9]">
-                      Current Position:{' '}
-                    </span>
-                    <span>
-                      {currentPosition.designation} at{' '}
-                      <strong className="text-[#32143F] dark:text-[#F7F3F9]">
-                        {currentPosition.organization}
-                      </strong>
-                    </span>
-                    {currentPosition.location && (
-                      <span className="text-xs ml-1.5">({currentPosition.location})</span>
-                    )}
-                  </div>
-                ) : (
-                  <div className="text-sm italic text-[#716A79] dark:text-[#9A8FA6]">
-                    Current employment information not available in the directory archive.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Public Professional Links & Verification Status */}
-          <div className="flex flex-col lg:items-end justify-between gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#E8DFED] dark:border-[#2E1A3B] shrink-0">
-            <div className="lg:text-right space-y-1">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-[#716A79] dark:text-[#9A8FA6]">
-                Record Verification Status
-              </div>
-              <VerificationLabel status={alumni.verificationStatus} />
             </div>
 
-            {alumni.publicLinks.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2.5">
-                {alumni.publicLinks.map((lnk) => (
+            {/* C. Conditional Social and Research Profile Buttons */}
+            {hasAnySocialButton && (
+              <div className="flex flex-wrap items-center gap-2.5 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#E8DFED] dark:border-[#B69AD8]/15 shrink-0">
+                {hasValidLinkedIn && (
                   <a
-                    key={lnk.id}
-                    href={lnk.url}
+                    href={linkedinUrl.trim()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3.5 py-2 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#23122E] hover:bg-[#663078] hover:text-[#FFFFFF] dark:hover:bg-[#663078] border border-[#E8DFED] dark:border-[#392249] rounded-lg transition-colors inline-flex items-center gap-1.5 whitespace-nowrap shrink-0"
+                    className="px-4 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078] hover:bg-[#32143F] dark:bg-[#663078] dark:hover:bg-[#7D3C94] rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 shadow-2xs"
                   >
-                    <span>{lnk.label}</span>
+                    <svg
+                      className="w-3.5 h-3.5 fill-current shrink-0"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+                    </svg>
+                    <span>LinkedIn</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+                )}
 
-      {/* Main Two-Column Editorial Dossier */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-        {/* Left / Main Column (8 cols): About, Career Journey, Education, Achievements */}
-        <div className="lg:col-span-8 space-y-12">
-          {/* B. About */}
-          <section className="space-y-4">
-            <h2 className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] pb-3 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
-              01. Professional Summary
-            </h2>
-            {alumni.professionalSummary ? (
-              <p className="text-base text-[#25212B]/90 dark:text-[#E8DFED]/90 leading-relaxed max-w-[70ch]">
-                {alumni.professionalSummary}
-              </p>
-            ) : (
-              <p className="text-sm italic text-[#716A79]">
-                No extended professional summary is on file for this alumnus.
-              </p>
-            )}
-
-            {alumni.areasOfInterest && alumni.areasOfInterest.length > 0 && (
-              <div className="pt-2">
-                <div className="text-xs font-mono uppercase tracking-wider text-[#716A79] dark:text-[#B69AD8] mb-1.5">
-                  Areas of Professional Focus
-                </div>
-                <div className="text-sm font-medium text-[#32143F] dark:text-[#E8DFED]">
-                  {alumni.areasOfInterest.join(' · ')}
-                </div>
-              </div>
-            )}
-          </section>
-
-          {/* D. Career Journey (Chronological Career Timeline) */}
-          <section className="space-y-6">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
-              <h2 className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]">
-                02. Career Journey
-              </h2>
-              <span className="text-xs font-mono text-[#716A79] dark:text-[#B69AD8] tabular-nums">
-                {experiences.length} Recorded {experiences.length === 1 ? 'Role' : 'Roles'}
-              </span>
-            </div>
-
-            {experiences.length === 0 ? (
-              <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9]/40 dark:bg-[#190D21] text-sm text-[#716A79] dark:text-[#B69AD8]">
-                No employment history records have been added to this profile yet.
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {experiences.map((exp) => {
-                  const isDesignatedCurrent =
-                    alumni.currentPositionId === exp.id || (!alumni.currentPositionId && exp.isCurrent);
-
-                  return (
-                    <article
-                      key={exp.id}
-                      className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-2.5"
+                {hasValidFacebook && (
+                  <a
+                    href={facebookUrl.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#241332] hover:bg-[#663078] hover:text-[#FFFFFF] dark:hover:bg-[#663078] border border-[#E8DFED] dark:border-[#B69AD8]/25 rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5 fill-current shrink-0"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
                     >
-                      <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[#716A79] dark:text-[#B69AD8] tabular-nums">
-                        <div>
-                          <span>
-                            {exp.startDate} — {exp.isCurrent ? 'Present' : exp.endDate || 'Completed'}
-                          </span>
-                          {isDesignatedCurrent && (
-                            <>
-                              <span aria-hidden="true"> · </span>
-                              <span className="font-semibold text-[#663078] dark:text-[#C8B2E6]">
-                                Current Verified Role
-                              </span>
-                            </>
-                          )}
-                        </div>
-                        <span>{exp.location}</span>
-                      </div>
+                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z" />
+                    </svg>
+                    <span>Facebook</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
 
-                      <div>
-                        <h3 className="text-lg font-semibold text-[#25212B] dark:text-[#F7F3F9]">
-                          {exp.designation}
-                        </h3>
-                        <div className="text-sm font-medium text-[#663078] dark:text-[#B69AD8] flex flex-wrap items-center gap-2 mt-0.5">
-                          <span>{exp.organization}</span>
-                          {exp.employmentType && (
-                            <>
-                              <span aria-hidden="true">·</span>
-                              <span className="text-xs text-[#716A79] dark:text-[#9A8FA6]">
-                                {exp.employmentType}
-                              </span>
-                            </>
-                          )}
-                          {exp.industry && (
-                            <>
-                              <span aria-hidden="true">·</span>
-                              <span className="text-xs text-[#716A79] dark:text-[#9A8FA6]">
-                                {exp.industry}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                      </div>
-
-                      {exp.description && (
-                        <p className="text-sm text-[#716A79] dark:text-[#E8DFED]/80 leading-relaxed pt-1">
-                          {exp.description}
-                        </p>
-                      )}
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-          </section>
-
-          {/* C. Education */}
-          <section className="space-y-6">
-            <h2 className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] pb-3 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
-              03. Academic Education &amp; Credentials
-            </h2>
-
-            {educations.length === 0 ? (
-              <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] text-sm text-[#716A79]">
-                No education records listed.
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {educations.map((edu) => (
-                  <article
-                    key={edu.id}
-                    className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-2"
+                {hasValidResearch && (
+                  <a
+                    href={researchProfileUrl.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#241332] hover:bg-[#663078] hover:text-[#FFFFFF] dark:hover:bg-[#663078] border border-[#E8DFED] dark:border-[#B69AD8]/25 rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0"
                   >
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[#716A79] dark:text-[#B69AD8] tabular-nums">
-                      <span>{edu.fieldOfStudy}</span>
-                      <span>
-                        {edu.startYear} — {edu.endYear || 'Ongoing'}
-                      </span>
-                    </div>
-                    <h3 className="text-base font-semibold text-[#25212B] dark:text-[#F7F3F9]">
-                      {edu.degree}
-                    </h3>
-                    <p className="text-sm font-medium text-[#663078] dark:text-[#B69AD8]">
-                      {edu.institution}
-                    </p>
-                    {edu.description && (
-                      <p className="text-sm text-[#716A79] dark:text-[#E8DFED]/80 leading-relaxed pt-1">
-                        {edu.description}
-                      </p>
-                    )}
-                    {edu.certifications && edu.certifications.length > 0 && (
-                      <div className="pt-2 text-xs text-[#716A79] dark:text-[#B69AD8]">
-                        <span className="font-semibold text-[#25212B] dark:text-[#E8DFED]">
-                          Certifications:{' '}
-                        </span>
-                        <span>{edu.certifications.join(' · ')}</span>
-                      </div>
-                    )}
-                  </article>
-                ))}
+                    <BookOpen className="w-3.5 h-3.5 shrink-0" />
+                    <span>Research Profile</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
-            )}
-          </section>
-
-          {/* F. Achievements and Projects */}
-          <section className="space-y-6">
-            <h2 className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] pb-3 border-b border-[#E8DFED] dark:border-[#2E1A3B]">
-              04. Selected Projects, Publications &amp; Milestones
-            </h2>
-
-            {achievements.length === 0 ? (
-              <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9]/40 dark:bg-[#190D21] text-sm text-[#716A79] dark:text-[#B69AD8]">
-                No notable projects, awards, or publications have been cataloged for this profile yet.
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {achievements.map((ach) => (
-                  <article
-                    key={ach.id}
-                    className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-2"
-                  >
-                    <div className="flex items-center justify-between gap-2 text-xs text-[#716A79] dark:text-[#B69AD8]">
-                      <span className="font-semibold text-[#663078] dark:text-[#C8B2E6]">
-                        {ach.category} · {ach.issuerOrContext}
-                      </span>
-                      <span className="font-mono tabular-nums">{ach.year}</span>
-                    </div>
-                    <h3 className="text-base font-semibold text-[#25212B] dark:text-[#F7F3F9]">
-                      {ach.title}
-                    </h3>
-                    <p className="text-sm text-[#716A79] dark:text-[#E8DFED]/80 leading-relaxed">
-                      {ach.description}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
-        </div>
-
-        {/* Right / Archival Sidebar Column (4 cols): Skills, Associated Stories, Provenance & Metadata */}
-        <aside className="lg:col-span-4 space-y-8">
-          {/* E. Skills and Expertise */}
-          <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#F7F3F9]/60 dark:bg-[#190D21] space-y-4">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-[#32143F] dark:text-[#E8DFED]">
-              Skills &amp; Domain Expertise
-            </h3>
-            {alumni.skills.length === 0 ? (
-              <p className="text-xs italic text-[#716A79]">No skills listed.</p>
-            ) : (
-              <p className="text-sm text-[#25212B] dark:text-[#E8DFED] leading-relaxed">
-                {alumni.skills.join(' · ')}
-              </p>
             )}
           </div>
+        </header>
 
-          {/* Associated Editorial Stories */}
-          {stories.length > 0 && (
-            <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-[#32143F] dark:text-[#E8DFED]">
-                Associated Alumni Stories
-              </h3>
-              <div className="space-y-3">
-                {stories.map((st) => (
-                  <div
-                    key={st.id}
-                    onClick={() => navigate(`/stories/${st.slug}`)}
-                    className="group cursor-pointer p-3.5 rounded-lg border border-[#E8DFED] dark:border-[#2E1A3B] hover:border-[#663078] transition-colors"
-                  >
-                    <div className="text-[11px] text-[#663078] dark:text-[#B69AD8] font-medium">
-                      {st.category} · {st.publishedAt}
-                    </div>
-                    <div className="mt-1 text-sm font-serif font-semibold text-[#25212B] dark:text-[#F7F3F9] group-hover:text-[#663078] dark:group-hover:text-[#B69AD8]">
-                      {st.title}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* H. Archival Metadata & Provenance */}
-          <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-4">
-            <h3 className="text-xs font-mono uppercase tracking-wider text-[#32143F] dark:text-[#E8DFED]">
-              Archival Metadata &amp; Provenance
-            </h3>
-
-            <dl className="divide-y divide-[#E8DFED] dark:divide-[#2E1A3B] text-xs">
-              <div className="py-2.5 flex items-center justify-between gap-4">
-                <dt className="text-[#716A79] dark:text-[#9A8FA6]">Verification Status</dt>
-                <dd className="text-right">
-                  <VerificationLabel status={alumni.verificationStatus} />
-                </dd>
+        {/* Two-Column Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* Left Column (8 cols): Career Journey & Higher Education */}
+          <div className="lg:col-span-8 space-y-10 order-2 lg:order-1">
+            {/* 4. Career Journey */}
+            <section aria-labelledby="career-journey-heading" className="space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
+                <h2
+                  id="career-journey-heading"
+                  className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]"
+                >
+                  Career Journey
+                </h2>
+                {experiences.length > 0 && (
+                  <span className="text-xs font-mono text-[#716A79] dark:text-[#C8B9D6] tabular-nums">
+                    {experiences.length} {experiences.length === 1 ? 'Experience' : 'Experiences'}
+                  </span>
+                )}
               </div>
 
-              <div className="py-2.5 flex items-center justify-between gap-4">
-                <dt className="text-[#716A79] dark:text-[#9A8FA6]">Last Updated</dt>
-                <dd className="font-mono text-[#25212B] dark:text-[#F7F3F9] tabular-nums">
-                  {alumni.lastUpdated}
-                </dd>
-              </div>
+              {experiences.length === 0 ? (
+                <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/15 bg-[#FFFFFF] dark:bg-[#180C22] text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                  No work experience records have been found.
+                </div>
+              ) : (
+                <div className="relative pl-5 sm:pl-6 border-l-2 border-[#E8DFED] dark:border-[#663078]/40 space-y-5">
+                  {experiences.map((exp) => {
+                    const periodText = getExperiencePeriodDisplay(exp);
+                    const statusLabel = getEmploymentStatusDisplay(exp);
+                    const locationText = (exp.location || '').trim();
+                    const isCurrentRole =
+                      alumni.currentPositionId === exp.id ||
+                      (!alumni.currentPositionId && exp.isCurrent);
 
-              <div className="py-2.5 flex items-center justify-between gap-4">
-                <dt className="text-[#716A79] dark:text-[#9A8FA6]">Directory Visibility</dt>
-                <dd className="font-mono text-[#25212B] dark:text-[#F7F3F9] uppercase">
-                  {alumni.publicVisibility}
-                </dd>
-              </div>
+                    return (
+                      <article
+                        key={exp.id}
+                        className="relative rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-5 sm:p-6 transition-colors hover:border-[#663078]/60 dark:hover:border-[#B69AD8]/40"
+                      >
+                        {/* Timeline Node Dot */}
+                        <span
+                          aria-hidden="true"
+                          className={`absolute -left-[27px] sm:-left-[31px] top-6 w-3 h-3 rounded-full border-2 ${
+                            isCurrentRole
+                              ? 'bg-[#663078] border-[#B69AD8] dark:bg-[#B69AD8] dark:border-[#32143F]'
+                              : 'bg-[#FFFFFF] dark:bg-[#180C22] border-[#B69AD8] dark:border-[#663078]'
+                          }`}
+                        />
 
-              <div className="py-2.5 space-y-1">
-                <dt className="text-[#716A79] dark:text-[#9A8FA6]">Primary Source Citation</dt>
-                <dd className="text-[#25212B] dark:text-[#E8DFED] leading-relaxed">
-                  {alumni.informationSource}
-                </dd>
-              </div>
+                        {/* Work Period */}
+                        {periodText && (
+                          <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mb-2 tabular-nums">
+                            {periodText}
+                          </div>
+                        )}
 
-              {sourceRecords.length > 0 && (
-                <div className="py-2.5 space-y-1">
-                  <dt className="text-[#716A79] dark:text-[#9A8FA6]">Audit Log Reference</dt>
-                  {sourceRecords.map((sr) => (
-                    <dd key={sr.id} className="font-mono text-[11px] text-[#716A79] dark:text-[#B69AD8] tabular-nums">
-                      {sr.sourceReference} (Checked {sr.checkedAt})
-                    </dd>
-                  ))}
+                        {/* Organization Name, Designation, Status & Location */}
+                        <div className="min-w-0 space-y-1">
+                          <h3 className="text-base sm:text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] leading-snug break-words">
+                            {exp.organization}
+                          </h3>
+
+                          <p className="text-sm sm:text-base font-medium text-[#25212B] dark:text-[#E8DFED] break-words">
+                            {exp.designation}
+                          </p>
+
+                          {(statusLabel || locationText) && (
+                            <div className="pt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                              {statusLabel && <span>{statusLabel}</span>}
+                              {statusLabel && locationText && <span aria-hidden="true">·</span>}
+                              {locationText && <span>{locationText}</span>}
+                            </div>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               )}
-            </dl>
+            </section>
 
-            <p className="text-[11px] text-[#716A79] dark:text-[#9A8FA6] leading-relaxed pt-2 border-t border-[#E8DFED] dark:border-[#2E1A3B]">
-              Data Integrity Note: Creating or editing a profile via the Admin interface does not
-              automatically mark it as verified. Verification requires independent review of departmental or
-              alumnus-submitted documentation.
-            </p>
+            {/* 5. Higher Education */}
+            <section aria-labelledby="higher-education-heading" className="space-y-5">
+              <div className="pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
+                <h2
+                  id="higher-education-heading"
+                  className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]"
+                >
+                  Higher Education
+                </h2>
+              </div>
+
+              {higherEducationList.length === 0 ? (
+                <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/15 bg-[#FFFFFF] dark:bg-[#180C22] text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                  No post-IUT higher education records found.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {higherEducationList.map((edu) => {
+                    const periodText = getEducationPeriodDisplay(edu);
+                    const locationText = (edu.locationLabel || '').trim();
+
+                    return (
+                      <article
+                        key={edu.id}
+                        className="rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-5 sm:p-6 transition-colors hover:border-[#663078]/60 dark:hover:border-[#B69AD8]/40"
+                      >
+                        {periodText && (
+                          <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mb-2 tabular-nums">
+                            {periodText}
+                          </div>
+                        )}
+
+                        <div className="min-w-0 space-y-1">
+                          <h3 className="text-base sm:text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] leading-snug break-words">
+                            {edu.institution}
+                          </h3>
+
+                          <p className="text-sm sm:text-base font-medium text-[#25212B] dark:text-[#E8DFED] break-words">
+                            {edu.degree}
+                          </p>
+
+                          {locationText && (
+                            <p className="pt-0.5 text-xs sm:text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                              {locationText}
+                            </p>
+                          )}
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
           </div>
-        </aside>
+
+          {/* Right Column (4 cols): Compact Alumni Information Card */}
+          <aside className="lg:col-span-4 order-1 lg:order-2">
+            <div className="rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-6 space-y-4">
+              <h2 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
+                Alumni Information
+              </h2>
+
+              <dl className="divide-y divide-[#E8DFED] dark:divide-[#B69AD8]/15 text-sm">
+                <div className="py-3 flex items-center justify-between gap-4">
+                  <dt className="text-[#716A79] dark:text-[#C8B9D6]">Batch</dt>
+                  <dd className="font-semibold text-[#32143F] dark:text-[#F7F3F9] text-right">
+                    {batch.name}
+                  </dd>
+                </div>
+
+                <div className="py-3 flex items-center justify-between gap-4">
+                  <dt className="text-[#716A79] dark:text-[#C8B9D6]">Student ID</dt>
+                  <dd className="font-mono font-semibold text-[#25212B] dark:text-[#F7F3F9] tabular-nums text-right">
+                    {alumni.studentId}
+                  </dd>
+                </div>
+
+                {currentCity && (
+                  <div className="py-3 flex items-center justify-between gap-4">
+                    <dt className="text-[#716A79] dark:text-[#C8B9D6]">Current City</dt>
+                    <dd className="font-medium text-[#25212B] dark:text-[#F7F3F9] text-right">
+                      {currentCity}
+                    </dd>
+                  </div>
+                )}
+
+                {currentCountry && (
+                  <div className="py-3 flex items-center justify-between gap-4">
+                    <dt className="text-[#716A79] dark:text-[#C8B9D6]">Current Country</dt>
+                    <dd className="font-medium text-[#25212B] dark:text-[#F7F3F9] text-right">
+                      {currentCountry}
+                    </dd>
+                  </div>
+                )}
+
+                {currentPosition && (
+                  <div className="py-3 flex items-start justify-between gap-4">
+                    <dt className="text-[#716A79] dark:text-[#C8B9D6] shrink-0 flex items-center gap-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-[#663078] dark:text-[#B69AD8]" />
+                      <span>Current Organization</span>
+                    </dt>
+                    <dd className="font-medium text-[#25212B] dark:text-[#F7F3F9] text-right break-words">
+                      {currentPosition.organization}
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   );

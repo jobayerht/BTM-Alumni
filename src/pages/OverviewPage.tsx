@@ -214,13 +214,6 @@ export const OverviewPage: React.FC = () => {
             <Search className="w-3.5 h-3.5" />
             <span>Open Alumni Directory</span>
           </button>
-          <button
-            type="button"
-            onClick={() => navigate('/admin')}
-            className="px-4 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] bg-[#F7F3F9] dark:bg-[#190D21] border border-[#E8DFED] dark:border-[#352044] hover:border-[#663078] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
-          >
-            Manage Records in Admin
-          </button>
         </div>
       </header>
 
@@ -303,8 +296,8 @@ export const OverviewPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Row B: Dimension Filters (Location, Career Status, Industry, Study Level, Organization) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+        {/* Row B: Dimension Filters (Location, Study Level, Organization) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div>
             <label
               htmlFor="ov-country"
@@ -347,52 +340,6 @@ export const OverviewPage: React.FC = () => {
                   {c}
                 </option>
               ))}
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="ov-career"
-              className="block text-[11px] font-mono uppercase text-[#716A79] dark:text-[#B69AD8] mb-1"
-            >
-              Career Status
-            </label>
-            <select
-              id="ov-career"
-              value={filters.careerStatus}
-              onChange={(e) => setFilters({ ...filters, careerStatus: e.target.value })}
-              className="w-full px-3 py-2 text-xs font-medium rounded-lg border border-[#E8DFED] dark:border-[#352044] bg-[#F7F3F9]/60 dark:bg-[#120917] text-[#25212B] dark:text-[#F7F3F9]"
-            >
-              <option value="all">All Career Statuses</option>
-              <option value="Employed">Employed</option>
-              <option value="Higher studies">Higher studies</option>
-              <option value="Entrepreneur / Founder">Entrepreneur / Founder</option>
-              <option value="Seeking employment">Seeking employment</option>
-              <option value="Career transition">Career transition</option>
-              <option value="Unknown">Unknown / Unreported</option>
-            </select>
-          </div>
-
-          <div>
-            <label
-              htmlFor="ov-industry"
-              className="block text-[11px] font-mono uppercase text-[#716A79] dark:text-[#B69AD8] mb-1"
-            >
-              Primary Industry
-            </label>
-            <select
-              id="ov-industry"
-              value={filters.industry}
-              onChange={(e) => setFilters({ ...filters, industry: e.target.value })}
-              className="w-full px-3 py-2 text-xs font-medium rounded-lg border border-[#E8DFED] dark:border-[#352044] bg-[#F7F3F9]/60 dark:bg-[#120917] text-[#25212B] dark:text-[#F7F3F9]"
-            >
-              <option value="all">All Industries</option>
-              {filterOptions.industries.map((ind) => (
-                <option key={ind} value={ind}>
-                  {ind}
-                </option>
-              ))}
-              <option value="Unknown">Unknown / Unspecified</option>
             </select>
           </div>
 
@@ -994,69 +941,42 @@ export const OverviewPage: React.FC = () => {
               </h2>
             </div>
 
-            {/* Career Status & Seniority Split */}
+            {/* Employment Geography & Seniority Split */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Career Status Distribution */}
-              <div className="p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5">
+              {/* Employment Geography & Role Transitions */}
+              <div className="p-6 rounded-2xl border border-[#E8DFED] dark:border-[#321E3E] bg-[#FFFFFF] dark:bg-[#190D21] space-y-5 flex flex-col justify-between">
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9]">
-                    A. Primary Career Status Distribution (Person-Level)
+                    A. Workplace Geography &amp; Role Transitions
                   </h3>
                   <p className="text-xs text-[#716A79] dark:text-[#B69AD8]/80 mt-0.5">
-                    Mutually exclusive primary status per alumnus (n = {analytics.totalAlumni}). Note:{' '}
-                    {analytics.career.workingAndStudyingCount}{' '}
-                    {analytics.career.workingAndStudyingCount === 1 ? 'alumnus is' : 'alumni are'}{' '}
-                    simultaneously employed and enrolled in part-time higher studies.
+                    Summary of domestic vs. international roles and multi-role career progressions across n ={' '}
+                    {analytics.totalAlumni} records.
                   </p>
                 </div>
 
-                <div className="space-y-3.5">
-                  {analytics.career.careerStatusDistribution.map((item) => (
-                    <div key={item.status} className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-[#25212B] dark:text-[#F7F3F9]">
-                          {item.status}
-                        </span>
-                        <span className="font-mono text-[#663078] dark:text-[#B69AD8] tabular-nums">
-                          {item.count} ({item.pct}%)
-                        </span>
-                      </div>
-                      <div className="w-full h-2.5 rounded-full bg-[#F7F3F9] dark:bg-[#120917] overflow-hidden">
-                        <div
-                          style={{ width: `${Math.max(item.pct, 4)}%` }}
-                          className={`h-full rounded-full ${
-                            item.status === 'Unknown'
-                              ? 'bg-[#716A79]/50'
-                              : 'bg-[#663078] dark:bg-[#B69AD8]'
-                          }`}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-4 border-t border-[#E8DFED] dark:border-[#2E1A3B] grid grid-cols-3 gap-3 text-center text-xs">
-                  <div className="p-3 rounded-lg bg-[#F7F3F9] dark:bg-[#140A1B]">
-                    <div className="font-mono text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
+                <div className="grid grid-cols-3 gap-3 text-center text-xs">
+                  <div className="p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#140A1B] border border-[#E8DFED] dark:border-[#2E1A3B]">
+                    <div className="font-mono text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
                       {analytics.career.domesticEmploymentCount}
                     </div>
-                    <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8]">
+                    <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8] mt-1">
                       Working in Bangladesh
                     </div>
                   </div>
-                  <div className="p-3 rounded-lg bg-[#F7F3F9] dark:bg-[#140A1B]">
-                    <div className="font-mono text-lg font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
+                  <div className="p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#140A1B] border border-[#E8DFED] dark:border-[#2E1A3B]">
+                    <div className="font-mono text-2xl font-semibold text-[#663078] dark:text-[#C8B2E6] tabular-nums">
                       {analytics.career.internationalEmploymentCount}
                     </div>
-                    <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8]">
+                    <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8] mt-1">
                       Working Abroad
                     </div>
                   </div>
-                  <div className="p-3 rounded-lg bg-[#F7F3F9] dark:bg-[#140A1B]">
-                    <div className="font-mono text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
+                  <div className="p-4 rounded-xl bg-[#F7F3F9] dark:bg-[#140A1B] border border-[#E8DFED] dark:border-[#2E1A3B]">
+                    <div className="font-mono text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
                       {analytics.career.multiExperienceProfilesCount}
                     </div>
-                    <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8]">
+                    <div className="text-[11px] text-[#716A79] dark:text-[#B69AD8] mt-1">
                       Multi-Role Transitions
                     </div>
                   </div>
@@ -1578,7 +1498,7 @@ export const OverviewPage: React.FC = () => {
                   </div>
                   <p className="text-[11px] text-[#716A79] dark:text-[#9A8FA6] leading-relaxed">
                     Note: A profile with 100% field completeness is not automatically classified as Verified
-                    until source documentation is audited in the Admin Workspace.
+                    until source documentation is audited.
                   </p>
                 </div>
               </div>

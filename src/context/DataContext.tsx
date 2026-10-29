@@ -21,8 +21,16 @@ import {
   INITIAL_STORIES,
 } from '../data/initialDataset';
 
-const STORAGE_KEY = 'btm_alumni_store_btm17_real_v4';
-const LEGACY_KEYS = ['btm_alumni_store_v1', 'btm_alumni_store_v2', 'btm_alumni_store_v3'];
+const STORAGE_KEY = 'btm_alumni_store_v8_no_170061005';
+const LEGACY_KEYS = [
+  'btm_alumni_store_v1',
+  'btm_alumni_store_v2',
+  'btm_alumni_store_v3',
+  'btm_alumni_store_btm17_real_v4',
+  'btm_alumni_store_v5_json',
+  'btm_alumni_store_v6',
+  'btm_alumni_store_v7_all_batches',
+];
 const THEME_KEY = 'btm_alumni_theme';
 
 interface StoreState {
@@ -99,8 +107,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           parsed &&
           Array.isArray(parsed.batches) &&
           Array.isArray(parsed.alumni) &&
-          parsed.alumni.some((a: Alumni) => a.studentId === '170061001') &&
-          !parsed.alumni.some((a: Alumni) => a.studentId === '170061101')
+          parsed.alumni.length >= 200 &&
+          !parsed.alumni.some((a: Alumni) => a.studentId === '170061005')
         ) {
           return parsed;
         }
@@ -151,13 +159,18 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         status: 'active',
       };
 
-    // Sort experiences chronologically descending (most recent start date first)
+    // Sort experiences from most recent to oldest
     const experiences = store.experiences
       .filter((e) => e.alumniId === alum.id)
-      .sort((a, b) => b.startDate.localeCompare(a.startDate));
+      .sort((a, b) => {
+        if (a.isCurrent !== b.isCurrent) return a.isCurrent ? -1 : 1;
+        const endA = a.endDate || a.startDate;
+        const endB = b.endDate || b.startDate;
+        if (endA !== endB) return endB.localeCompare(endA);
+        return b.startDate.localeCompare(a.startDate);
+      });
 
-    // Explicit current position resolution: use currentPositionId first, or explicit isCurrent flag
-    // Never blindly assume the first experience is current unless explicitly marked
+    // Explicit current position resolution: only use currentPositionId or explicit isCurrent flag
     const currentPosition =
       (alum.currentPositionId
         ? experiences.find((e) => e.id === alum.currentPositionId)
