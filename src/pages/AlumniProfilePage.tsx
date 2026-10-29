@@ -362,142 +362,140 @@ export const AlumniProfilePage: React.FC<{ studentId: string }> = ({ studentId }
 
         {/* Two-Column Responsive Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-          {/* Left Column (8 cols): Career Journey & Higher Education */}
-          <div className="lg:col-span-8 space-y-10 order-2 lg:order-1">
-            {/* 4. Career Journey */}
-            <section aria-labelledby="career-journey-heading" className="space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
-                <h2
-                  id="career-journey-heading"
-                  className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]"
-                >
-                  Career Journey
-                </h2>
-                {experiences.length > 0 && (
-                  <span className="text-xs font-mono text-[#716A79] dark:text-[#C8B9D6] tabular-nums">
-                    {experiences.length} {experiences.length === 1 ? 'Experience' : 'Experiences'}
-                  </span>
-                )}
-              </div>
+          {/* Left Column (8 cols): Career Journey & Higher Education (only rendered when data exists) */}
+          {(experiences.length > 0 || higherEducationList.length > 0) && (
+            <div className="lg:col-span-8 space-y-10 order-2 lg:order-1">
+              {/* 4. Career Journey */}
+              {experiences.length > 0 && (
+                <section aria-labelledby="career-journey-heading" className="space-y-5">
+                  <div className="flex items-center justify-between pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
+                    <h2
+                      id="career-journey-heading"
+                      className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]"
+                    >
+                      Career Journey
+                    </h2>
+                    <span className="text-xs font-mono text-[#716A79] dark:text-[#C8B9D6] tabular-nums">
+                      {experiences.length} {experiences.length === 1 ? 'Experience' : 'Experiences'}
+                    </span>
+                  </div>
 
-              {experiences.length === 0 ? (
-                <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/15 bg-[#FFFFFF] dark:bg-[#180C22] text-sm text-[#716A79] dark:text-[#C8B9D6]">
-                  No work experience records have been found.
-                </div>
-              ) : (
-                <div className="relative pl-5 sm:pl-6 border-l-2 border-[#E8DFED] dark:border-[#663078]/40 space-y-5">
-                  {experiences.map((exp) => {
-                    const periodText = getExperiencePeriodDisplay(exp);
-                    const statusLabel = getEmploymentStatusDisplay(exp);
-                    const locationText = (exp.location || '').trim();
-                    const isCurrentRole =
-                      alumni.currentPositionId === exp.id ||
-                      (!alumni.currentPositionId && exp.isCurrent);
+                  <div className="relative pl-5 sm:pl-6 border-l-2 border-[#E8DFED] dark:border-[#663078]/40 space-y-5">
+                    {experiences.map((exp) => {
+                      const periodText = getExperiencePeriodDisplay(exp);
+                      const statusLabel = getEmploymentStatusDisplay(exp);
+                      const locationText = (exp.location || '').trim();
+                      const isCurrentRole =
+                        alumni.currentPositionId === exp.id ||
+                        (!alumni.currentPositionId && exp.isCurrent);
 
-                    return (
-                      <article
-                        key={exp.id}
-                        className="relative rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-5 sm:p-6 transition-colors hover:border-[#663078]/60 dark:hover:border-[#B69AD8]/40"
-                      >
-                        {/* Timeline Node Dot */}
-                        <span
-                          aria-hidden="true"
-                          className={`absolute -left-[27px] sm:-left-[31px] top-6 w-3 h-3 rounded-full border-2 ${
-                            isCurrentRole
-                              ? 'bg-[#663078] border-[#B69AD8] dark:bg-[#B69AD8] dark:border-[#32143F]'
-                              : 'bg-[#FFFFFF] dark:bg-[#180C22] border-[#B69AD8] dark:border-[#663078]'
-                          }`}
-                        />
+                      return (
+                        <article
+                          key={exp.id}
+                          className="relative rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-5 sm:p-6 transition-colors hover:border-[#663078]/60 dark:hover:border-[#B69AD8]/40"
+                        >
+                          {/* Timeline Node Dot */}
+                          <span
+                            aria-hidden="true"
+                            className={`absolute -left-[27px] sm:-left-[31px] top-6 w-3 h-3 rounded-full border-2 ${
+                              isCurrentRole
+                                ? 'bg-[#663078] border-[#B69AD8] dark:bg-[#B69AD8] dark:border-[#32143F]'
+                                : 'bg-[#FFFFFF] dark:bg-[#180C22] border-[#B69AD8] dark:border-[#663078]'
+                            }`}
+                          />
 
-                        {/* Work Period */}
-                        {periodText && (
-                          <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mb-2 tabular-nums">
-                            {periodText}
-                          </div>
-                        )}
-
-                        {/* Organization Name, Designation, Status & Location */}
-                        <div className="min-w-0 space-y-1">
-                          <h3 className="text-base sm:text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] leading-snug break-words">
-                            {exp.organization}
-                          </h3>
-
-                          <p className="text-sm sm:text-base font-medium text-[#25212B] dark:text-[#E8DFED] break-words">
-                            {exp.designation}
-                          </p>
-
-                          {(statusLabel || locationText) && (
-                            <div className="pt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-[#716A79] dark:text-[#C8B9D6]">
-                              {statusLabel && <span>{statusLabel}</span>}
-                              {statusLabel && locationText && <span aria-hidden="true">·</span>}
-                              {locationText && <span>{locationText}</span>}
+                          {/* Work Period */}
+                          {periodText && (
+                            <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mb-2 tabular-nums">
+                              {periodText}
                             </div>
                           )}
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
 
-            {/* 5. Higher Education */}
-            <section aria-labelledby="higher-education-heading" className="space-y-5">
-              <div className="pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
-                <h2
-                  id="higher-education-heading"
-                  className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]"
-                >
-                  Higher Education
-                </h2>
-              </div>
+                          {/* Organization Name, Designation, Status & Location */}
+                          <div className="min-w-0 space-y-1">
+                            <h3 className="text-base sm:text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] leading-snug break-words">
+                              {exp.organization}
+                            </h3>
 
-              {higherEducationList.length === 0 ? (
-                <div className="p-6 rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/15 bg-[#FFFFFF] dark:bg-[#180C22] text-sm text-[#716A79] dark:text-[#C8B9D6]">
-                  No post-IUT higher education records found.
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {higherEducationList.map((edu) => {
-                    const periodText = getEducationPeriodDisplay(edu);
-                    const locationText = (edu.locationLabel || '').trim();
-
-                    return (
-                      <article
-                        key={edu.id}
-                        className="rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-5 sm:p-6 transition-colors hover:border-[#663078]/60 dark:hover:border-[#B69AD8]/40"
-                      >
-                        {periodText && (
-                          <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mb-2 tabular-nums">
-                            {periodText}
-                          </div>
-                        )}
-
-                        <div className="min-w-0 space-y-1">
-                          <h3 className="text-base sm:text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] leading-snug break-words">
-                            {edu.institution}
-                          </h3>
-
-                          <p className="text-sm sm:text-base font-medium text-[#25212B] dark:text-[#E8DFED] break-words">
-                            {edu.degree}
-                          </p>
-
-                          {locationText && (
-                            <p className="pt-0.5 text-xs sm:text-sm text-[#716A79] dark:text-[#C8B9D6]">
-                              {locationText}
+                            <p className="text-sm sm:text-base font-medium text-[#25212B] dark:text-[#E8DFED] break-words">
+                              {exp.designation}
                             </p>
-                          )}
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          </div>
 
-          {/* Right Column (4 cols): Compact Alumni Information Card */}
-          <aside className="lg:col-span-4 order-1 lg:order-2">
+                            {(statusLabel || locationText) && (
+                              <div className="pt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                                {statusLabel && <span>{statusLabel}</span>}
+                                {statusLabel && locationText && <span aria-hidden="true">·</span>}
+                                {locationText && <span>{locationText}</span>}
+                              </div>
+                            )}
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
+
+              {/* 5. Higher Education */}
+              {higherEducationList.length > 0 && (
+                <section aria-labelledby="higher-education-heading" className="space-y-5">
+                  <div className="pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
+                    <h2
+                      id="higher-education-heading"
+                      className="font-serif text-2xl font-semibold text-[#32143F] dark:text-[#F7F3F9]"
+                    >
+                      Higher Education
+                    </h2>
+                  </div>
+
+                  <div className="space-y-4">
+                    {higherEducationList.map((edu) => {
+                      const periodText = getEducationPeriodDisplay(edu);
+                      const locationText = (edu.locationLabel || '').trim();
+
+                      return (
+                        <article
+                          key={edu.id}
+                          className="rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-5 sm:p-6 transition-colors hover:border-[#663078]/60 dark:hover:border-[#B69AD8]/40"
+                        >
+                          {periodText && (
+                            <div className="text-xs font-mono font-semibold uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mb-2 tabular-nums">
+                              {periodText}
+                            </div>
+                          )}
+
+                          <div className="min-w-0 space-y-1">
+                            <h3 className="text-base sm:text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] leading-snug break-words">
+                              {edu.institution}
+                            </h3>
+
+                            <p className="text-sm sm:text-base font-medium text-[#25212B] dark:text-[#E8DFED] break-words">
+                              {edu.degree}
+                            </p>
+
+                            {locationText && (
+                              <p className="pt-0.5 text-xs sm:text-sm text-[#716A79] dark:text-[#C8B9D6]">
+                                {locationText}
+                              </p>
+                            )}
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
+            </div>
+          )}
+
+          {/* Right Column: Compact Alumni Information Card */}
+          <aside
+            className={
+              experiences.length > 0 || higherEducationList.length > 0
+                ? 'lg:col-span-4 order-1 lg:order-2'
+                : 'lg:col-span-6 order-1'
+            }
+          >
             <div className="rounded-xl border border-[#E8DFED] dark:border-[#B69AD8]/20 bg-[#FFFFFF] dark:bg-[#180C22] p-6 space-y-4">
               <h2 className="font-serif text-lg font-semibold text-[#32143F] dark:text-[#F7F3F9] pb-3 border-b border-[#E8DFED] dark:border-[#B69AD8]/15">
                 Alumni Information

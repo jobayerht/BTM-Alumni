@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="btmBg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#32143F" />
+      <stop offset="55%" stop-color="#663078" />
+      <stop offset="100%" stop-color="#4A1E5A" />
+    </linearGradient>
+    <linearGradient id="btmAccent" x1="12" y1="12" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F7F3F9" />
+      <stop offset="100%" stop-color="#D7C3EC" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded Squircle Background -->
+  <rect width="64" height="64" rx="16" fill="url(#btmBg)" />
+  <rect x="2.5" y="2.5" width="59" height="59" rx="13.5" stroke="#B69AD8" stroke-opacity="0.35" stroke-width="1.5" />
+
+  <!-- Subtle Academic Crest Arch -->
+  <path
+    d="M16 19C16 15.6863 18.6863 13 22 13H42C45.3137 13 48 15.6863 48 19V41C48 47.6274 32 53 32 53C32 53 16 47.6274 16 41V19Z"
+    fill="#240D30"
+    fill-opacity="0.45"
+    stroke="#B69AD8"
+    stroke-opacity="0.5"
+    stroke-width="1.5"
+  />
+
+  <!-- Graduation Mortarboard Top Motif -->
+  <path
+    d="M32 16L43 21L32 26L21 21L32 16Z"
+    fill="url(#btmAccent)"
+  />
+  <path
+    d="M25 23.8V27.5C25 29.2 28.1 30.8 32 30.8C35.9 30.8 39 29.2 39 27.5V23.8"
+    stroke="#E8DFED"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+  <path
+    d="M41.5 21.8V27.5"
+    stroke="#B69AD8"
+    stroke-width="1.6"
+    stroke-linecap="round"
+  />
+
+  <!-- Bold "BTM" Monogram -->
+  <text
+    x="32"
+    y="44"
+    text-anchor="middle"
+    fill="#FFFFFF"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="700"
+    font-size="13.5"
+    letter-spacing="0.8"
+  >
+    BTM
+  </text>
+</svg>
