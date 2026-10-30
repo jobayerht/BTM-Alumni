@@ -21,7 +21,7 @@ export const HomePage: React.FC = () => {
   useEffect(() => {
     updateDocumentMeta(
       'Home',
-      'Discover the people, careers, and achievements shaping the BTM alumni community at Islamic University of Technology (IUT), Bangladesh.'
+      'Discover the people, careers, and higher studies shaping the BTM alumni community at Islamic University of Technology (IUT), Bangladesh.'
     );
   }, []);
 
@@ -100,27 +100,27 @@ export const HomePage: React.FC = () => {
   return (
     <div>
       {/* 1. Asymmetric 60/40 Editorial Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#230E2D] via-[#32143F] to-[#4A1F5C] text-[#F7F3F9] border-b border-[#4A235A]">
+      <section className="relative overflow-hidden border-b border-[#E8DFED] dark:border-[#2E1A3B]">
         {/* Ambient Hero Glows for Frosted Glass Depth */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -top-20 left-[12%] w-80 h-80 rounded-full bg-[#B69AD8]/20 blur-[90px]" />
-          <div className="absolute bottom-[-10%] right-[10%] w-96 h-96 rounded-full bg-[#9D59B8]/25 blur-[100px]" />
+          <div className="absolute -top-20 left-[12%] w-80 h-80 rounded-full bg-[#B69AD8]/20 dark:bg-[#663078]/20 blur-[90px]" />
+          <div className="absolute bottom-[-10%] right-[10%] w-96 h-96 rounded-full bg-[#9D59B8]/15 dark:bg-[#4A1F5C]/25 blur-[100px]" />
         </div>
 
         <div className="relative z-10 max-w-[1280px] mx-auto px-6 py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left 60% Editorial & Search Column */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#D8C2F0]">
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#663078] dark:text-[#B69AD8]">
                 <span>Department of Business &amp; Technology Management · IUT</span>
               </div>
 
-              <h1 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-semibold tracking-tight leading-[1.08] text-balance">
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-semibold tracking-tight leading-[1.08] text-[#32143F] dark:text-[#F7F3F9] text-balance">
                 Connecting the Generations of BTM at IUT
               </h1>
 
-              <p className="text-base sm:text-lg text-[#E8DFED]/90 max-w-2xl leading-relaxed">
-                Discover the people, careers, higher studies, and achievements shaping the Business
+              <p className="text-base sm:text-lg text-[#716A79] dark:text-[#B69AD8]/90 max-w-2xl leading-relaxed">
+                Discover the people, careers, and higher studies shaping the Business
                 and Technology Management alumni community at Islamic University of Technology (IUT),
                 Gazipur, Bangladesh.
               </p>
@@ -128,22 +128,22 @@ export const HomePage: React.FC = () => {
               {/* Hero Search Form (Glass) */}
               <form
                 onSubmit={handleHeroSearchSubmit}
-                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 btm-glass-dark p-2 rounded-xl max-w-xl"
+                className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 btm-glass p-2 rounded-xl max-w-xl"
               >
                 <div className="flex items-center gap-2.5 flex-1 px-3 py-2">
-                  <Search className="w-4 h-4 text-[#B69AD8] shrink-0" />
+                  <Search className="w-4 h-4 text-[#663078] dark:text-[#B69AD8] shrink-0" />
                   <input
                     type="text"
                     value={heroSearch}
                     onChange={(e) => setHeroSearch(e.target.value)}
                     placeholder="Search by name, student ID (e.g. 170061...), or organization..."
                     aria-label="Search alumni directory"
-                    className="w-full bg-transparent text-sm text-[#FFFFFF] placeholder-[#B69AD8]/70 focus:outline-none"
+                    className="w-full bg-transparent text-sm text-[#25212B] dark:text-[#F7F3F9] placeholder-[#716A79]/70 dark:placeholder-[#B69AD8]/60 focus:outline-none"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078]/90 hover:bg-[#7D3C94] border border-[#FFFFFF]/20 backdrop-blur-md rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078] hover:bg-[#32143F] dark:hover:bg-[#4E1E64] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer shadow-sm"
                 >
                   Search Directory
                 </button>
@@ -154,7 +154,7 @@ export const HomePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/batch/17')}
-                  className="px-5 py-2.5 text-xs font-semibold text-[#32143F] bg-[#F7F3F9]/95 hover:bg-[#FFFFFF] backdrop-blur-md rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 cursor-pointer shadow-sm"
+                  className="px-5 py-2.5 text-xs font-semibold text-[#FFFFFF] bg-[#663078] hover:bg-[#32143F] dark:hover:bg-[#4E1E64] rounded-lg transition-colors inline-flex items-center gap-2 whitespace-nowrap shrink-0 cursor-pointer shadow-sm"
                 >
                   <span>Explore BTM 17 Directory</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -162,14 +162,14 @@ export const HomePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => navigate('/batches')}
-                  className="px-4 py-2.5 text-xs font-semibold text-[#F7F3F9] bg-[#FFFFFF]/12 hover:bg-[#FFFFFF]/20 backdrop-blur-md border border-[#FFFFFF]/25 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] btm-glass-subtle hover:bg-[#E8DFED]/70 dark:hover:bg-[#23122E] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   Browse All Batches
                 </button>
                 <button
                   type="button"
                   onClick={() => navigate('/overview')}
-                  className="px-4 py-2.5 text-xs font-semibold text-[#F7F3F9] bg-[#FFFFFF]/12 hover:bg-[#FFFFFF]/20 backdrop-blur-md border border-[#FFFFFF]/25 rounded-lg transition-colors inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
+                  className="px-4 py-2.5 text-xs font-semibold text-[#32143F] dark:text-[#F7F3F9] btm-glass-subtle hover:bg-[#E8DFED]/70 dark:hover:bg-[#23122E] rounded-lg transition-colors inline-flex items-center gap-1.5 whitespace-nowrap shrink-0 cursor-pointer"
                 >
                   <LayoutDashboard className="w-3.5 h-3.5" />
                   <span>Overview Dashboard</span>
@@ -179,8 +179,8 @@ export const HomePage: React.FC = () => {
 
             {/* Right 40% Architectural Feature Plate (Glass) */}
             <div className="lg:col-span-5">
-              <div className="rounded-2xl overflow-hidden btm-glass-dark">
-                <div className="h-64 sm:h-72 border-b border-[#B69AD8]/25">
+              <div className="rounded-2xl overflow-hidden btm-glass">
+                <div className="h-64 sm:h-72 border-b border-[#E8DFED]/80 dark:border-[#321E3E]">
                   <EditorialPlate
                     variant="campus-arch"
                     alt="Islamic University of Technology BTM Architectural Plate"
@@ -188,28 +188,28 @@ export const HomePage: React.FC = () => {
                     className="w-full h-full"
                   />
                 </div>
-                <div className="p-6 grid grid-cols-3 gap-4 divide-x divide-[#B69AD8]/25 text-center bg-[#FFFFFF]/5 backdrop-blur-md">
+                <div className="p-6 grid grid-cols-3 gap-4 divide-x divide-[#E8DFED]/80 dark:divide-[#321E3E] text-center btm-glass-subtle">
                   <div>
-                    <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#FFFFFF] tabular-nums">
+                    <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
                       {totalProfiles}
                     </div>
-                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#D8C2F0] mt-1">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mt-1">
                       Alumni Records
                     </div>
                   </div>
                   <div className="pl-4">
-                    <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#FFFFFF] tabular-nums">
+                    <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
                       {batches.length}
                     </div>
-                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#D8C2F0] mt-1">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mt-1">
                       BTM Batches
                     </div>
                   </div>
                   <div className="pl-4">
-                    <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#FFFFFF] tabular-nums">
+                    <div className="font-serif text-2xl sm:text-3xl font-semibold text-[#32143F] dark:text-[#F7F3F9] tabular-nums">
                       {uniqueCompanies}
                     </div>
-                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#D8C2F0] mt-1">
+                    <div className="text-[11px] font-mono uppercase tracking-wider text-[#663078] dark:text-[#B69AD8] mt-1">
                       Organizations
                     </div>
                   </div>
